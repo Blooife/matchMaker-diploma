@@ -1,0 +1,6 @@
+<div *ngIf="isLoading" class="loading-message">Загрузка целей...</div>
+<select *ngIf="!isLoading && goals.length > 0" (change)="onGoalChange($event)" [ngModel]="selectedGoalId" class="select-input">
+  <option value="{{null}}">Выберите цель</option>
+  <option *ngFor="let goal of goals" [ngValue]="goal.id">{{ goal.name }}</option>
+</select>
+<p *ngIf="!isLoading && goals.length === 0" class="no-items">Результатов не найдено.</p>

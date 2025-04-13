@@ -1,0 +1,10 @@
+<div class="languages-container">
+  <h2>Обновить языки</h2>
+  <div class="languages-list">
+    <div *ngFor="let language of allLanguages"
+         [class.selected]="isLanguageSelected(language)"
+         (click)="toggleLanguageSelection(language)">
+      {{ language.name }}
+    </div>
+  </div>
+</div>

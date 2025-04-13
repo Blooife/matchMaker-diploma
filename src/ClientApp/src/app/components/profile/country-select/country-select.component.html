@@ -1,0 +1,5 @@
+<div *ngIf="isLoading" class="loading-message">Загрузка стран...</div>
+<select *ngIf="!isLoading" (change)="onCountryChange($event)" [ngModel]="selectedCountryId" class="select-input">
+  <option value="{{null}}">Выберите страну</option>
+  <option *ngFor="let country of countries" [ngValue]="country.id">{{ country.name }}</option>
+</select>

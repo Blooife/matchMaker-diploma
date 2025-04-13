@@ -1,0 +1,31 @@
+<div class="chats-container">
+  <div class="left-panel" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [scrollWindow]="false" (scrolled)="onScrollDown()">
+    <div *ngFor="let chat of chats" class="chat-item" [ngClass]="{'chat-item': true, 'active': chat.id === selectedChat?.id}" (click)="openChat(chat)" (contextmenu)="onRightClick($event, chat)">
+      <img [src]="chat.mainImageUrl || 'noImage.jpg'" crossorigin="anonymous" class="profile-image" />
+      <p>{{ chat.profileName }} {{ chat.profileLastName }}</p>
+    </div>
+  </div>
+  <div class="chat-content">
+    <div class="modal" *ngIf="selectedChat">
+      <div class="modal-content">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <div class="chat-header">
+          <img [src]="selectedChat.mainImageUrl || 'noImage.jpg'" crossorigin="anonymous" class="profile-image" />
+          <span class="chat-partner" (click)="viewProfile(selectedChat.firstProfileId == this.profileId ? selectedChat.secondProfileId : selectedChat.firstProfileId)">
+            {{ selectedChat.profileName }} {{ selectedChat.profileLastName }}
+          </span>
+        </div>
+        <app-messages [chatId]="selectedChat.id" [profileId]="profileId"></app-messages>
+      </div>
+    </div>
+  </div>
+  <div class="profile-modal" *ngIf="selectedProfile">
+    <div class="profile-modal-content">
+      <span class="close" (click)="closeProfileModal()">&times;</span>
+      <app-profile-card [profile]="selectedProfile"></app-profile-card>
+    </div>
+  </div>
+  <div *ngIf="showContextMenu" class="context-menu" [ngStyle]="{'top.px': contextMenuPosition.y, 'left.px': contextMenuPosition.x}">
+    <button (click)="deleteChat(selectedChatId!)">Удалить чат</button>
+  </div>
+</div>

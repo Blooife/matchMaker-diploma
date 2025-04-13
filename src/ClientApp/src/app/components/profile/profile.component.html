@@ -1,0 +1,12 @@
+<div *ngIf="loading; else loadedContent" class="content-container">
+  <div class="loader">Загрузка...</div>
+</div>
+
+<ng-template #loadedContent>
+  <div *ngIf="profile;" class="content-container">
+    <app-profile-card [profile]="profile"></app-profile-card>
+    <button [routerLink]="['/update-profile', profile.id]" class="update-profile-button">
+      Обновить профиль
+    </button>
+  </div>
+</ng-template>

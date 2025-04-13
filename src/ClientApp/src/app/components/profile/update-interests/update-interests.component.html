@@ -1,0 +1,10 @@
+<div class="interests-container">
+  <h2>Обновить интересы</h2>
+  <div class="interests-list">
+    <div *ngFor="let interest of allInterests"
+         [class.selected]="isInterestSelected(interest)"
+         (click)="toggleInterestSelection(interest)">
+      {{ interest.name }}
+    </div>
+  </div>
+</div>

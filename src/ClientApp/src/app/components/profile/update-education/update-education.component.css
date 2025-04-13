@@ -1,0 +1,64 @@
+.educations-container {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f3e5f5;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.educations-container h2 {
+  color: black;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.education-item {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #d1c4e9;
+  border-radius: 5px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.education-item label {
+  display: block;
+  margin-bottom: 5px;
+  color: #4a148c;
+}
+
+.education-item input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.education-item input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d1c4e9;
+  border-radius: 5px;
+  background-color: #f3e5f5;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.education-item input[type="text"]:focus {
+  border-color: #7e57c2;
+  outline: none;
+}
+
+button {
+  background-color: #7e57c2;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #6a1b9a;
+}
+
+p {
+  color: #4a148c;
+}

@@ -1,0 +1,4 @@
+<select *ngIf="cities.length >= 0" (change)="onCityChange($event)" [ngModel]="selectedCityId" class="select-input">
+  <option value="{{null}}">Выберите город</option>
+  <option *ngFor="let city of cities" [ngValue]="city.id">{{ city.name }}</option>
+</select>

@@ -1,0 +1,42 @@
+<div class="images-container">
+  <h2>Изображения профиля</h2>
+  <div class="image-list">
+    <div *ngFor="let image of images" class="image-item">
+      <img [src]="image.imageUrl" crossorigin="anonymous" class="profile-image" (click)="openImage(image)" />
+    </div>
+  </div>
+
+  <div class="upload-section">
+    <h3>Загрузить изображение</h3>
+    <input type="file" (change)="onFileSelected($event)" />
+  </div>
+</div>
+
+
+
+<div *ngIf="croppingImage" class="modal">
+  <div class="modal-content">
+    <app-image-cropper class="modal-image"
+      [imageChangedEvent]="imageChangedEvent"
+      [fileName]="fileName"
+      (imageCroppedEvent)="onImageCropped($event)"
+      (cropCancelled)="onCropCancelled()">
+    </app-image-cropper>
+
+  </div>
+  <div class="modal-buttons">
+    <button class="make-main-button" (click)="confirmCrop()">Обрезать & Загрузить</button>
+    <button class="delete-button" (click)="cancelCrop()">Отмена</button>
+  </div>
+</div>
+
+<div *ngIf="selectedImage" class="modal">
+  <div class="modal-content">
+    <img [src]="selectedImage.imageUrl" crossorigin="anonymous" class="modal-image" />
+    <div class="modal-buttons">
+      <button (click)="makeMain(selectedImage.id)" class="make-main-button">Сделать аватаром</button>
+      <button (click)="confirmDelete(selectedImage.id)" class="delete-button">Удалить</button>
+    </div>
+    <span class="close" (click)="closeModal()">×</span>
+  </div>
+</div>

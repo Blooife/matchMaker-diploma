@@ -1,0 +1,52 @@
+.content-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.5em;
+  color: #6200ea;
+}
+
+.update-profile-button {
+  background-color: #6a1b9a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.update-profile-button:hover {
+  background-color: #4a148c;
+}
+
+.update-profile-button:active {
+  background-color: #38006b;
+}
+
+.update-profile-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.4);
+}
+
+.no-profile-message {
+  font-size: 1.2em;
+  color: #a35bbf;
+  margin: 20px 0;
+}
+
+.no-profile-message + button {
+  margin-top: 20px;
+}

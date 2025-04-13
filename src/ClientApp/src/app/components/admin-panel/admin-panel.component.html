@@ -1,0 +1,43 @@
+<div class="admin-panel-container">
+  <div class="admin-panel">
+    <h1>Панель администратора</h1>
+
+    <table>
+      <thead>
+      <tr>
+        <th>Пользователь</th>
+        <th>Роли</th>
+        <th *ngIf="isAdmin()">Назначит/Удалить роль</th>
+        <th>Удалить</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of users$">
+        <td>{{ user.email }}</td>
+        <td>
+          <span *ngFor="let role of user.roles">{{ role }} </span>
+        </td>
+        <td *ngIf="isAdmin()">
+          <div class="button-container">
+            <select [(ngModel)]="selectedRole">
+              <option value="" disabled selected>Выбрать роль</option>
+              <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+            </select>
+            <button (click)="assignRole(user.email, selectedRole)">Назначить</button>
+            <button (click)="removeRole(user.email, selectedRole)">Удалить</button>
+          </div>
+        </td>
+        <td>
+          <button (click)="deleteUser(user.id)">Удалить пользователя</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <button (click)="previousPage()" [disabled]="pageNumber === 1">Назад</button>
+      <span>Страница {{ pageNumber }} из {{ totalPages }}</span>
+      <button (click)="nextPage()" [disabled]="pageNumber === totalPages">Вперёд</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="image-slider">
+      <ng-container *ngIf="profile.images.length > 0 else defaultImage" >
+        <button class="slider-arrow left-arrow" (click)="prevImage()">&lt;</button>
+        <div class="image-list">
+          <div *ngFor="let image of profile.images; let i = index"
+               class="image-item"
+               [class.active]="i === currentImageIndex">
+            <img [src]="image.imageUrl" alt="Profile Image" crossorigin="anonymous" height="360" width="360" class="profile-image" />
+          </div>
+        </div>
+        <button class="slider-arrow right-arrow" (click)="nextImage()">&gt;</button>
+      </ng-container>
+      <ng-template #defaultImage>
+        <img src="/noImage.jpg" class="profile-image" height="360" width="360" alt=""/>
+      </ng-template>
+    </div>
+    <h2>{{profile.name}} {{profile.lastName}}</h2>
+    <p class="profile-bio">{{profile.bio}}</p>
+  </div>
+  <div class="profile-details">
+    <div class="profile-detail-item">
+      <i class="fa fa-birthday-cake"></i>
+      <p><strong>Дата рождения:</strong> {{profile.birthDate | date}}</p>
+    </div>
+    <div class="profile-detail-item">
+      <i class="fa fa-venus-mars"></i>
+      <p><strong>Пол:</strong> {{Gender[profile.gender]}}</p>
+    </div>
+    <div class="profile-detail-item">
+      <i class="fa fa-arrows-alt-v"></i>
+      <p><strong>Рост:</strong> {{profile.height}} cm</p>
+    </div>
+    <div class="profile-detail-item">
+      <i class="fa fa-flag"></i>
+      <p><strong>Страна:</strong> {{profile.country.name}}</p>
+    </div>
+    <div class="profile-detail-item">
+      <i class="fa fa-city"></i>
+      <p><strong>Город:</strong> {{profile.city.name}}</p>
+    </div>
+    <div class="profile-detail-item">
+      <i class="fa fa-bullseye"></i>
+      <p><strong>Цель:</strong> {{profile.goal?.name}}</p>
+    </div>
+  </div>
+
+  <div class="profile-section">
+    <h3>Языки</h3>
+    <ng-container *ngIf="profile.languages.length > 0; else noLanguages">
+      <ul>
+        <li *ngFor="let language of profile.languages">{{language.name}}</li>
+      </ul>
+    </ng-container>
+    <ng-template #noLanguages>
+      <p>-</p>
+    </ng-template>
+  </div>
+
+  <div class="profile-section">
+    <h3>Интересы</h3>
+    <ng-container *ngIf="profile.interests.length > 0; else noInterests">
+      <ul>
+        <li *ngFor="let interest of profile.interests">{{interest.name}}</li>
+      </ul>
+    </ng-container>
+    <ng-template #noInterests>
+      <p>-</p>
+    </ng-template>
+  </div>
+
+  <div class="profile-section">
+    <h3>Образование</h3>
+    <ng-container *ngIf="profile.education.length > 0; else noEducation">
+      <ul>
+        <li *ngFor="let edu of profile.education">{{edu.educationName}}: {{edu.description}}</li>
+      </ul>
+    </ng-container>
+    <ng-template #noEducation>
+      <p>-</p>
+    </ng-template>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div *ngIf="!noMoreRecs; else noRecs" class="container">
+  <div *ngIf="recsLoading; else content" class="loading-container">
+    <div class="loader"></div>
+    <div class="loading-text">Загрузка</div>
+  </div>
+
+  <ng-template #content>
+    <div *ngIf="recommendations.length > 0 && currentIndex < recommendations.length" [@flyInOut]="animationState" class="profile-container">
+      <app-profile-card [profile]="recommendations[currentIndex]" class="profile-card"></app-profile-card>
+    </div>
+    <div class="actions">
+      <button (click)="onDislike(recommendations[currentIndex].id)" class="action-button">
+        <i class="fas fa-times"></i>
+      </button>
+      <button (click)="onLike(recommendations[currentIndex].id)" class="action-button">
+        <i class="fas fa-check"></i>
+      </button>
+    </div>
+  </ng-template>
+</div>
+
+<ng-template #noRecs>
+  <div class="no-recs-container">
+    <p class="no-recs-message">Рекомендации на сегодня закончились</p>
+  </div>
+</ng-template>

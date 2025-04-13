@@ -1,0 +1,19 @@
+<div *ngIf="educations.length > 0" class="educations-container">
+  <h2>Выберите образование</h2>
+  <div *ngFor="let education of educations" class="education-item">
+    <label>
+      <input type="checkbox"
+             [checked]="isEducationSelected(education.id)"
+             (change)="onEducationToggle(education)">
+      {{education.name}}
+    </label>
+    <label for="description-{{education.id}}">Описание:</label>
+    <input type="text"
+           id="description-{{education.id}}"
+           [(ngModel)]="educationDescriptions[education.id]"
+           (ngModelChange)="onDescriptionChange(education.id, $event)">
+  </div>
+  <button (click)="save()">Обновить образование</button>
+</div>
+
+<p *ngIf="educations.length === 0">Результатов не найдено</p>

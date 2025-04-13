@@ -1,0 +1,55 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #6a5acd 0%, #00bfff 100%);
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.welcome-message {
+  color: #ffffff;
+  max-width: 600px;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+
+.welcome-message h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.welcome-message p {
+  font-size: 1.2rem;
+}
+
+.auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffffff;
+  background: #6a5acd;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background: #00bfff;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

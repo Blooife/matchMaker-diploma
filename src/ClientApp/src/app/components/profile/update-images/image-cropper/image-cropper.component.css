@@ -1,0 +1,9 @@
+.cropper-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: auto;
+}
+image-cropper {
+  height: 70%;
+}

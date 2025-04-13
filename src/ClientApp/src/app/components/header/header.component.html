@@ -1,0 +1,29 @@
+<header class="header">
+  <div class="toggle-btn" (click)="toggleMenu()">
+    <span *ngIf="isMenuVisible" class="icon-close">✖</span>
+    <span *ngIf="!isMenuVisible" class="icon-menu">☰</span>
+  </div>
+  <nav *ngIf="isMenuVisible">
+    <button *ngIf="(isLoggedIn$)" (click)="logOut()">Выйти</button>
+    <div *ngIf="isLoggedIn$">
+      <button *ngIf="isAdmin() || isModerator()" [routerLink]="['/admin-panel']">
+        Панель администратора
+      </button>
+      <button *ngIf="isUser()" [routerLink]="['/profile']">
+        Мой профиль
+      </button>
+      <button *ngIf="isUser()" [routerLink]="['/find-match']">
+        Поиск
+      </button>
+      <button *ngIf="isUser()" [routerLink]="['/matches']">
+        Совпадения
+      </button>
+      <button *ngIf="isUser()" [routerLink]="['/chats']">
+        Чаты
+      </button>
+      <button (click)="deleteUserById()">
+        Удалить аккаунт
+      </button>
+    </div>
+  </nav>
+</header>

@@ -1,0 +1,95 @@
+form {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #f5f5f5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #a35bbf;
+}
+
+.select-input {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: #ffffff;
+  font-size: 14px;
+  color: #495057;
+}
+
+.select-input option {
+  padding: 8px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #a35bbf;
+}
+
+form input[type="text"],
+form input[type="number"],
+form input[type="date"],
+form input[type="checkbox"],
+form select,
+form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+form input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+form input[type="checkbox"] {
+  width: auto;
+  margin-right: 10px;
+}
+
+form select {
+  background-color: #fff;
+}
+
+form button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 5px;
+  background-color: #a35bbf;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #8a3ea6;
+}
+
+form .form-section {
+  margin-bottom: 20px;
+}
+
+form .form-section h3 {
+  font-size: 1.2em;
+  color: #a35bbf;
+  border-bottom: 1px solid #a35bbf;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+form .form-section p {
+  margin: 0;
+  color: #666;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8em;
+}
