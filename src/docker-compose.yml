@@ -1,0 +1,12 @@
+﻿services:
+  user.api:
+    image: user.api
+    build:
+      context: .
+      dockerfile: matchMaker.Services/User/User.API/Dockerfile
+
+  profile.api:
+    image: profile.api
+    build:
+      context: .
+      dockerfile: matchMaker.Services/Profile/Profile.API/Dockerfile
