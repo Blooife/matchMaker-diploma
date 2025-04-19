@@ -16,7 +16,7 @@ public class MessagesController(IMessageService _messageService, IMapper _mapper
 {
     [HttpGet("paged/{chatId}")]
     public async Task<ActionResult<PagedList<MessageResponseDto>>> GetPagedMessages(
-        [FromRoute] long chatId, CancellationToken cancellationToken, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        [FromRoute] string chatId, CancellationToken cancellationToken, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
         var pagedList = await _messageService.GetMessagesByChatIdAsync(chatId, pageNumber, pageSize, cancellationToken);
         var metadata = _mapper.Map<PaginationMetadata>(pagedList);

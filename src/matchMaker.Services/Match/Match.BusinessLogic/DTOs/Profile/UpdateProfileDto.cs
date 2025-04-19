@@ -4,7 +4,7 @@ namespace Match.BusinessLogic.DTOs.Profile;
 
 public class UpdateProfileDto
 {
-    public string Id { get; set; }
+    public long Id { get; set; }
     public string Name { get; set; }
     public string LastName { get; set; }
     public DateTime BirthDate { get; set; }

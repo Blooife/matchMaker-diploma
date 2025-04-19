@@ -27,8 +27,9 @@ public class JwtTokenProvider : IJwtTokenProvider
         {
             new Claim(JwtRegisteredClaimNames.Sub, applicationUser.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, applicationUser.Email),
-            
+            new Claim(ClaimTypes.NameIdentifier, applicationUser.Id.ToString()),
         };
+
 
         claimList.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 

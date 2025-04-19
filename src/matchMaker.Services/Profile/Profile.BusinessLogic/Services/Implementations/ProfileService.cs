@@ -20,6 +20,7 @@ public class ProfileService(IUnitOfWork _unitOfWork, IMapper _mapper, ICommunica
     public async Task<ProfileResponseDto> CreateProfileAsync(CreateOrUpdateProfileDto requestDto, CancellationToken cancellationToken)
     {
         var profile = _mapper.Map<UserProfile>(requestDto);
+        profile.Id = profile.UserId;
         var result = await _unitOfWork.ProfileRepository.CreateProfileAsync(profile, cancellationToken);
         await _unitOfWork.SaveAsync(cancellationToken);
 
@@ -50,8 +51,8 @@ public class ProfileService(IUnitOfWork _unitOfWork, IMapper _mapper, ICommunica
         var fullProfile = await _unitOfWork.ProfileRepository.GetAllProfileInfoAsync(userProfile => userProfile.Id == profile.Id, cancellationToken);
         var mappedProfile = _mapper.Map<ProfileResponseDto>(fullProfile);
         
-        var profileCreatedMessage = _mapper.Map<ProfileUpdatedEventMessage>(fullProfile);
-        await _communicationBus.PublishAsync(profileCreatedMessage, cancellationToken);
+        var profileUpdatedMessage = _mapper.Map<ProfileUpdatedEventMessage>(fullProfile);
+        await _communicationBus.PublishAsync(profileUpdatedMessage, cancellationToken);
         
         return mappedProfile;
     }

@@ -10,7 +10,7 @@ namespace Match.BusinessLogic.Services.Implementations;
 
 public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatService
 {
-    public async Task<Message> SendMessageAsync(long chatId, long senderId, string message, CancellationToken cancellationToken)
+    public async Task<Message> SendMessageAsync(string chatId, long senderId, string message, CancellationToken cancellationToken)
     {
         var chat = await _unitOfWork.Chats.GetByIdAsync(chatId, cancellationToken);
         
@@ -64,6 +64,7 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
         mappedChat.ProfileName = mappedChat.FirstProfileId == profile1.Id ? profile2.Name : profile1.Name;
         mappedChat.ProfileLastName = mappedChat.FirstProfileId == profile1.Id ? profile2.LastName : profile1.LastName;
         mappedChat.MainImageUrl = mappedChat.FirstProfileId == profile1.Id ? profile2.MainImageUrl : profile1.MainImageUrl;
+        mappedChat.UnreadCount = mappedChat.FirstProfileId == profile1.Id ? chat.FirstProfileUnreadCount : chat.SecondProfileUnreadCount;
         
         return mappedChat;
     }
@@ -102,7 +103,10 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
                 SecondProfileId = chat.SecondProfileId,
                 ProfileName = otherProfile.Name,
                 ProfileLastName = otherProfile.LastName,
-                MainImageUrl = otherProfile.MainImageUrl
+                MainImageUrl = otherProfile.MainImageUrl,
+                UnreadCount = profileId == chat.FirstProfileId 
+                    ? chat.FirstProfileUnreadCount 
+                    : chat.SecondProfileUnreadCount
             };
         }).ToList();
 
@@ -136,7 +140,9 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
         var chat = new Chat()
         {
             FirstProfileId = firstProfileId,
-            SecondProfileId = secondProfileId
+            SecondProfileId = secondProfileId,
+            FirstProfileUnreadCount = 0,
+            SecondProfileUnreadCount = 0,
         };
         
         await _unitOfWork.Chats.CreateAsync(chat, cancellationToken);
@@ -149,7 +155,7 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
         return mappedChat;
     }
     
-    public async Task<GeneralResponseDto> DeleteChatAsync(long chatId, CancellationToken cancellationToken)
+    public async Task<GeneralResponseDto> DeleteChatAsync(string chatId, CancellationToken cancellationToken)
     {
         var chat = await _unitOfWork.Chats.GetByIdAsync(chatId, cancellationToken);
 
@@ -163,5 +169,65 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
         await _unitOfWork.Messages.DeleteManyAsync(message => message.ChatId == chat.Id, cancellationToken);
         
         return new GeneralResponseDto();
+    }
+    
+    public async Task ReadChatAsync(ReadChatDto dto, CancellationToken cancellationToken)
+    {
+        var chat = await _unitOfWork.Chats.GetByIdAsync(dto.ChatId, cancellationToken);
+
+        if (chat is null)
+        {
+            throw new NotFoundException(dto.ChatId);
+        }
+
+        if (dto.ProfileId == chat.FirstProfileId)
+        {
+            chat.FirstProfileUnreadCount = 0;
+        }
+        else
+        {
+            chat.SecondProfileUnreadCount = 0;
+        }
+        
+        await _unitOfWork.Chats.UpdateAsync(chat, cancellationToken);
+    }
+
+    public async Task<Chat> GetById(string id)
+    {
+        var chat = await _unitOfWork.Chats.GetByIdAsync(id, CancellationToken.None);
+
+        if (chat is null)
+        {
+            throw new NotFoundException(id);
+        }
+
+        return chat;
+    }
+
+    public async Task<long> IncrementUnreadCountAsync(string chatId, long receiverId)
+    {
+        var chat = await _unitOfWork.Chats.GetByIdAsync(chatId, CancellationToken.None);
+
+        if (chat is null)
+        {
+            throw new NotFoundException(chatId);
+        }
+        
+        long newCount = 0;
+
+        if (receiverId == chat.FirstProfileId)
+        {
+            chat.FirstProfileUnreadCount++;
+            newCount = chat.FirstProfileUnreadCount;
+        }
+        else
+        {
+            chat.SecondProfileUnreadCount++;
+            newCount = chat.SecondProfileUnreadCount;
+        }
+
+        await _unitOfWork.Chats.UpdateAsync(chat, CancellationToken.None);
+
+        return newCount;
     }
 }

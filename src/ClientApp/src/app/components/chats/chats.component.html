@@ -1,8 +1,20 @@
 <div class="chats-container">
   <div class="left-panel" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [scrollWindow]="false" (scrolled)="onScrollDown()">
-    <div *ngFor="let chat of chats" class="chat-item" [ngClass]="{'chat-item': true, 'active': chat.id === selectedChat?.id}" (click)="openChat(chat)" (contextmenu)="onRightClick($event, chat)">
+    Чаты
+    <div *ngFor="let chat of chats"
+         class="chat-item"
+         [ngClass]="{
+       'chat-item': true,
+       'active': chat.id === selectedChat?.id,
+       'unread': chat.unreadCount > 0 && chat.id !== selectedChat?.id
+     }"
+         (click)="openChat(chat)"
+         (contextmenu)="onRightClick($event, chat)">
       <img [src]="chat.mainImageUrl || 'noImage.jpg'" crossorigin="anonymous" class="profile-image" />
-      <p>{{ chat.profileName }} {{ chat.profileLastName }}</p>
+      <p>
+        {{ chat.profileName }} {{ chat.profileLastName }}
+        <span *ngIf="chat.unreadCount > 0 && chat.id !== selectedChat?.id" class="badge">{{ chat.unreadCount }}</span>
+      </p>
     </div>
   </div>
   <div class="chat-content">

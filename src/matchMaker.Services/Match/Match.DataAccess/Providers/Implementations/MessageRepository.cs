@@ -5,9 +5,9 @@ using MongoDB.Driver;
 
 namespace Match.DataAccess.Providers.Implementations;
 
-public class MessageRepository(IMongoCollection<Message> _collection) : GenericRepository<Message, long>(_collection), IMessageRepository
+public class MessageRepository(IMongoCollection<Message> _collection) : GenericRepository<Message, string>(_collection), IMessageRepository
 {
-    public async Task<(List<Message>, int)> GetPagedAsync(long chatId, int pageNumber, int pageSize, CancellationToken cancellationToken)
+    public async Task<(List<Message>, int)> GetPagedAsync(string chatId, int pageNumber, int pageSize, CancellationToken cancellationToken)
     {
         Expression<Func<Message, bool>> filter = x => x.ChatId == chatId;
 

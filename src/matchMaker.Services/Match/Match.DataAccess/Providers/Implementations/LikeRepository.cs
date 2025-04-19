@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace Match.DataAccess.Providers.Implementations;
 
-public class LikeRepository(IMongoCollection<Like> _collection) : GenericRepository<Like, long>(_collection), ILikeRepository
+public class LikeRepository(IMongoCollection<Like> _collection) : GenericRepository<Like, string>(_collection), ILikeRepository
 {
     public async Task<Like?> CheckMutualLikeAsync(Like likeParam, CancellationToken cancellationToken)
     {

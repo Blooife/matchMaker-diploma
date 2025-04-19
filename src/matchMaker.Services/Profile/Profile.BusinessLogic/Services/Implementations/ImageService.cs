@@ -1,5 +1,7 @@
 using AutoMapper;
 using Common.Exceptions;
+using MessageQueue;
+using MessageQueue.Messages.Profile;
 using Profile.BusinessLogic.DTOs.Image.Request;
 using Profile.BusinessLogic.DTOs.Image.Response;
 using Profile.BusinessLogic.InfrastructureServices.Interfaces;
@@ -10,9 +12,9 @@ using Profile.DataAccess.Providers.Interfaces.Repositories;
 namespace Profile.BusinessLogic.Services.Implementations;
 
 public class ImageService
-    (IUnitOfWork _unitOfWork, IMapper _mapper, IMinioService _minioService, ICacheService _cacheService) : IImageService
+    (IUnitOfWork _unitOfWork, IMapper _mapper, IMinioService _minioService, ICommunicationBus _communicationBus) : IImageService
 {
-    private readonly string[] _allowedExtensions = { ".jpg", ".jpeg", ".png" };
+    private readonly string[] _allowedExtensions = [ ".jpg", ".jpeg", ".png" ];
     
     public async Task<IEnumerable<ImageResponseDto>> AddImageToProfileAsync(AddImageDto request, CancellationToken cancellationToken)
     {
@@ -61,11 +63,11 @@ public class ImageService
             .ToList();
         profile.Images = sortedImages;
 
-        /*if (isMain)
+        if (isMain)
         {
-            var message = _mapper.Map<ProfileUpdatedMessage>(profile);
-            await _producerService.ProduceAsync(message);
-        }*/
+            var profileUpdatedMessage = _mapper.Map<ProfileUpdatedEventMessage>(profile);
+            await _communicationBus.PublishAsync(profileUpdatedMessage, cancellationToken);
+        }
         
         return _mapper.Map<IEnumerable<ImageResponseDto>>(sortedImages);
     }
@@ -91,10 +93,8 @@ public class ImageService
         
         var notMainImage = profile.Images.First(p => p.IsMainImage);
         var mainImage = profile.Images.First(p => p.Id == image.Id);
-        notMainImage.IsMainImage = false;
-        mainImage.IsMainImage = true;
-        await _unitOfWork.ImageRepository.UpdateImageAsync(notMainImage);
-        await _unitOfWork.ImageRepository.UpdateImageAsync(mainImage);
+        await _unitOfWork.ImageRepository.UpdateIsMainImageAsync(notMainImage.Id, false, cancellationToken);
+        await _unitOfWork.ImageRepository.UpdateIsMainImageAsync(mainImage.Id, true, cancellationToken);
         await _unitOfWork.SaveAsync(cancellationToken);
         
         var sortedImages = profile.Images
@@ -103,8 +103,8 @@ public class ImageService
             .ToList();
         profile.Images = sortedImages;
         
-        /*var message = _mapper.Map<ProfileUpdatedMessage>(profile);
-        await _producerService.ProduceAsync(message);*/
+        var profileUpdatedMessage = _mapper.Map<ProfileUpdatedEventMessage>(profile);
+        await _communicationBus.PublishAsync(profileUpdatedMessage, cancellationToken);
         
         return  _mapper.Map<IEnumerable<ImageResponseDto>>(profile.Images);
     }
@@ -132,14 +132,13 @@ public class ImageService
         await _unitOfWork.ImageRepository.RemoveImageFromProfileAsync(image);
         profile.Images.Remove(image);
         
-        /*if (profile.Images.Count > 0 && !profile.Images[0].IsMainImage)
+        if (profile.Images.Count > 0 && !profile.Images[0].IsMainImage)
         {
-            profile.Images[0].IsMainImage = true;
-            await _unitOfWork.ImageRepository.UpdateImageAsync(profile.Images[0]);
+            await _unitOfWork.ImageRepository.UpdateIsMainImageAsync(profile.Images[0].Id, true, cancellationToken);
             
-            var message = _mapper.Map<ProfileUpdatedMessage>(profile);
-            await _producerService.ProduceAsync(message);
-        }*/
+            var profileUpdatedMessage = _mapper.Map<ProfileUpdatedEventMessage>(profile);
+            await _communicationBus.PublishAsync(profileUpdatedMessage, cancellationToken);
+        }
         
         await _unitOfWork.SaveAsync(cancellationToken);
         

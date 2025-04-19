@@ -123,4 +123,11 @@ export class MatchService {
       .pipe(
       );
   }
+
+  readChat(chatId: string, profileId: string) {
+    return this.httpClient.post(`${chatsEndpoints.chats}/read`, {
+      chatId: chatId,
+      profileId: profileId
+    }, this.httpOptions);
+  }
 }

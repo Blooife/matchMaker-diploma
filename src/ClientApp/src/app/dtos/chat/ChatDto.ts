@@ -5,4 +5,5 @@ export interface ChatDto{
   firstProfileId: string;
   secondProfileId: string;
   mainImageUrl: string;
+  unreadCount: number;
 }

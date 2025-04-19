@@ -3,8 +3,8 @@ using Match.DataAccess.Providers.Interfaces;
 
 namespace Match.DataAccess.Providers.Interfaces;
 
-public interface IMessageRepository : IGenericRepository<Message, long>
+public interface IMessageRepository : IGenericRepository<Message, string>
 {
-    Task<(List<Message>, int)> GetPagedAsync(long chatId, int pageNumber, int pageSize,
+    Task<(List<Message>, int)> GetPagedAsync(string chatId, int pageNumber, int pageSize,
         CancellationToken cancellationToken);
 }

@@ -6,8 +6,8 @@ namespace Match.DataAccess.Models;
 public class Like
 {
     [BsonId]
-    [BsonRepresentation(BsonType.Int64)]
-    public long Id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
     public long ProfileId { get; set; }
     public long TargetProfileId { get; set; }
     public bool IsLike { get; set; }

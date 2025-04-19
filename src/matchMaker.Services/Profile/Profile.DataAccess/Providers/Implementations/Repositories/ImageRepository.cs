@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Profile.DataAccess.Models;
 using Profile.DataAccess.Contexts;
 using Profile.DataAccess.Implementations.BaseRepositories;
@@ -22,6 +23,13 @@ public class ImageRepository(ProfileDbContext _dbContext)
     
     public async Task UpdateImageAsync(Image image)
     {
+        _dbContext.Images.Update(image);
+    }
+    
+    public async Task UpdateIsMainImageAsync(long imageId, bool isMainImage, CancellationToken cancellationToken)
+    {
+        var image = await _dbContext.Images.AsNoTracking().FirstOrDefaultAsync(x => x.Id == imageId, cancellationToken);
+        image.IsMainImage = isMainImage;
         _dbContext.Images.Update(image);
     }
 }

@@ -1,7 +1,9 @@
 using System.Text;
 using Common.Filters;
 using Common.Options;
+using Match.BusinessLogic.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -15,6 +17,7 @@ public static class DependencyInjection
     {
         services.AddAuthorization();
         services.AddSignalR();
+        services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
         services
             .AddControllers(x =>
             {
@@ -56,6 +59,21 @@ public static class DependencyInjection
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
+            };
+            jwtOpt.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    var accessToken = context.Request.Query["access_token"];
+            
+                    var path = context.HttpContext.Request.Path;
+                    if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chat"))
+                    {
+                        context.Token = accessToken;
+                    }
+
+                    return Task.CompletedTask;
+                }
             };
         });
     }

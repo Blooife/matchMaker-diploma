@@ -12,6 +12,7 @@ import {CreateChatDto} from "../../dtos/chat/CreateChatDto";
 import {InfiniteScrollDirective} from "ngx-infinite-scroll";
 import {ProfileCardComponent} from "../profile/profile-card/profile-card.component";
 import {catchError, map, switchMap} from "rxjs/operators";
+import {ChatSignalRService} from "../../services/chat-signalr.service";
 
 @Component({
   selector: 'app-chats',
@@ -47,6 +48,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   constructor(private matchService: MatchService,
               private profileService:ProfileService,
+              private chatSignalRService: ChatSignalRService,
               private route: ActivatedRoute) {
 
   }
@@ -56,6 +58,21 @@ export class ChatsComponent implements OnInit, OnDestroy {
       (profileDto) =>{
         this.profile = profileDto;
         this.profileId = profileDto!.id;
+
+        const token = localStorage.getItem('access_token');
+        console.log("ddd"+token)
+        if (token) {
+          this.chatSignalRService.startConnection(token);
+
+          this.chatSignalRService.onUnreadCountUpdated((chatId, unreadCount) => {
+            console.log(unreadCount);
+            console.log("Пришло анред коунт")
+            const chat = this.chats.find(c => c.id === chatId);
+            if (chat) {
+              chat.unreadCount = unreadCount;
+            }
+          });
+        }
       }
     )
     this.subscriptions.push(sub);
@@ -97,6 +114,10 @@ export class ChatsComponent implements OnInit, OnDestroy {
   openChat(chat: ChatDto): void {
     this.closeModal();
     this.selectedChat = chat;
+
+    if (chat.unreadCount > 0) {
+      chat.unreadCount = 0;
+    }
   }
 
   closeModal(): void {

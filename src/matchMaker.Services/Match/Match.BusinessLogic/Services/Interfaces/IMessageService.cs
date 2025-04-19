@@ -6,5 +6,5 @@ namespace Match.BusinessLogic.Services.Interfaces;
 public interface IMessageService
 {
     Task<PagedList<MessageResponseDto>> GetMessagesByChatIdAsync(
-        long chatId, int pageNumber, int pageSize, CancellationToken cancellationToken);
+        string chatId, int pageNumber, int pageSize, CancellationToken cancellationToken);
 }

@@ -1,9 +1,9 @@
-import {Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, OnChanges, SimpleChanges} from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { MatchService } from "../../../services/match-service.service";
 import { MessageDto } from "../../../dtos/message/MessageDto";
 import { DatePipe, NgClass, NgForOf } from "@angular/common";
-import * as SignalR from '@microsoft/signalr';
-import {InfiniteScrollDirective} from "ngx-infinite-scroll";
+import { InfiniteScrollDirective } from "ngx-infinite-scroll";
+import { ChatSignalRService } from "../../../services/chat-signalr.service";
 
 @Component({
   selector: 'app-messages',
@@ -17,7 +17,7 @@ import {InfiniteScrollDirective} from "ngx-infinite-scroll";
   ],
   standalone: true
 })
-export class ChatMessagesComponent implements OnDestroy, OnChanges {
+export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
   @Input() chatId!: string;
   @Input() profileId!: string;
 
@@ -28,24 +28,44 @@ export class ChatMessagesComponent implements OnDestroy, OnChanges {
   pageSize: number = 12;
   isLoading: boolean = false;
   pagination: any = {};
-  private hubConnection!: SignalR.HubConnection;
-  private isConnectionActive = false;
 
-  constructor(private matchService: MatchService) {}
+  private isConnected: boolean = false;
+
+  constructor(
+    private matchService: MatchService,
+    private chatSignalRService: ChatSignalRService
+  ) {}
+
+  ngOnInit(): void {
+    this.chatSignalRService.isConnected$.subscribe(isConnected => {
+      this.isConnected = isConnected;
+      console.log(isConnected)
+      if (isConnected) {
+        this.chatSignalRService.joinChat(this.chatId, this.profileId);
+      }
+    });
+
+    this.chatSignalRService.newMessage$.subscribe(message => {
+      if (message && message.chatId === this.chatId) {
+        this.messages.push(message);
+        setTimeout(() => this.scrollToBottom(), 100);
+      }
+    });
+  }
 
   ngOnDestroy(): void {
-    this.hubConnection?.stop();
+    // Закрываем соединение при уничтожении компонента
+    this.chatSignalRService.stopConnection();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // Если chatId изменился, загружаем сообщения для нового чата
     if (changes['chatId'] && changes['chatId'].currentValue) {
-      this.updateConnection();
-      this.messages = [];
-      this.pageNumber = 1
+      this.messages = []; // очищаем сообщения
+      this.pageNumber = 1;
       this.loadMessages();
-      setTimeout(() => {
-        this.scrollToBottom();
-      }, 100);
+      this.markChatAsRead();
+      setTimeout(() => this.scrollToBottom(), 100); // прокручиваем чат вниз
     }
   }
 
@@ -60,7 +80,7 @@ export class ChatMessagesComponent implements OnDestroy, OnChanges {
       error: () => {
         this.isLoading = false;
       },
-      complete: () =>{
+      complete: () => {
         this.isLoading = false;
       }
     });
@@ -74,52 +94,29 @@ export class ChatMessagesComponent implements OnDestroy, OnChanges {
   }
 
   isSender(message: MessageDto): boolean {
-    return message.senderId === this.profileId;
-  }
-
-  initializeSignalR(): void {
-    this.hubConnection = new SignalR.HubConnectionBuilder()
-      .withUrl('https://localhost:5003/chat')
-      .build();
-
-    this.hubConnection.on('ReceiveMessage', (message: MessageDto) => {
-      if (message.chatId === this.chatId) {
-        this.messages.push(message);
-        this.scrollToBottom();
-      }
-    });
-
-    this.hubConnection
-      .start()
-      .then(() => {
-        console.log('SignalR Connected');
-        this.hubConnection.invoke('JoinChat', this.chatId);
-        this.isConnectionActive = true;
-      })
-      .catch(err => console.error('SignalR Connection Error: ', err));
+    return message.senderId == this.profileId;
   }
 
   sendMessage(content: string): void {
-        this.hubConnection.invoke('SendMessage', this.chatId, this.profileId, content)
-      .then(() => {
+    if (this.isConnected) {
+      this.chatSignalRService.sendMessage(this.chatId, this.profileId, content).then(() => {
         setTimeout(() => {
           this.scrollToBottom();
         }, 100);
-      })
-      .catch(err => console.error('Send Message Error: ', err));
+      });
+    } else {
+      console.error('Нет соединения с сервером');
+    }
   }
 
   scrollToBottom(): void {
     this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
   }
 
-  private updateConnection(): void {
-    if (this.isConnectionActive) {
-      this.hubConnection.stop().then(() => {
-        this.initializeSignalR();
-      });
-    } else {
-      this.initializeSignalR();
-    }
+  markChatAsRead(): void {
+    this.matchService.readChat(this.chatId, this.profileId).subscribe({
+      next: () => {},
+      error: (err) => console.error('Mark chat as read failed', err)
+    });
   }
 }

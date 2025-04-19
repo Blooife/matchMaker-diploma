@@ -25,9 +25,6 @@ app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapHub<ChatHub>("/chat");
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseHttpsRedirection();
 app.MapControllers();
 app.UseCors("MyCorsPolicy");
 

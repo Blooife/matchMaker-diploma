@@ -6,10 +6,10 @@ namespace Match.DataAccess.Models;
 public class Message
 {
     [BsonId]
-    [BsonRepresentation(BsonType.Int64)]
-    public long Id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
     public long SenderId { get; set; }
     public string Content { get; set; }
     public DateTime Timestamp { get; set; }
-    public long ChatId { get; set; }
+    public string ChatId { get; set; }
 }

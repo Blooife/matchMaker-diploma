@@ -5,7 +5,7 @@ using Match.DataAccess.Models;
 
 namespace Match.DataAccess.Providers.Implementations;
 
-public class MatchRepository(IMongoCollection<MatchEntity> _collection) : GenericRepository<MatchEntity, long>(_collection), IMatchRepository
+public class MatchRepository(IMongoCollection<MatchEntity> _collection) : GenericRepository<MatchEntity, string>(_collection), IMatchRepository
 {
     public async Task<bool> AreProfilesMatchedAsync(long profileId1, long profileId2, CancellationToken cancellationToken)
     {

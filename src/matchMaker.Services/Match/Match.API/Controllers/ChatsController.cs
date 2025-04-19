@@ -44,10 +44,18 @@ public class ChatsController(IChatService _chatService, IMapper _mapper) : Contr
     }
     
     [HttpDelete("{chatId}")]
-    public async Task<ActionResult<GeneralResponseDto>> DeleteChat([FromRoute] long chatId, CancellationToken cancellationToken)
+    public async Task<ActionResult<GeneralResponseDto>> DeleteChat([FromRoute] string chatId, CancellationToken cancellationToken)
     {
         var chat = await _chatService.DeleteChatAsync(chatId, cancellationToken);
 
         return Ok(chat);
+    }
+    
+    [HttpPost("read")]
+    public async Task<ActionResult> ReadChat([FromBody] ReadChatDto dto, CancellationToken cancellationToken)
+    {
+        await _chatService.ReadChatAsync(dto, cancellationToken);
+
+        return Ok();
     }
 }

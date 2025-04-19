@@ -10,7 +10,7 @@ namespace Match.BusinessLogic.Services.Implementations;
 public class MessageService(IUnitOfWork _unitOfWork, IMapper _mapper) : IMessageService
 {
     public async Task<PagedList<MessageResponseDto>> GetMessagesByChatIdAsync(
-        long chatId, int pageNumber, int pageSize, CancellationToken cancellationToken)
+        string chatId, int pageNumber, int pageSize, CancellationToken cancellationToken)
     {
         var chat = await _unitOfWork.Chats.GetByIdAsync(chatId, cancellationToken);
 

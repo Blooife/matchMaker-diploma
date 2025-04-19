@@ -51,8 +51,6 @@ export class AuthService {
   }
 
   refreshToken(): Observable<boolean> {
-
-
     const refreshToken = this.getRefreshToken();
     console.log(refreshToken)
     if (!refreshToken) {

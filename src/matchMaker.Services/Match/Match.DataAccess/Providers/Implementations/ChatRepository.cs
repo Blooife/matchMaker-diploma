@@ -5,7 +5,7 @@ using MongoDB.Driver;
 
 namespace Match.DataAccess.Providers.Implementations;
 
-public class ChatRepository(IMongoCollection<Chat> _collection) : GenericRepository<Chat, long>(_collection), IChatRepository
+public class ChatRepository(IMongoCollection<Chat> _collection) : GenericRepository<Chat, string>(_collection), IChatRepository
 {
     public async Task<IEnumerable<Chat>> GetChatsByProfileIdAsync(long profileId, CancellationToken cancellationToken)
     {
