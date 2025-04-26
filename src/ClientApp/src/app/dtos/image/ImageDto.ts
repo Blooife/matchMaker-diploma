@@ -1,6 +1,6 @@
 export interface ImageDto {
   id: number,
   imageUrl: string,
-  profileId: string,
+  profileId: number,
   isMainImage: boolean,
 }

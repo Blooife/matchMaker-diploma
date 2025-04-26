@@ -37,8 +37,8 @@ import {Subscription} from "rxjs";
   ]
 })
 export class FindMatchComponent implements OnInit, OnDestroy {
-  profileId: string = '';
-  userId: string | null = null;
+  profileId: number | undefined;
+  userId: number | undefined;
   recommendations: ProfileDto[] = [];
   currentIndex: number = 0;
   noMoreRecs: boolean = false;
@@ -75,7 +75,7 @@ export class FindMatchComponent implements OnInit, OnDestroy {
 
   loadRecommendations(): void {
     console.log(this.profileId);
-    this.matchService.getRecs(this.profileId).subscribe({
+    this.matchService.getRecs(this.profileId!).subscribe({
       next: (recs) => {
         if (recs.length === 0) {
           this.noMoreRecs = true;
@@ -87,9 +87,9 @@ export class FindMatchComponent implements OnInit, OnDestroy {
     });
   }
 
-  addLike(targetProfileId: string, isLike: boolean): void {
+  addLike(targetProfileId: number, isLike: boolean): void {
     const model: AddLikeDto = {
-      profileId: this.profileId,
+      profileId: this.profileId!,
       targetProfileId: targetProfileId,
       isLike: isLike
     };
@@ -105,14 +105,14 @@ export class FindMatchComponent implements OnInit, OnDestroy {
     });
   }
 
-  onLike(targetProfileId: string): void {
+  onLike(targetProfileId: number): void {
     this.animationState = 'like';
     setTimeout(() => {
       this.addLike(targetProfileId, true);
     }, 300);
   }
 
-  onDislike(targetProfileId: string): void {
+  onDislike(targetProfileId: number): void {
     this.animationState = 'dislike';
     setTimeout(() => {
       this.addLike(targetProfileId, false);
@@ -120,7 +120,7 @@ export class FindMatchComponent implements OnInit, OnDestroy {
   }
 
   async loadProfile() {
-    this.userId = this.authService.getCurrentUserId();
+    this.userId = this.authService.getCurrentUserId()!;
     if (this.userId) {
       const profile = await this.profileService.getProfileByUserId(this.userId).toPromise();
       if (profile) {
@@ -135,7 +135,7 @@ export class FindMatchComponent implements OnInit, OnDestroy {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const model: UpdateLocationDto = {
-              profileId: this.profileId,
+              profileId: this.profileId!,
               latitude: position.coords.latitude,
               longitude: position.coords.longitude
             };
@@ -153,7 +153,7 @@ export class FindMatchComponent implements OnInit, OnDestroy {
           (error) => {
             console.warn('User denied geolocation request, sending request with null values');
             const model: UpdateLocationDto = {
-              profileId: this.profileId,
+              profileId: this.profileId!,
               latitude: null,
               longitude: null
             };
@@ -171,7 +171,7 @@ export class FindMatchComponent implements OnInit, OnDestroy {
       } else {
         console.error('Geolocation is not supported by this browser.');
         const model: UpdateLocationDto = {
-          profileId: this.profileId,
+          profileId: this.profileId!,
           latitude: null,
           longitude: null
         };

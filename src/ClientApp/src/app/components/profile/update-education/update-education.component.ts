@@ -25,7 +25,7 @@ export class UpdateEducationComponent implements OnInit, OnDestroy {
   educations: EducationDto[] = [];
   profileEducations: ProfileEducationDto[] = [];
   educationDescriptions: { [key: number]: string } = {};
-  profileId: string = '';
+  profileId: number | undefined;
   profile: ProfileDto | null = null;
   private subscriptions: Subscription[] = [];
 
@@ -33,10 +33,10 @@ export class UpdateEducationComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.profileId = params.get('profileId')!;
+      this.profileId = Number(params.get('profileId'));
     });
     let routeSub = this.route.paramMap.subscribe(params => {
-      this.profileId = params.get('profileId')!;
+      this.profileId = Number(params.get('profileId'));
     });
     let profileSub = this.profileService.profile$.subscribe(
       (profileDto) =>{
@@ -78,7 +78,7 @@ export class UpdateEducationComponent implements OnInit, OnDestroy {
       this.removeEducation(education.id);
     } else {
       const newEducation: ProfileEducationDto = {
-        profileId: this.profileId,
+        profileId: this.profileId!,
         educationId: education.id,
         educationName: education.name,
         description: this.getEducationDescription(education.id)
@@ -97,7 +97,7 @@ export class UpdateEducationComponent implements OnInit, OnDestroy {
 
   addEducation(education: ProfileEducationDto): void {
     const model: AddEducationToProfileDto = {
-      profileId: this.profileId,
+      profileId: this.profileId!,
       educationId: education.educationId,
       description: education.description
     };
@@ -105,13 +105,13 @@ export class UpdateEducationComponent implements OnInit, OnDestroy {
   }
 
   removeEducation(educationId: number): void {
-    this.profileService.removeEducationFromProfile(this.profileId, educationId).subscribe();
+    this.profileService.removeEducationFromProfile(this.profileId!, educationId).subscribe();
   }
 
   save(): void {
     this.profileEducations.forEach(education => {
       const model: UpdateProfileEducationDto = {
-        profileId: this.profileId,
+        profileId: this.profileId!,
         educationId: education.educationId,
         description: education.description
       };

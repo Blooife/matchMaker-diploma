@@ -1,4 +1,4 @@
 export interface CreateChatDto{
-  firstProfileId: string;
-  secondProfileId: string;
+  firstProfileId: number;
+  secondProfileId: number;
 }

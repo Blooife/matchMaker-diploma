@@ -41,7 +41,7 @@ export class UserService {
     );
   }
 
-  deleteUserById(userId: string): Observable<GeneralResponseDto> {
+  deleteUserById(userId: number): Observable<GeneralResponseDto> {
     return this.httpClient.delete<GeneralResponseDto>(`${usersEndpoints.users}/${userId}`, this.httpOptions).pipe(
       retry(2),
     );

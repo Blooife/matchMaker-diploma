@@ -1,5 +1,5 @@
 export interface MatchDto {
   id: string;
-  firstProfileId: string;
-  secondProfileId: string;
+  firstProfileId: number;
+  secondProfileId: number;
 }

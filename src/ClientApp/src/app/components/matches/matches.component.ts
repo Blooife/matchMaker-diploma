@@ -75,7 +75,7 @@ export class MatchesComponent implements OnInit, OnDestroy {
     this.selectedProfile = null;
   }
 
-  startDialog(selectedProfileId: string){
+  startDialog(selectedProfileId: number){
     if (this.selectedProfile) {
       const currentProfileId = this.profile?.id!;
       this.router.navigate(['/chats'], {

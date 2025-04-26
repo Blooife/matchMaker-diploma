@@ -4,7 +4,7 @@ import {InterestDto} from "../interest/InterestDto";
 import {ImageDto} from "../image/ImageDto";
 
 export interface MatchProfileDto {
-  id: string;
+  id: number;
   name: string;
   lastName: string;
   birthDate: Date;

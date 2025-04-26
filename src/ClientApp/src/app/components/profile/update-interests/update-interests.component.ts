@@ -18,14 +18,14 @@ import {Subscription} from "rxjs";
 export class UpdateInterestsComponent implements OnInit, OnDestroy {
   allInterests: InterestDto[] = [];
   profileInterests: InterestDto[] = [];
-  profileId: string = '';
+  profileId: number | undefined;
   private subscriptions: Subscription[] = [];
 
   constructor(private profileService: ProfileService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     let routeSub = this.route.paramMap.subscribe(params => {
-      this.profileId = params.get('profileId')!;
+      this.profileId = Number(params.get('profileId'));
     });
     let profileSub = this.profileService.profile$.subscribe(
       (profileDto) =>{
@@ -62,13 +62,13 @@ export class UpdateInterestsComponent implements OnInit, OnDestroy {
 
   addLanguage(interest: InterestDto): void {
     const model: AddInterestToProfileDto = {
-      profileId: this.profileId,
+      profileId: this.profileId!,
       interestId: interest.id
     }
     this.profileService.addInterestToProfile(model).subscribe();
   }
 
   removeLanguage(interestId: number): void {
-    this.profileService.removeInterestFromProfile(this.profileId, interestId).subscribe();
+    this.profileService.removeInterestFromProfile(this.profileId!, interestId).subscribe();
   }
 }

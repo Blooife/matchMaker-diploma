@@ -35,7 +35,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
   chats: ChatDto[] = [];
   pageNumber: number = 1;
   pageSize: number = 12;
-  profileId: string = '';
+  profileId: number | undefined;
   isLoading: boolean = false;
   pagination: any = {};
   selectedChat?: ChatDto;
@@ -125,7 +125,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
     this.selectedProfile = null;
   }
 
-  startOrCreateChat(firstProfileId: string, secondProfileId: string): Observable<any> {
+  startOrCreateChat(firstProfileId: number, secondProfileId: number): Observable<any> {
     return this.matchService.getChatByProfilesIds(firstProfileId, secondProfileId).pipe(
       map(chat => {
         this.selectedChat = chat;
@@ -154,7 +154,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
     }
   }
 
-  viewProfile(profileId: string): void {
+  viewProfile(profileId: number): void {
     this.profileService.getProfileById(profileId).subscribe({
         next: (profile) => {
           this.selectedProfile = profile

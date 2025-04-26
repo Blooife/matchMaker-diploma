@@ -14,5 +14,5 @@ export interface CreateProfileDto {
   preferredGender: Gender;
   goalId?: number;
   cityId: number;
-  userId: string;
+  userId: number;
 }

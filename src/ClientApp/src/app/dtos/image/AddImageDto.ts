@@ -1,4 +1,4 @@
 export interface AddImageDto {
-  profileId: string;
+  profileId: number;
   file: File;
 }

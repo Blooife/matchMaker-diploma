@@ -1,5 +1,5 @@
 export interface UpdateProfileEducationDto {
-  profileId: string,
+  profileId: number,
   educationId: number,
   description: string
 }

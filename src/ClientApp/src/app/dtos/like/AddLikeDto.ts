@@ -1,5 +1,5 @@
 export interface AddLikeDto {
-  profileId: string;
-  targetProfileId: string;
+  profileId: number;
+  targetProfileId: number;
   isLike: boolean;
 }

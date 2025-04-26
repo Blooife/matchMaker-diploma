@@ -13,7 +13,7 @@ export class ProfileCreatedGuard implements CanActivate {
 
   constructor(private authService: AuthService, private profileService: ProfileService, private router: Router) { }
 
-  private async getProfile(userId: string): Promise<boolean> {
+  private async getProfile(userId: number): Promise<boolean> {
     const profile = await firstValueFrom(this.profileService.getProfileByUserId(userId));
     if (profile) {
       return true;

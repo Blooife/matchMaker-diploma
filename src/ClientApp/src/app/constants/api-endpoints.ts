@@ -20,11 +20,11 @@ export const usersEndpoints = {
 
 export const profilesEndpoints = {
   profiles: `${base}/profiles`,
-  byUserId(userId:string) {
+  byUserId(userId:number) {
     return `${base}/profiles/user/${userId}`
   },
   location: `${base}/profiles/location`,
-  recs(profileId: string){
+  recs(profileId: number){
     return `${base}/profiles/${profileId}/recommendations`
   }
 }
@@ -68,7 +68,7 @@ export const goalsEndpoints = {
 
 export const matchesEndpoints = {
   matches: `${base}/matches`,
-  paged(pageSize: string, pageNumber: string, profileId: string){
+  paged(pageSize: string, pageNumber: string, profileId: number){
     return `${matchesEndpoints.matches}/paged/profiles/${profileId}?pageSize=${pageSize}&pageNumber=${pageNumber}`
   }
 }
@@ -79,10 +79,10 @@ export const likesEndpoints = {
 
 export const chatsEndpoints = {
   chats: `${base}/chats`,
-  chatsByIds(firstProfileId: string, secondProfileId: string){
+  chatsByIds(firstProfileId: number, secondProfileId: number){
     return `${chatsEndpoints.chats}/profiles?firstProfileId=${firstProfileId}&secondProfileId=${secondProfileId}`
   },
-  paged(pageSize: string, pageNumber: string, profileId: string){
+  paged(pageSize: string, pageNumber: string, profileId: number){
     return `${chatsEndpoints.chats}/paged/profiles/${profileId}?pageSize=${pageSize}&pageNumber=${pageNumber}`
   }
 }

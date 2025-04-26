@@ -20,7 +20,7 @@ export class AuthService {
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.isLogged());
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
-  private currentUserIdSubject = new BehaviorSubject<string | null>(this.getCurrentUserId());
+  private currentUserIdSubject = new BehaviorSubject<number | null>(this.getCurrentUserId());
   currentUserId$ = this.currentUserIdSubject.asObservable();
 
   private currentUserRolesSubject = new BehaviorSubject<string[] | null>(this.getCurrentUserRoles());
@@ -109,7 +109,7 @@ export class AuthService {
     return false;
   }
 
-  getCurrentUserId(): string | null {
+  getCurrentUserId(): number | null {
     if (!this.isLogged()) {
       return null;
     }
@@ -117,7 +117,7 @@ export class AuthService {
     const accessToken = this.getAccessToken();
 
     if (accessToken) {
-      const payload = jwtDecode<{ sub: string }>(accessToken);
+      const payload = jwtDecode<{ sub: number }>(accessToken);
       return payload.sub;
     }
 

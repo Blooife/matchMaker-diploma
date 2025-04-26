@@ -8,7 +8,7 @@ import {CityDto} from "../city/CityDto";
 import {CountryDto} from "../country/CountryDto";
 
 export interface ProfileDto {
-  id: string;
+  id: number;
   name: string;
   lastName: string;
   birthDate: Date;
@@ -23,7 +23,7 @@ export interface ProfileDto {
   city: CityDto;
   country: CountryDto;
   goal?: GoalDto;
-  userId: string;
+  userId: number;
   languages: LanguageDto[];
   interests: InterestDto[];
   education: ProfileEducationDto[];

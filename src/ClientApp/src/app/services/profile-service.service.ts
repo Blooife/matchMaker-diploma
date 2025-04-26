@@ -43,12 +43,12 @@ export class ProfileService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getProfileById(profileId: string): Observable<ProfileDto> {
+  getProfileById(profileId: number): Observable<ProfileDto> {
     return this.httpClient.get<ProfileDto>(`${profilesEndpoints.profiles}/${profileId}`, this.httpOptions)
       .pipe();
   }
 
-  getProfileByUserId(userId: string): Observable<ProfileDto | null> {
+  getProfileByUserId(userId: number): Observable<ProfileDto | null> {
     return this.httpClient.get<ProfileDto>(profilesEndpoints.byUserId(userId), {
       headers: this.httpOptions.headers,
       context: new HttpContext().set(_IGNORED_STATUSES, true),
@@ -114,7 +114,7 @@ export class ProfileService {
       );
   }
 
-  removeLanguageFromProfile(profileId: string, languageId: number): Observable<LanguageDto[]> {
+  removeLanguageFromProfile(profileId: number, languageId: number): Observable<LanguageDto[]> {
     const options = {
       headers: this.httpOptions.headers,
       body: {
@@ -161,7 +161,7 @@ export class ProfileService {
       );
   }
 
-  removeInterestFromProfile(profileId: string, interestId: number): Observable<InterestDto[]> {
+  removeInterestFromProfile(profileId: number, interestId: number): Observable<InterestDto[]> {
     const options = {
       headers: this.httpOptions.headers,
       body: {
@@ -238,7 +238,7 @@ export class ProfileService {
       );
   }
 
-  removeEducationFromProfile(profileId: string, educationId: number): Observable<ProfileEducationDto[]> {
+  removeEducationFromProfile(profileId: number, educationId: number): Observable<ProfileEducationDto[]> {
     const options = {
       headers: this.httpOptions.headers,
       body: {
@@ -293,7 +293,7 @@ export class ProfileService {
       );
   }
 
-  removeImage(profileId: string, imageId: number): Observable<ImageDto> {
+  removeImage(profileId: number, imageId: number): Observable<ImageDto> {
     const options = {
       headers: this.httpOptions.headers,
       body: {

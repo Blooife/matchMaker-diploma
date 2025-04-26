@@ -53,7 +53,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteUser(userId: string) {
+  deleteUser(userId: number) {
     this.userService.deleteUserById(userId).subscribe({
       next: () => {
         this.loadUsers();

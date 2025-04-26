@@ -19,7 +19,7 @@ import { ChatSignalRService } from "../../../services/chat-signalr.service";
 })
 export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
   @Input() chatId!: string;
-  @Input() profileId!: string;
+  @Input() profileId!: number;
 
   @ViewChild('chatContainer', { static: true }) chatContainer!: ElementRef;
 

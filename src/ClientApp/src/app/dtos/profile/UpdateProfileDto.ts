@@ -1,7 +1,7 @@
 import {Gender} from "../../constants/gender";
 
 export interface UpdateProfileDto {
-  id: string;
+  id: number;
   name: string;
   lastName?: string;
   birthDate: Date;
@@ -15,5 +15,5 @@ export interface UpdateProfileDto {
   preferredGender: Gender;
   goalId?: number;
   cityId: number;
-  userId: string;
+  userId: number;
 }

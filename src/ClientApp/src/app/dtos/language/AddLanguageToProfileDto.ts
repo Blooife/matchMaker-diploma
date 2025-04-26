@@ -1,4 +1,4 @@
 export interface AddLanguageToProfileDto {
-  profileId: string,
+  profileId: number,
   languageId: number
 }

@@ -1,6 +1,6 @@
 export interface MessageDto{
   id: string;
-  senderId: string;
+  senderId: number;
   content: string;
   timestamp: string;
   chatId: string;

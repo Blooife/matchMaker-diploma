@@ -46,18 +46,18 @@ export class ChatSignalRService {
       });
   }
 
-  joinChat(chatId: string, profileId: string): void {
+  joinChat(chatId: string, profileId: number): void {
     if (this.hubConnection) {
-      this.hubConnection.invoke('JoinChat', chatId, Number(profileId)).then(() => {
+      this.hubConnection.invoke('JoinChat', chatId, profileId).then(() => {
         this.currentChatId = chatId;
         console.log(`Присоединились к чату: ${chatId}`);
       }).catch(err => console.error('JoinChat Error: ', err));
     }
   }
 
-  sendMessage(chatId: string, profileId: string, message: string): Promise<void> {
+  sendMessage(chatId: string, profileId: number, message: string): Promise<void> {
     if (this.hubConnection) {
-      return this.hubConnection.invoke('SendMessage', chatId, Number(profileId), message)
+      return this.hubConnection.invoke('SendMessage', chatId, profileId, message)
         .then(() => {
           console.log('Сообщение отправлено');
         })
@@ -89,9 +89,9 @@ export class ChatSignalRService {
     return this.isConnectedSubject.asObservable();
   }
 
-  leaveChat(chatId: string, profileId: string): void {
+  leaveChat(chatId: string, profileId: number): void {
     if (this.hubConnection) {
-      this.hubConnection.invoke('LeaveChat', chatId, Number(profileId)).then(() => {
+      this.hubConnection.invoke('LeaveChat', chatId, profileId).then(() => {
         this.currentChatId = null;
         console.log(`Покинули чат: ${chatId}`);
       }).catch(err => {

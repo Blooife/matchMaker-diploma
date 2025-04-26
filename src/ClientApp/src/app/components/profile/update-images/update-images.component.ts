@@ -24,7 +24,7 @@ export class UpdateImagesComponent implements OnInit, OnDestroy {
   images: ImageDto[] = [];
   selectedFile: File | null = null;
   selectedImage: ImageDto | null = null;
-  profileId: string = '';
+  profileId: number | undefined;
   imageChangedEvent: any = '';
   croppingImage: boolean = false;
   fileName: string = ''; // Добавьте это
@@ -34,7 +34,7 @@ export class UpdateImagesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     let routeSub = this.route.paramMap.subscribe(params => {
-      this.profileId = params.get('profileId')!;
+      this.profileId = Number(params.get('profileId'));
     });
     let profileSub = this.profileService.profile$.subscribe(
       (profileDto) => {
@@ -72,7 +72,7 @@ export class UpdateImagesComponent implements OnInit, OnDestroy {
   uploadCroppedImage(): void {
     if (this.selectedFile) {
       const model: AddImageDto = {
-        profileId: this.profileId,
+        profileId: this.profileId!,
         file: this.selectedFile
       };
 
@@ -105,7 +105,7 @@ export class UpdateImagesComponent implements OnInit, OnDestroy {
 
   confirmDelete(imageId: number): void {
     if (confirm('Are you sure you want to delete this image?')) {
-      this.profileService.removeImage(this.profileId, imageId).subscribe(() => {
+      this.profileService.removeImage(this.profileId!, imageId).subscribe(() => {
         this.closeModal();
       });
     }
@@ -114,7 +114,7 @@ export class UpdateImagesComponent implements OnInit, OnDestroy {
   makeMain(imageId: number): void {
     if (confirm('Are you sure you want to make this image main?')) {
       const model: ChangeMainImageDto = {
-        profileId: this.profileId,
+        profileId: this.profileId!,
         imageId: imageId
       };
       this.profileService.changeMainImage(model).subscribe(() => {

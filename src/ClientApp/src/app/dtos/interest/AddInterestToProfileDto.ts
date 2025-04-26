@@ -1,4 +1,4 @@
 export interface AddInterestToProfileDto {
-  profileId: string,
+  profileId: number,
   interestId: number
 }

@@ -18,14 +18,14 @@ import {Subscription} from "rxjs";
 export class UpdateLanguagesComponent implements OnInit, OnDestroy {
   allLanguages: LanguageDto[] = [];
   profileLanguages: LanguageDto[] = [];
-  profileId: string = '';
+  profileId: number | undefined;
   private subscriptions: Subscription[] = [];
 
   constructor(private profileService: ProfileService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     let routeSub = this.route.paramMap.subscribe(params => {
-      this.profileId = params.get('profileId')!;
+      this.profileId = Number(params.get('profileId'));
     });
     let profileSub = this.profileService.profile$.subscribe(
       (profileDto) =>{
@@ -62,13 +62,13 @@ export class UpdateLanguagesComponent implements OnInit, OnDestroy {
 
   addLanguage(language: LanguageDto): void {
     const model: AddLanguageToProfileDto = {
-      profileId: this.profileId,
+      profileId: this.profileId!,
       languageId: language.id
     }
     this.profileService.addLanguageToProfile(model).subscribe();
   }
 
   removeLanguage(language: LanguageDto): void {
-    this.profileService.removeLanguageFromProfile(this.profileId, language.id).subscribe();
+    this.profileService.removeLanguageFromProfile(this.profileId!, language.id).subscribe();
   }
 }

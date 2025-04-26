@@ -1,5 +1,5 @@
 export interface UpdateLocationDto{
-  profileId: string;
+  profileId: number;
   latitude: number | null;
   longitude: number | null;
 }

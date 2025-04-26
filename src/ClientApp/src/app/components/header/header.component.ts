@@ -19,7 +19,7 @@ import {UserService} from "../../services/user-service.service";
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn$: boolean = false;
-  currentUserId$: string | null = '';
+  currentUserId$: number | undefined;
   isMenuVisible = true;
   private subscriptions: Subscription[] = [];
 
@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
 
     const sub2 = this.authService.currentUserId$.subscribe((id) =>{
-      this.currentUserId$ = id;
+      this.currentUserId$ = id!;
     });
 
     this.subscriptions.push(sub1, sub2);

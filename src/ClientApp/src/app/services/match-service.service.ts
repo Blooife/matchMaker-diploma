@@ -31,7 +31,7 @@ export class MatchService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getRecs(profileId: string): Observable<ProfileDto[]> {
+  getRecs(profileId: number): Observable<ProfileDto[]> {
     this.recsLoadingSubject.next(true);
 
     return this.httpClient.get<ProfileDto[]>(`${profilesEndpoints.recs(profileId)}`,
@@ -54,7 +54,7 @@ export class MatchService {
       );
   }
 
-  getPaginatedMatches(pageSize: number, pageNumber: number, profileId: string): Observable<{ matches: ProfileDto[], pagination: any }> {
+  getPaginatedMatches(pageSize: number, pageNumber: number, profileId: number): Observable<{ matches: ProfileDto[], pagination: any }> {
     return this.httpClient.get<ProfileDto[]>(`${matchesEndpoints.paged(pageSize.toString(), pageNumber.toString(), profileId)}`,
       {
         ...this.httpOptions,
@@ -70,7 +70,7 @@ export class MatchService {
     );
   }
 
-  getPaginatedChats(pageSize: number, pageNumber: number, profileId: string): Observable<{ chats: ChatDto[], pagination: any }> {
+  getPaginatedChats(pageSize: number, pageNumber: number, profileId: number): Observable<{ chats: ChatDto[], pagination: any }> {
     return this.httpClient.get<ChatDto[]>(`${chatsEndpoints.paged(pageSize.toString(), pageNumber.toString(), profileId)}`,
       {
         ...this.httpOptions,
@@ -103,7 +103,7 @@ export class MatchService {
     );
   }
 
-  getChatByProfilesIds(firstProfileId: string, secondProfileId: string){
+  getChatByProfilesIds(firstProfileId: number, secondProfileId: number){
     return this.httpClient.get<ChatDto>(chatsEndpoints.chatsByIds(firstProfileId, secondProfileId), {
       headers: this.httpOptions.headers,
       context: new HttpContext().set(_IGNORED_STATUSES, true),
@@ -124,7 +124,7 @@ export class MatchService {
       );
   }
 
-  readChat(chatId: string, profileId: string) {
+  readChat(chatId: string, profileId: number) {
     return this.httpClient.post(`${chatsEndpoints.chats}/read`, {
       chatId: chatId,
       profileId: profileId
