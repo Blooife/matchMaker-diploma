@@ -59,4 +59,16 @@ public class ProfileService(IUnitOfWork _unitOfWork, IProfileClient _profileClie
         
         await _unitOfWork.Profiles.UpdateAsync(profile, cancellationToken);
     }
+    
+    public async Task<ProfileResponseDto> GetByIdAsync(long profileId, CancellationToken cancellationToken)
+    {
+        var profile = await _unitOfWork.Profiles.GetByIdAsync(profileId, cancellationToken);
+
+        if (profile is null)
+        {
+            throw new NotFoundException(profileId);
+        }
+
+        return _mapper.Map<ProfileResponseDto>(profile);
+    }
 }

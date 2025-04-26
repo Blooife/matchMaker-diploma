@@ -3,16 +3,12 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Match.BusinessLogic.Hubs;
 
-public class ChatHub : Hub
+public class ChatHub(
+    IChatService _chatService,
+    IConnectionManager _connectionManager,
+    INotificationService _notificationService,
+    IProfileService _profileService) : Hub
 {
-    private readonly IChatService _chatService;
-    private readonly Dictionary<string, HashSet<long>> _activeUsersInChat = new();
-
-    public ChatHub(IChatService chatService)
-    {
-        _chatService = chatService;
-    }
-
     public async Task SendMessage(string chatId, long senderId, string message)
     {
         var newMessage = await _chatService.SendMessageAsync(chatId, senderId, message);
@@ -20,7 +16,7 @@ public class ChatHub : Hub
         var chat = await _chatService.GetById(chatId);
         var receiverId = senderId == chat.FirstProfileId ? chat.SecondProfileId : chat.FirstProfileId;
 
-        var isReceiverActive = _activeUsersInChat.ContainsKey(chatId) && _activeUsersInChat[chatId].Contains(receiverId);
+        var isReceiverActive = _connectionManager.IsUserInChat(chatId, receiverId);
 
         if (!isReceiverActive)
         {
@@ -28,6 +24,10 @@ public class ChatHub : Hub
 
             await Clients.User(receiverId.ToString())
                 .SendAsync("UpdateUnreadCount", chatId, unreadCount);
+            
+            var senderProfile = await _profileService.GetByIdAsync(senderId, CancellationToken.None);
+            await _notificationService.CreateNewMessageNotificationAsync(
+                receiverId, chatId, senderId, senderProfile.LastName + senderProfile.Name, CancellationToken.None);
         }
         
         await Clients.Group(chatId).SendAsync("ReceiveMessage", newMessage);
@@ -37,18 +37,14 @@ public class ChatHub : Hub
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
 
-        if (!_activeUsersInChat.ContainsKey(chatId))
-            _activeUsersInChat[chatId] = new HashSet<long>();
-
-        _activeUsersInChat[chatId].Add(profileId);
+        _connectionManager.AddUserToChat(chatId, profileId);
     }
 
     public async Task LeaveChat(string chatId, long profileId)
     {
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatId);
 
-        if (_activeUsersInChat.ContainsKey(chatId))
-            _activeUsersInChat[chatId].Remove(profileId);
+        _connectionManager.RemoveUserFromChat(chatId, profileId);
     }
 
 }

@@ -1,6 +1,7 @@
 using System.Reflection;
 using MassTransit;
 using Match.BusinessLogic.Consumers;
+using Match.BusinessLogic.Hubs;
 using Match.BusinessLogic.Services.Implementations;
 using Match.BusinessLogic.Services.Interfaces;
 using MessageQueue.Constants;
@@ -29,6 +30,9 @@ public static class DependencyInjection
         services.AddScoped<IProfileService, ProfileService>();
         services.AddScoped<IMessageService, MessageService>();
         services.AddScoped<ILikeService, LikeService>();
+        services.AddScoped<INotificationService, NotificationService>();
+        services.AddSingleton<IConnectionManager, ConnectionManager>();
+
     }
     
     private static void RegisterMassTransit(this IServiceCollection services)

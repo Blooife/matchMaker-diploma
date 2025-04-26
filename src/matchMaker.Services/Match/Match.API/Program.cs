@@ -27,5 +27,6 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.MapHub<ChatHub>("/chat");
 app.MapControllers();
 app.UseCors("MyCorsPolicy");
+app.UseWebSockets();
 
 app.Run();

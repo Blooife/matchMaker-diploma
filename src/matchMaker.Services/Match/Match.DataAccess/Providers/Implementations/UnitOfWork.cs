@@ -17,6 +17,7 @@ public class UnitOfWork : IUnitOfWork
         Likes = new LikeRepository(_database.GetCollection<Like>(options.Value.LikesCollectionName));
         Chats = new ChatRepository(_database.GetCollection<Chat>(options.Value.ChatsCollectionName));
         Messages = new MessageRepository(_database.GetCollection<Message>(options.Value.MessagesCollectionName));
+        Notifications = new NotificationRepository(_database.GetCollection<Notification>(options.Value.NotificationsCollectionName));
     }
 
     public IMatchRepository Matches { get; }
@@ -24,6 +25,7 @@ public class UnitOfWork : IUnitOfWork
     public ILikeRepository Likes { get; }
     public IChatRepository Chats { get; }
     public IMessageRepository Messages { get; }
+    public INotificationRepository Notifications { get; }
 
     public void Dispose()
     {

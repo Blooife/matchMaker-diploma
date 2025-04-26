@@ -22,7 +22,7 @@ export class ChatSignalRService {
     }
 
     this.hubConnection = new SignalR.HubConnectionBuilder()
-      .withUrl('https://localhost:5003/chat', {
+      .withUrl('https://localhost:5000/chat', {
         accessTokenFactory: () => token
       })
       .withAutomaticReconnect()
@@ -87,5 +87,16 @@ export class ChatSignalRService {
 
   get isConnected$() {
     return this.isConnectedSubject.asObservable();
+  }
+
+  leaveChat(chatId: string, profileId: string): void {
+    if (this.hubConnection) {
+      this.hubConnection.invoke('LeaveChat', chatId, Number(profileId)).then(() => {
+        this.currentChatId = null;
+        console.log(`Покинули чат: ${chatId}`);
+      }).catch(err => {
+        console.error('LeaveChat Error: ', err);
+      });
+    }
   }
 }

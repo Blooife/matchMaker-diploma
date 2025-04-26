@@ -7,4 +7,5 @@ public interface IUnitOfWork : IDisposable
     ILikeRepository Likes { get; }
     IChatRepository Chats { get; }
     IMessageRepository Messages { get; }
+    INotificationRepository Notifications { get; }
 }

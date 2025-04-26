@@ -12,4 +12,6 @@ public interface IGenericRepository<T, TKey> where T : class
     Task<T?> GetByIdAsync(TKey id, CancellationToken cancellationToken);
     Task<List<T>> GetAllAsync(CancellationToken cancellationToken);
     Task DeleteManyAsync(Expression<Func<T, bool>> condition, CancellationToken cancellationToken);
+    Task UpdateManyAsync(
+        Expression<Func<T, bool>> filter, UpdateDefinition<T> updateDefinition, CancellationToken cancellationToken);
 }

@@ -187,4 +187,11 @@ export class ChatsComponent implements OnInit, OnDestroy {
   onDocumentClick(event: MouseEvent): void {
     this.showContextMenu = false;
   }
+
+  leaveChat(): void {
+    if (this.selectedChat && this.profile) {
+      this.chatSignalRService.leaveChat(this.selectedChat.id, this.profile.id);
+      this.closeModal();
+    }
+  }
 }

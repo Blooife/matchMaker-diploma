@@ -54,18 +54,19 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    // Закрываем соединение при уничтожении компонента
+    if (this.chatId && this.profileId) {
+      this.chatSignalRService.leaveChat(this.chatId, this.profileId);
+    }
     this.chatSignalRService.stopConnection();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Если chatId изменился, загружаем сообщения для нового чата
     if (changes['chatId'] && changes['chatId'].currentValue) {
-      this.messages = []; // очищаем сообщения
+      this.messages = [];
       this.pageNumber = 1;
       this.loadMessages();
       this.markChatAsRead();
-      setTimeout(() => this.scrollToBottom(), 100); // прокручиваем чат вниз
+      setTimeout(() => this.scrollToBottom(), 100);
     }
   }
 

@@ -80,6 +80,13 @@ public class GenericRepository<T, TKey>(IMongoCollection<T> _collection) : IGene
         var filter = ApplySoftDeleteFilter(baseFilter);
         return await _collection.Find(filter).ToListAsync(cancellationToken);
     }
+    
+    public async Task UpdateManyAsync(
+        Expression<Func<T, bool>> filter, UpdateDefinition<T> updateDefinition, CancellationToken cancellationToken)
+    {
+        var mongoFilter = Builders<T>.Filter.Where(filter);
+        await _collection.UpdateManyAsync(mongoFilter, updateDefinition, cancellationToken: cancellationToken);
+    }
 
     private static object GetIdValue(T entity)
     {
