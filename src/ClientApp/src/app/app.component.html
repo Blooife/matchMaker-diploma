@@ -1,4 +1,9 @@
-<app-header *ngIf="showHeader"></app-header>
-<main [ngClass]="{'main-with-header': showHeader, 'main-no-header': !showHeader}">
+<app-header *ngIf="showHeader" (menuStateChanged)="onMenuStateChanged($event)"></app-header>
+
+<main [ngClass]="{
+  'main-with-header-expanded': showHeader && isMenuExpanded,
+  'main-with-header-collapsed': showHeader && !isMenuExpanded,
+  'main-no-header': !showHeader
+}">
   <router-outlet></router-outlet>
 </main>

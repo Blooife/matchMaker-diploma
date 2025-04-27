@@ -4,7 +4,7 @@ import {BehaviorSubject, Observable} from "rxjs";
 import {
   chatsEndpoints,
   likesEndpoints,
-  matchesEndpoints, messagesEndpoints,
+  matchesEndpoints, messagesEndpoints, notificationsEndpoints,
   profilesEndpoints,
 } from "../constants/api-endpoints";
 import {map, retry, tap} from "rxjs/operators";
@@ -17,6 +17,7 @@ import {MessageDto} from "../dtos/message/MessageDto";
 import {CreateChatDto} from "../dtos/chat/CreateChatDto";
 import {_IGNORED_STATUSES} from "../constants/http-context";
 import {GeneralResponseDto} from "../dtos/shared/generalResponseDto";
+import {NotificationDto} from "../dtos/notification/NotificationDto";
 
 @Injectable({
   providedIn: 'root'
@@ -129,5 +130,17 @@ export class MatchService {
       chatId: chatId,
       profileId: profileId
     }, this.httpOptions);
+  }
+
+  getNotifications(profileId: number): Observable<NotificationDto[]> {
+    return this.httpClient.get<NotificationDto[]>(`${notificationsEndpoints.notifications}/${profileId}`, this.httpOptions)
+      .pipe(
+      );
+  }
+
+  markNotificationsAsRead(notificationIds: string[]): Observable<void> {
+    return this.httpClient.post<void>(`${notificationsEndpoints.notifications}/read`, {notificationIds}, this.httpOptions)
+      .pipe(
+      );
   }
 }

@@ -1,0 +1,37 @@
+<div *ngIf="isVisible" class="notifications-panel">
+  <div class="actions-fixed">
+    <button (click)="markSelectedAsRead()">Отметить выбранные</button>
+    <button (click)="markAllAsRead()">Отметить все</button>
+    <button class="close-btn" (click)="toggleNotifications()">×</button>
+  </div>
+
+  <div class="tabs">
+    <button (click)="activeTab = 'unread'" [class.active]="activeTab === 'unread'">Непрочитанные</button>
+    <button (click)="activeTab = 'read'" [class.active]="activeTab === 'read'">Прочитанные</button>
+  </div>
+
+  <div class="notifications-list">
+    <div *ngIf="isLoading" class="loading">Загрузка...</div>
+
+    <div *ngIf="!isLoading && filteredNotifications.length === 0" class="no-notifications">
+      Нет уведомлений
+    </div>
+
+    <div *ngFor="let notification of filteredNotifications" class="notification-item">
+      <ng-container *ngIf="activeTab === 'unread'; else readContent">
+        <input type="checkbox" [(ngModel)]="notification.isSelected" />
+        <div class="content">
+          <div class="text">{{ notification.body }}</div>
+          <div class="date">{{ notification.createdAt | date:'dd.MM.yyyy HH:mm' }}</div>
+        </div>
+      </ng-container>
+      <ng-template #readContent>
+        <div class="content">
+          <div class="text">{{ notification.body }}</div>
+          <div class="date">{{ notification.createdAt | date:'dd.MM.yyyy HH:mm' }}</div>
+        </div>
+      </ng-template>
+    </div>
+
+  </div>
+</div>

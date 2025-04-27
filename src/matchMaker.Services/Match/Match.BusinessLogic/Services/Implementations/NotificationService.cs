@@ -8,11 +8,11 @@ using MongoDB.Driver;
 
 namespace Match.BusinessLogic.Services.Implementations;
 
-public class NotificationService(INotificationRepository _notificationRepository, IMapper _mapper) : INotificationService
+public class NotificationService(IUnitOfWork _unitOfWork, IMapper _mapper) : INotificationService
 {
     public async Task<List<NotificationResponseDto>> GetUserNotificationsAsync(long profileId, CancellationToken cancellationToken)
     {
-        var notifications = (await _notificationRepository.GetAsync(
+        var notifications = (await _unitOfWork.Notifications.GetAsync(
             n => n.ProfileId == profileId,
             cancellationToken
             ))
@@ -26,7 +26,7 @@ public class NotificationService(INotificationRepository _notificationRepository
     {
         var update = Builders<Notification>.Update.Set(n => n.IsRead, true);
 
-        await _notificationRepository.UpdateManyAsync(
+        await _unitOfWork.Notifications.UpdateManyAsync(
             n => ids.Contains(n.Id),
             update,
             cancellationToken
@@ -48,7 +48,7 @@ public class NotificationService(INotificationRepository _notificationRepository
             SenderId = senderId
         };
 
-        await _notificationRepository.CreateAsync(notification, cancellationToken);
+        await _unitOfWork.Notifications.CreateAsync(notification, cancellationToken);
     }
 
 }

@@ -22,9 +22,9 @@ public class NotificationsController(INotificationService _notificationService) 
     
     [HttpPost("read")]
     public async Task<ActionResult> MarkNotificationsAsRead(
-        [FromBody] string[] notificationIds, CancellationToken cancellationToken)
+        [FromBody] MarkAsReadDto dto, CancellationToken cancellationToken)
     {
-        await _notificationService.MarkNotificationsAsReadAsync(notificationIds, cancellationToken);
+        await _notificationService.MarkNotificationsAsReadAsync(dto.NotificationIds, cancellationToken);
 
         return NoContent();
     }

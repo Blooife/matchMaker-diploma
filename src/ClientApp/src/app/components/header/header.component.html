@@ -1,29 +1,52 @@
-<header class="header">
+<header class="header" [class.collapsed]="!isMenuVisible">
   <div class="toggle-btn" (click)="toggleMenu()">
-    <span *ngIf="isMenuVisible" class="icon-close">✖</span>
     <span *ngIf="!isMenuVisible" class="icon-menu">☰</span>
+    <span *ngIf="isMenuVisible" class="icon-close">✖</span>
   </div>
-  <nav *ngIf="isMenuVisible">
-    <button *ngIf="(isLoggedIn$)" (click)="logOut()">Выйти</button>
+
+  <nav>
+    <button *ngIf="isUser()" (click)="notificationsComponent?.toggleNotifications()">
+      <span class="icon">🔔</span>
+      <span *ngIf="isMenuVisible">Уведомления</span>
+    </button>
+
+    <button *ngIf="isLoggedIn$" (click)="logOut()">
+      <span class="icon">🚪</span>
+      <span *ngIf="isMenuVisible">Выйти</span>
+    </button>
+
     <div *ngIf="isLoggedIn$">
       <button *ngIf="isAdmin() || isModerator()" [routerLink]="['/admin-panel']">
-        Панель администратора
+        <span class="icon">🛠️</span>
+        <span *ngIf="isMenuVisible">Панель администратора</span>
       </button>
+
       <button *ngIf="isUser()" [routerLink]="['/profile']">
-        Мой профиль
+        <span class="icon">👤</span>
+        <span *ngIf="isMenuVisible">Мой профиль</span>
       </button>
+
       <button *ngIf="isUser()" [routerLink]="['/find-match']">
-        Поиск
+        <span class="icon">🔍</span>
+        <span *ngIf="isMenuVisible">Поиск</span>
       </button>
+
       <button *ngIf="isUser()" [routerLink]="['/matches']">
-        Совпадения
+        <span class="icon">❤️</span>
+        <span *ngIf="isMenuVisible">Совпадения</span>
       </button>
+
       <button *ngIf="isUser()" [routerLink]="['/chats']">
-        Чаты
+        <span class="icon">💬</span>
+        <span *ngIf="isMenuVisible">Чаты</span>
       </button>
+
       <button (click)="deleteUserById()">
-        Удалить аккаунт
+        <span class="icon">🗑️</span>
+        <span *ngIf="isMenuVisible">Удалить аккаунт</span>
       </button>
     </div>
   </nav>
 </header>
+
+<app-notifications #notificationsComponent></app-notifications>

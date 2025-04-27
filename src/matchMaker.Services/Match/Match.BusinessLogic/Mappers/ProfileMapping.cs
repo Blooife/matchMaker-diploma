@@ -13,6 +13,8 @@ public class ProfileMapping : AutoMapper.Profile
 
         CreateMap<ProfileCreatedEventMessage, DataAccess.Models.Profile>();
         CreateMap<ProfileUpdatedEventMessage, DataAccess.Models.Profile>();
+
+        CreateMap<DataAccess.Models.Profile, ProfileResponseDto>();
         
         CreateMap<ProfileClientDto, ProfileResponseDto>()
             .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => src.BirthDate))

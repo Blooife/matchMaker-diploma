@@ -93,3 +93,10 @@ export const messagesEndpoints = {
     return `${messagesEndpoints.messages}/paged/${chatId}?pageSize=${pageSize}&pageNumber=${pageNumber}`
   }
 }
+
+export const notificationsEndpoints = {
+  notifications: `${base}/notifications`,
+  byProfileId(profileId: number){
+    return `${notificationsEndpoints.notifications}/${profileId}`
+  }
+}

@@ -27,7 +27,10 @@
             {{ selectedChat.profileName }} {{ selectedChat.profileLastName }}
           </span>
         </div>
-        <app-messages [chatId]="selectedChat.id" [profileId]="profileId!"></app-messages>
+        <app-messages [selectedChat]="selectedChat!"
+                      [profileId]="profileId!"
+                      [chatId]="selectedChat.id"
+        ></app-messages>
       </div>
     </div>
   </div>

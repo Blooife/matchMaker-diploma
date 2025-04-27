@@ -423,7 +423,7 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "DownstreamPathTemplate": "/api/notifications/{id}",
+      "DownstreamPathTemplate": "/api/notifications/{profileId}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -431,7 +431,7 @@
           "Port": 5003
         }
       ],
-      "UpstreamPathTemplate": "/notifications/{id}",
+      "UpstreamPathTemplate": "/notifications/{profileId}",
       "UpstreamHttpMethod": [ "GET" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"

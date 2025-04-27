@@ -13,6 +13,7 @@ import {NgClass, NgIf} from "@angular/common";
 })
 export class AppComponent implements OnInit{
   showHeader = true;
+  isMenuExpanded = true;
 
   constructor(private router: Router) {
 
@@ -32,5 +33,9 @@ export class AppComponent implements OnInit{
         }
       }
     )
+  }
+
+  onMenuStateChanged(isExpanded: boolean) {
+    this.isMenuExpanded = isExpanded;
   }
 }

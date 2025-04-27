@@ -1,10 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import {AuthService} from "../../services/auth-service.service";
 import {AsyncPipe, NgIf} from "@angular/common";
 import {Subscription} from "rxjs";
 import {roles} from "../../constants/roles";
 import {UserService} from "../../services/user-service.service";
+import {NotificationsComponent} from "../notifications/notifications.component";
 
 @Component({
   selector: 'app-header',
@@ -13,14 +14,19 @@ import {UserService} from "../../services/user-service.service";
   imports: [
     NgIf,
     RouterLink,
-    AsyncPipe
+    AsyncPipe,
+    NotificationsComponent
   ],
   standalone: true
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  @Output() menuStateChanged = new EventEmitter<boolean>();
+  @ViewChild(NotificationsComponent) notificationsComponent: NotificationsComponent | undefined;
+
   isLoggedIn$: boolean = false;
   currentUserId$: number | undefined;
   isMenuVisible = true;
+  isNotificationsOpen = false;
   private subscriptions: Subscription[] = [];
 
   constructor(private authService: AuthService, private router: Router, private userService: UserService) {
@@ -45,6 +51,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   toggleMenu() {
     this.isMenuVisible = !this.isMenuVisible;
+    this.menuStateChanged.emit(this.isMenuVisible);
   }
 
   logOut() {

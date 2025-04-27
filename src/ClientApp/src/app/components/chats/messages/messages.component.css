@@ -36,7 +36,11 @@
   border-radius: 10px;
   max-width: 70%;
   word-wrap: break-word;
-  display: inline-block;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  flex-direction: column;
 }
 
 .message-list .received .message-content {
@@ -81,4 +85,29 @@
   color: #fff;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.unread-icon {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: gray;
+  font-size: 1rem;
+}
+
+.read-icon {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: gray;
+  font-size: 1rem;
+}
+
+.message-content small {
+  text-align: right;
+  margin-top: 5px;
+  font-size: 0.75em;
+  color: #ccc;
 }

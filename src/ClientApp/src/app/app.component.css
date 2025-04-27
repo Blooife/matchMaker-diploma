@@ -1,7 +1,14 @@
-.main-with-header {
+.main-with-header-expanded {
   margin-left: 160px;
+  transition: width 0.3s;
+}
+
+.main-with-header-collapsed {
+  margin-left: 70px;
+  transition: width 0.3s;
 }
 
 .main-no-header {
   margin-left: 0;
+  transition: width 0.3s;
 }

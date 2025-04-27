@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { MatchService } from "../../../services/match-service.service";
 import { MessageDto } from "../../../dtos/message/MessageDto";
-import { DatePipe, NgClass, NgForOf } from "@angular/common";
+import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import { InfiniteScrollDirective } from "ngx-infinite-scroll";
 import { ChatSignalRService } from "../../../services/chat-signalr.service";
+import {ChatDto} from "../../../dtos/chat/ChatDto";
 
 @Component({
   selector: 'app-messages',
@@ -13,12 +14,14 @@ import { ChatSignalRService } from "../../../services/chat-signalr.service";
     DatePipe,
     NgClass,
     NgForOf,
-    InfiniteScrollDirective
+    InfiniteScrollDirective,
+    NgIf
   ],
   standalone: true
 })
 export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
   @Input() chatId!: string;
+  @Input() selectedChat!: ChatDto;
   @Input() profileId!: number;
 
   @ViewChild('chatContainer', { static: true }) chatContainer!: ElementRef;
@@ -28,6 +31,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
   pageSize: number = 12;
   isLoading: boolean = false;
   pagination: any = {};
+  messageStatuses: { [key: number]: 'read' | 'unread' } = {};
 
   private isConnected: boolean = false;
 
@@ -39,15 +43,15 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.chatSignalRService.isConnected$.subscribe(isConnected => {
       this.isConnected = isConnected;
-      console.log(isConnected)
       if (isConnected) {
-        this.chatSignalRService.joinChat(this.chatId, this.profileId);
+        this.chatSignalRService.joinChat(this.chatId, String(this.profileId));
       }
     });
 
     this.chatSignalRService.newMessage$.subscribe(message => {
       if (message && message.chatId === this.chatId) {
         this.messages.push(message);
+        this.updateMessagesStatus();
         setTimeout(() => this.scrollToBottom(), 100);
       }
     });
@@ -55,9 +59,9 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy(): void {
     if (this.chatId && this.profileId) {
-      this.chatSignalRService.leaveChat(this.chatId, this.profileId);
+      this.chatSignalRService.leaveChat(this.chatId, String(this.profileId));
     }
-    this.chatSignalRService.stopConnection();
+    //this.chatSignalRService.stopConnection();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -77,6 +81,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
         const mes = response.messages.reverse();
         this.messages = [...mes, ...this.messages];
         this.pagination = response.pagination;
+        this.updateMessagesStatus();
       },
       error: () => {
         this.isLoading = false;
@@ -100,11 +105,13 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
 
   sendMessage(content: string): void {
     if (this.isConnected) {
-      this.chatSignalRService.sendMessage(this.chatId, this.profileId, content).then(() => {
+      this.chatSignalRService.sendMessage(this.chatId, String(this.profileId), content).then(() => {
         setTimeout(() => {
           this.scrollToBottom();
         }, 100);
       });
+
+
     } else {
       console.error('Нет соединения с сервером');
     }
@@ -119,5 +126,33 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
       next: () => {},
       error: (err) => console.error('Mark chat as read failed', err)
     });
+  }
+
+  getMessageStatus(message: MessageDto, index: number): 'read' | 'unread' | null {
+    if (!this.selectedChat) return null;
+
+    if (!this.isSender(message)) {
+      return null;
+    }
+
+    const myMessages = this.messages.filter(m => this.isSender(m));
+
+    const myMessageIndex = myMessages.indexOf(message);
+
+    if (myMessageIndex >= (myMessages.length - this.selectedChat.unreadCount)) {
+      return 'unread';
+    } else {
+      return 'read';
+    }
+  }
+
+  updateMessagesStatus(): void {
+    if (this.selectedChat && this.selectedChat.unreadCount !== undefined) {
+      this.messages.forEach((message, index) => {
+        const status = this.getMessageStatus(message, index);
+        if(status)
+        this.messageStatuses[Number(message.id)] = status;
+      });
+    }
   }
 }

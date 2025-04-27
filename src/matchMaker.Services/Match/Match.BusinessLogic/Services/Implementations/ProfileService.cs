@@ -69,6 +69,12 @@ public class ProfileService(IUnitOfWork _unitOfWork, IProfileClient _profileClie
             throw new NotFoundException(profileId);
         }
 
-        return _mapper.Map<ProfileResponseDto>(profile);
+        var res = new ProfileResponseDto()
+        {
+            Name = profile.Name,
+            LastName = profile.LastName,
+        };
+
+        return res;
     }
 }

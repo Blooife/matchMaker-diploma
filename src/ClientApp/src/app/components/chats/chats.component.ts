@@ -93,6 +93,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub=>sub.unsubscribe());
+    this.leaveChat();
   }
 
   loadChats(): void {
@@ -190,7 +191,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   leaveChat(): void {
     if (this.selectedChat && this.profile) {
-      this.chatSignalRService.leaveChat(this.selectedChat.id, this.profile.id);
+      this.chatSignalRService.leaveChat(this.selectedChat.id, String(this.profile.id));
       this.closeModal();
     }
   }

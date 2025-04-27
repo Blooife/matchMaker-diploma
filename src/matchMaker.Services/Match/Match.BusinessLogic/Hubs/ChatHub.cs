@@ -27,7 +27,7 @@ public class ChatHub(
             
             var senderProfile = await _profileService.GetByIdAsync(senderId, CancellationToken.None);
             await _notificationService.CreateNewMessageNotificationAsync(
-                receiverId, chatId, senderId, senderProfile.LastName + senderProfile.Name, CancellationToken.None);
+                receiverId, chatId, senderId, $"{senderProfile.LastName} {senderProfile.Name}", CancellationToken.None);
         }
         
         await Clients.Group(chatId).SendAsync("ReceiveMessage", newMessage);
