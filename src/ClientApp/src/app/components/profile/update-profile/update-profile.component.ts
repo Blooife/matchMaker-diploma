@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {formatDate, KeyValuePipe, NgForOf} from '@angular/common';
-import { Gender } from '../../../constants/gender';
+import {Gender, GenderTranslatePipe} from '../../../constants/gender';
 import { ProfileService } from '../../../services/profile-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CountrySelectComponent } from '../country-select/country-select.component';
@@ -28,15 +28,14 @@ import {minimumAge, rangeValidator, minValue, ageFromLessThanOrEqualAgeTo, getEr
     UpdateInterestsComponent,
     UpdateLanguagesComponent,
     UpdateEducationComponent,
-    UpdateImagesComponent
+    UpdateImagesComponent,
+    GenderTranslatePipe
   ],
   standalone: true
 })
 export class UpdateProfileComponent implements OnInit {
   profileForm: FormGroup;
-  genders = Object.keys(Gender)
-    .filter(key => isNaN(Number(key)))
-    .map(key => ({ key, value: Gender[key as keyof typeof Gender] }));
+  genders = [Gender.Undefined, Gender.Male, Gender.Female];
   profileId: string = '';
   selectedCountryId: number | null = null;
   selectedCityId: number | null = null;

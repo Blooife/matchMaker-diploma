@@ -26,11 +26,11 @@
     </div>
     <div class="profile-detail-item">
       <i class="fa fa-venus-mars"></i>
-      <p><strong>Пол:</strong> {{Gender[profile.gender]}}</p>
+      <p><strong>Пол:</strong> {{ profile.gender | genderTranslate}}</p>
     </div>
     <div class="profile-detail-item">
       <i class="fa fa-arrows-alt-v"></i>
-      <p><strong>Рост:</strong> {{profile.height}} cm</p>
+      <p><strong>Рост:</strong> {{profile.height}} см</p>
     </div>
     <div class="profile-detail-item">
       <i class="fa fa-flag"></i>

@@ -8,5 +8,6 @@ public class ChatResponseDto
     public string MainImageUrl { get; set; }
     public long FirstProfileId { get; set; }
     public long SecondProfileId { get; set; }
-    public long UnreadCount { get; set; }
+    public long RequestedProfileUnreadCount { get; set; }
+    public long ReceiverProfileUnreadCount { get; set; }
 }

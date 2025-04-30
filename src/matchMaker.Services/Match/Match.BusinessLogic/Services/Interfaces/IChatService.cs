@@ -15,5 +15,5 @@ public interface IChatService
     Task<GeneralResponseDto> DeleteChatAsync(string chatId, CancellationToken cancellationToken);
     Task ReadChatAsync(ReadChatDto dto, CancellationToken cancellationToken);
     Task<Chat> GetById(string id);
-    Task<long> IncrementUnreadCountAsync(string chatId, long receiverId);
+    Task<ChatResponseDto> IncrementUnreadCountAsync(string chatId, long receiverId);
 }

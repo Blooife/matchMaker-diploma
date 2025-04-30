@@ -6,14 +6,14 @@
          [ngClass]="{
        'chat-item': true,
        'active': chat.id === selectedChat?.id,
-       'unread': chat.unreadCount > 0 && chat.id !== selectedChat?.id
+       'unread': chat.receiverProfileUnreadCount > 0 && chat.id !== selectedChat?.id
      }"
          (click)="openChat(chat)"
          (contextmenu)="onRightClick($event, chat)">
       <img [src]="chat.mainImageUrl || 'noImage.jpg'" crossorigin="anonymous" class="profile-image" />
       <p>
         {{ chat.profileName }} {{ chat.profileLastName }}
-        <span *ngIf="chat.unreadCount > 0 && chat.id !== selectedChat?.id" class="badge">{{ chat.unreadCount }}</span>
+        <span *ngIf="chat.requestedProfileUnreadCount > 0 && chat.id !== selectedChat?.id" class="badge">{{ chat.requestedProfileUnreadCount }}</span>
       </p>
     </div>
   </div>
@@ -30,6 +30,7 @@
         <app-messages [selectedChat]="selectedChat!"
                       [profileId]="profileId!"
                       [chatId]="selectedChat.id"
+                      (chatRead)="refreshChats()"
         ></app-messages>
       </div>
     </div>

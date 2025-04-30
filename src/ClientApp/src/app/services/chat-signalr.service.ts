@@ -70,10 +70,10 @@ export class ChatSignalRService {
     }
   }
 
-
-  onUnreadCountUpdated(callback: (chatId: string, unreadCount: number) => void): void {
-    this.hubConnection?.on('UpdateUnreadCount', (chatId: string, unreadCount: number) => {
-      callback(chatId, unreadCount);
+  onUnreadCountUpdated(callback: (chatId: string, requestedProfileUnreadCount: number, receiverProfileUnreadCount: number) => void): void {
+    this.hubConnection?.on('UpdateUnreadCount', (chatId: string, requestedProfileUnreadCount: any, receiverProfileUnreadCount: any) => {
+      console.log("upd unr count")
+      callback(chatId, Number(requestedProfileUnreadCount), Number(receiverProfileUnreadCount));
     });
   }
 
@@ -98,5 +98,16 @@ export class ChatSignalRService {
         console.error('LeaveChat Error: ', err);
       });
     }
+  }
+
+  readChat(chatId: string, profileId: string): void {
+    this.hubConnection?.invoke('ReadChat', chatId, profileId)
+      .catch(err => console.error('Failed to mark chat as read via SignalR', err));
+  }
+
+  onMessagesRead(callback: (chatId: string, profileId: number) => void): void {
+    this.hubConnection?.on('MessagesRead', (chatId: string, profileId: number) => {
+      callback(chatId, profileId);
+    });
   }
 }

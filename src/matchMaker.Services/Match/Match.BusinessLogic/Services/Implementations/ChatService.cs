@@ -64,7 +64,6 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
         mappedChat.ProfileName = mappedChat.FirstProfileId == profile1.Id ? profile2.Name : profile1.Name;
         mappedChat.ProfileLastName = mappedChat.FirstProfileId == profile1.Id ? profile2.LastName : profile1.LastName;
         mappedChat.MainImageUrl = mappedChat.FirstProfileId == profile1.Id ? profile2.MainImageUrl : profile1.MainImageUrl;
-        mappedChat.UnreadCount = mappedChat.FirstProfileId == profile1.Id ? chat.FirstProfileUnreadCount : chat.SecondProfileUnreadCount;
         
         return mappedChat;
     }
@@ -90,11 +89,12 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
         var profiles = await _unitOfWork.Profiles.GetAsync(p => profileIds.Contains(p.Id), cancellationToken);
 
         var profileDictionary = profiles.ToDictionary(p => p.Id);
-
+        
         var chatResponseDtos = chats.Select(chat =>
         {
             var otherProfileId = chat.FirstProfileId == profileId ? chat.SecondProfileId : chat.FirstProfileId;
             var otherProfile = profileDictionary[otherProfileId];
+            var isFirstRequested = chat.FirstProfileId == profileId;
 
             return new ChatResponseDto
             {
@@ -104,9 +104,12 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
                 ProfileName = otherProfile.Name,
                 ProfileLastName = otherProfile.LastName,
                 MainImageUrl = otherProfile.MainImageUrl,
-                UnreadCount = profileId == chat.FirstProfileId 
-                    ? chat.FirstProfileUnreadCount 
-                    : chat.SecondProfileUnreadCount
+                RequestedProfileUnreadCount = isFirstRequested
+                    ? chat.FirstProfileUnreadCount
+                    : chat.SecondProfileUnreadCount, 
+                ReceiverProfileUnreadCount = isFirstRequested
+                    ? chat.SecondProfileUnreadCount
+                    : chat.FirstProfileUnreadCount,
             };
         }).ToList();
 
@@ -179,7 +182,7 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
         {
             throw new NotFoundException(dto.ChatId);
         }
-
+        
         if (dto.ProfileId == chat.FirstProfileId)
         {
             chat.FirstProfileUnreadCount = 0;
@@ -204,7 +207,7 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
         return chat;
     }
 
-    public async Task<long> IncrementUnreadCountAsync(string chatId, long receiverId)
+    public async Task<ChatResponseDto> IncrementUnreadCountAsync(string chatId, long receiverId)
     {
         var chat = await _unitOfWork.Chats.GetByIdAsync(chatId, CancellationToken.None);
 
@@ -218,16 +221,26 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
         if (receiverId == chat.FirstProfileId)
         {
             chat.FirstProfileUnreadCount++;
-            newCount = chat.FirstProfileUnreadCount;
         }
         else
         {
             chat.SecondProfileUnreadCount++;
-            newCount = chat.SecondProfileUnreadCount;
         }
 
         await _unitOfWork.Chats.UpdateAsync(chat, CancellationToken.None);
-
-        return newCount;
+        
+        var isFirstRequested = chat.SecondProfileId == receiverId;
+        return new ChatResponseDto
+        {
+            Id = chat.Id,
+            FirstProfileId = chat.FirstProfileId,
+            SecondProfileId = chat.SecondProfileId,
+            RequestedProfileUnreadCount = isFirstRequested
+                ? chat.FirstProfileUnreadCount
+                : chat.SecondProfileUnreadCount, 
+            ReceiverProfileUnreadCount = isFirstRequested
+                ? chat.SecondProfileUnreadCount
+                : chat.FirstProfileUnreadCount,
+        };;
     }
 }

@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from '../../../services/profile-service.service';
 import { CreateProfileDto } from '../../../dtos/profile/CreateProfileDto';
-import { Gender } from '../../../constants/gender';
+import {Gender, GenderTranslatePipe} from '../../../constants/gender';
 import { CountrySelectComponent } from '../country-select/country-select.component';
 import { CitySelectComponent } from '../city-select/city-select.component';
 import { GoalSelectComponent } from '../goal-select/goal-select.component';
@@ -28,14 +28,13 @@ import {ageFromLessThanOrEqualAgeTo, getErrorMessage, minimumAge, minValue, rang
     GoalSelectComponent,
     MatButton,
     ReactiveFormsModule,
-    NgForOf
+    NgForOf,
+    GenderTranslatePipe
   ]
 })
 export class CreateProfileComponent implements OnInit {
   profileForm: FormGroup;
-  genders = Object.keys(Gender)
-    .filter(key => isNaN(Number(key)))
-    .map(key => ({ key, value: Gender[key as keyof typeof Gender] }));
+  genders = [Gender.Undefined, Gender.Male, Gender.Female];
   userId: string = '';
   selectedCountryId: number | null = null;
 

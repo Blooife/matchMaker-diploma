@@ -64,12 +64,35 @@ export class ChatsComponent implements OnInit, OnDestroy {
         if (token) {
           this.chatSignalRService.startConnection(token);
 
-          this.chatSignalRService.onUnreadCountUpdated((chatId, unreadCount) => {
-            console.log(unreadCount);
-            console.log("Пришло анред коунт")
+          this.chatSignalRService.onUnreadCountUpdated((chatId, requestedProfileUnreadCount, receiverProfileUnreadCount) => {
             const chat = this.chats.find(c => c.id === chatId);
             if (chat) {
-              chat.unreadCount = unreadCount;
+              chat.requestedProfileUnreadCount = requestedProfileUnreadCount;
+              chat.receiverProfileUnreadCount = receiverProfileUnreadCount;
+              console.log(requestedProfileUnreadCount)
+              console.log(receiverProfileUnreadCount)
+              if (this.selectedChat && this.selectedChat.id === chatId) {
+                this.selectedChat.requestedProfileUnreadCount = requestedProfileUnreadCount;
+                this.selectedChat.receiverProfileUnreadCount = receiverProfileUnreadCount;
+              }
+            }
+          });
+
+          this.chatSignalRService.onMessagesRead((chatId, profileId) => {
+            const chat = this.chats.find(c => c.id === chatId);
+            if (chat) {
+              if(chat.firstProfileId == profileId){
+                chat.requestedProfileUnreadCount = 0;
+              }else{
+                chat.receiverProfileUnreadCount = 0;
+              }
+              if (this.selectedChat && this.selectedChat.id === chatId) {
+                if(this.selectedChat.firstProfileId == profileId) {
+                  this.selectedChat.requestedProfileUnreadCount = 0;
+                }else{
+                  this.selectedChat.receiverProfileUnreadCount = 0;
+                }
+              }
             }
           });
         }
@@ -115,15 +138,15 @@ export class ChatsComponent implements OnInit, OnDestroy {
   openChat(chat: ChatDto): void {
     this.closeModal();
     this.selectedChat = chat;
-
-    if (chat.unreadCount > 0) {
-      chat.unreadCount = 0;
+    if (chat.requestedProfileUnreadCount > 0) {
+      chat.receiverProfileUnreadCount = 0;
     }
   }
 
   closeModal(): void {
     this.selectedChat = undefined;
     this.selectedProfile = null;
+    this.subscriptions.forEach(sub=>sub.unsubscribe());
   }
 
   startOrCreateChat(firstProfileId: number, secondProfileId: number): Observable<any> {
@@ -149,7 +172,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   onScrollDown(): void {
     if (!this.isLoading && this.pagination.HasNext) {
-      console.log("scroll")
       this.pageNumber++;
       this.loadChats();
     }
@@ -194,5 +216,20 @@ export class ChatsComponent implements OnInit, OnDestroy {
       this.chatSignalRService.leaveChat(this.selectedChat.id, String(this.profile.id));
       this.closeModal();
     }
+  }
+
+  refreshChats(){
+    this.matchService.getPaginatedChats(this.pageSize, this.pageNumber, this.profile!.id).subscribe({
+      next: (response) => {
+        this.chats = response.chats;
+        this.pagination = response.pagination;
+      },
+      error: () => {
+        this.isLoading = false;
+      },
+      complete:() => {
+        this.isLoading = false;
+      }
+    });
   }
 }

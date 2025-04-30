@@ -1,10 +1,21 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  OnChanges,
+  SimpleChanges,
+  EventEmitter, Output
+} from '@angular/core';
 import { MatchService } from "../../../services/match-service.service";
 import { MessageDto } from "../../../dtos/message/MessageDto";
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import { InfiniteScrollDirective } from "ngx-infinite-scroll";
 import { ChatSignalRService } from "../../../services/chat-signalr.service";
 import {ChatDto} from "../../../dtos/chat/ChatDto";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-messages',
@@ -31,7 +42,9 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
   pageSize: number = 12;
   isLoading: boolean = false;
   pagination: any = {};
-  messageStatuses: { [key: number]: 'read' | 'unread' } = {};
+  messageStatuses: Record<string, 'read' | 'unread'> = {};
+  private subscriptions: Subscription[] = [];
+  @Output() chatRead = new EventEmitter<void>();
 
   private isConnected: boolean = false;
 
@@ -41,18 +54,30 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.chatSignalRService.isConnected$.subscribe(isConnected => {
-      this.isConnected = isConnected;
-      if (isConnected) {
-        this.chatSignalRService.joinChat(this.chatId, String(this.profileId));
-      }
-    });
+    this.subscriptions.push(
+      this.chatSignalRService.isConnected$.subscribe(isConnected => {
+        this.isConnected = isConnected;
+        if (isConnected) {
+          this.chatSignalRService.joinChat(this.chatId, String(this.profileId));
+        }
+      })
+    );
 
-    this.chatSignalRService.newMessage$.subscribe(message => {
-      if (message && message.chatId === this.chatId) {
-        this.messages.push(message);
+    this.subscriptions.push(
+      this.chatSignalRService.newMessage$.subscribe(message => {
+        if (message && message.chatId === this.chatId) {
+          const exists = this.messages.some(m => m.id === message.id);
+          if (!exists) {
+            this.messages.push(message);
+            this.updateMessagesStatus();
+            setTimeout(() => this.scrollToBottom(), 100);
+          }
+        }
+      })
+    );
+    this.chatSignalRService.onMessagesRead((chatId, profileId) => {
+      if (chatId === this.chatId) {
         this.updateMessagesStatus();
-        setTimeout(() => this.scrollToBottom(), 100);
       }
     });
   }
@@ -61,6 +86,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
     if (this.chatId && this.profileId) {
       this.chatSignalRService.leaveChat(this.chatId, String(this.profileId));
     }
+    this.subscriptions.forEach(sub => sub.unsubscribe());
     //this.chatSignalRService.stopConnection();
   }
 
@@ -78,8 +104,13 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
     this.isLoading = true;
     this.matchService.getPaginatedMessages(this.pageSize, this.pageNumber, this.chatId).subscribe({
       next: (response) => {
-        const mes = response.messages.reverse();
-        this.messages = [...mes, ...this.messages];
+        const newMessages = response.messages.reverse();
+
+        const filteredMessages = newMessages.filter(newMsg =>
+          !this.messages.some(existing => existing.id === newMsg.id)
+        );
+
+        this.messages = [...filteredMessages, ...this.messages];
         this.pagination = response.pagination;
         this.updateMessagesStatus();
       },
@@ -122,10 +153,10 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   markChatAsRead(): void {
-    this.matchService.readChat(this.chatId, this.profileId).subscribe({
-      next: () => {},
-      error: (err) => console.error('Mark chat as read failed', err)
-    });
+    if (this.chatId && this.profileId) {
+      this.chatSignalRService.readChat(this.chatId, String(this.profileId));
+      this.chatRead.emit();
+    }
   }
 
   getMessageStatus(message: MessageDto, index: number): 'read' | 'unread' | null {
@@ -136,10 +167,11 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     const myMessages = this.messages.filter(m => this.isSender(m));
-
     const myMessageIndex = myMessages.indexOf(message);
 
-    if (myMessageIndex >= (myMessages.length - this.selectedChat.unreadCount)) {
+    const receiverUnreadCount = this.selectedChat.receiverProfileUnreadCount ?? 0;
+
+    if (myMessageIndex >= (myMessages.length - receiverUnreadCount)) {
       return 'unread';
     } else {
       return 'read';
@@ -147,11 +179,11 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   updateMessagesStatus(): void {
-    if (this.selectedChat && this.selectedChat.unreadCount !== undefined) {
+    if (this.selectedChat && this.selectedChat.receiverProfileUnreadCount !== undefined) {
       this.messages.forEach((message, index) => {
         const status = this.getMessageStatus(message, index);
         if(status)
-        this.messageStatuses[Number(message.id)] = status;
+        this.messageStatuses[message.id] = status;
       });
     }
   }

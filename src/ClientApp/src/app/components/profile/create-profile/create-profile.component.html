@@ -14,7 +14,7 @@
 
   <label for="gender">Пол:</label>
   <select id="gender" formControlName="gender" class="select-input">
-    <option *ngFor="let gender of genders" [value]="gender.value">{{ gender.key }}</option>
+    <option *ngFor="let gender of genders" [value]="gender">{{ gender | genderTranslate }}</option>
   </select>
   <div class="error-message">{{ getErrorMessage('gender', this.profileForm) }}</div>
 
@@ -44,7 +44,7 @@
 
   <label for="preferredGender">Предпочетаемый пол:</label>
   <select id="preferredGender" formControlName="preferredGender" class="select-input">
-    <option *ngFor="let gender of genders" [value]="gender.value">{{ gender.key }}</option>
+    <option *ngFor="let gender of genders" [value]="gender">{{ gender | genderTranslate}}</option>
   </select>
   <div class="error-message">{{ getErrorMessage('preferredGender', this.profileForm) }}</div>
 

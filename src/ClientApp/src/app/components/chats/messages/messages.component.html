@@ -8,11 +8,13 @@
       <div class="message-content">
         <p>{{ message.content }}</p>
 
-        <span *ngIf="messageStatuses[message.id] === 'unread'" class="unread-icon">✔️</span>
-
-        <span *ngIf="messageStatuses[message.id] === 'read'" class="read-icon">✔️✔️</span>
-
-        <small>{{ message.timestamp | date:'dd.MM.yyyy HH:mm' }}</small>
+        <div class="message-meta">
+          <small>{{ message.timestamp | date:'dd.MM.yyyy HH:mm' }}</small>
+          <div class="status-icons">
+            <i *ngIf="messageStatuses[message.id] === 'unread'" class="bi bi-check"></i>
+            <i *ngIf="messageStatuses[message.id] === 'read'" class="bi bi-check-all"></i>
+          </div>
+        </div>
       </div>
     </div>
   </div>

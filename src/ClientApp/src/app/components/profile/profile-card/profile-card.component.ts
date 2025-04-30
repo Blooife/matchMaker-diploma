@@ -3,7 +3,7 @@ import {DatePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {UpdateImagesComponent} from "../update-images/update-images.component";
 import {ProfileDto} from "../../../dtos/profile/ProfileDto";
-import { Gender } from '../../../constants/gender';
+import {Gender, GenderTranslatePipe} from '../../../constants/gender';
 
 @Component({
   selector: 'app-profile-card',
@@ -15,7 +15,8 @@ import { Gender } from '../../../constants/gender';
     DatePipe,
     NgForOf,
     UpdateImagesComponent,
-    NgOptimizedImage
+    NgOptimizedImage,
+    GenderTranslatePipe
   ],
   standalone: true
 })

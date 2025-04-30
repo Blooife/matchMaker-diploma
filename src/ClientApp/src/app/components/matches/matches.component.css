@@ -1,12 +1,22 @@
+/* Контейнер всей страницы */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Контейнер карточек */
 .match-container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
-  position: relative;
-  justify-content: center;
+  justify-content: flex-start; /* карточки идут слева направо */
+  align-content: flex-start;
+  flex: 1; /* занимает всё доступное пространство */
 }
 
+/* Одна карточка */
 .match-card {
   background-color: #f5f5f5;
   border: 1px solid #d1c4e9;
@@ -41,11 +51,13 @@
   font-size: 14px;
 }
 
+/* Пагинация */
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
+  padding: 20px 0;
+  background-color: #fff;
 }
 
 .pagination button {
@@ -73,6 +85,7 @@
   font-weight: bold;
 }
 
+/* Модальное окно */
 .modal {
   display: flex;
   align-items: center;

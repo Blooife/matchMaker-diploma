@@ -2,7 +2,7 @@
 
 public class NotFoundException : Exception
 {
-    public NotFoundException(object key) : base($"Object (with id = {key}) was not found")
+    public NotFoundException(object key) : base($"Объект не найден")
     {
 
     }

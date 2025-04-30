@@ -53,12 +53,22 @@
   word-break: break-word;
 }
 
-.message-content small {
-  display: block;
-  margin-top: 5px;
+.message-meta {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.message-meta small {
   font-size: 0.75em;
   color: #ccc;
-  text-align: right;
+}
+
+.status-icons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
 }
 
 .message-input {
@@ -85,29 +95,4 @@
   color: #fff;
   border-radius: 4px;
   cursor: pointer;
-}
-
-.unread-icon {
-  position: absolute;
-  right: 5px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: gray;
-  font-size: 1rem;
-}
-
-.read-icon {
-  position: absolute;
-  right: 5px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: gray;
-  font-size: 1rem;
-}
-
-.message-content small {
-  text-align: right;
-  margin-top: 5px;
-  font-size: 0.75em;
-  color: #ccc;
 }

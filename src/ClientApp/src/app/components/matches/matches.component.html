@@ -1,28 +1,31 @@
-<div class="match-container">
-  <div *ngFor="let match of matches" class="match-card" (click)="viewProfile(match)">
-    <ng-container *ngIf="match.images[0] else defaultImage">
-      <img [src]="match.images[0].imageUrl" crossorigin="anonymous" alt="Profile Image" class="profile-image" />
-    </ng-container>
-    <ng-template #defaultImage>
-      <img src="/noImage.jpg" class="profile-image" alt=""/>
-    </ng-template>
-    <div class="match-info">
-      <h3>{{ match.name }} {{ match.lastName }}</h3>
-      <p>{{ match.bio }}</p>
+<div class="page-wrapper">
+  <div class="match-container">
+    <div *ngFor="let match of matches" class="match-card" (click)="viewProfile(match)">
+      <ng-container *ngIf="match.images[0] else defaultImage">
+        <img [src]="match.images[0].imageUrl" crossorigin="anonymous" alt="Profile Image" class="profile-image" />
+      </ng-container>
+      <ng-template #defaultImage>
+        <img src="/noImage.jpg" class="profile-image" alt=""/>
+      </ng-template>
+      <div class="match-info">
+        <h3>{{ match.name }} {{ match.lastName }}</h3>
+        <p>{{ match.bio }}</p>
+      </div>
+    </div>
+
+    <!-- Модальное окно с профилем -->
+    <div class="modal" *ngIf="selectedProfile">
+      <div class="modal-content">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <app-profile-card [profile]="selectedProfile"></app-profile-card>
+        <button class="start-dialog-button" (click)="startDialog(selectedProfile.id)">Начать диалог</button>
+      </div>
     </div>
   </div>
 
-  <div class="modal" *ngIf="selectedProfile">
-    <div class="modal-content">
-      <span class="close" (click)="closeModal()">&times;</span>
-      <app-profile-card [profile]="selectedProfile"></app-profile-card>
-      <button class="start-dialog-button" (click)="startDialog(selectedProfile.id)">Начать диалог</button>
-    </div>
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="pageNumber === 1">Previous</button>
+    <span>Страница {{ pageNumber }} из {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="pageNumber === totalPages">Next</button>
   </div>
-</div>
-
-<div class="pagination">
-  <button (click)="prevPage()" [disabled]="pageNumber === 1">Previous</button>
-  <span>Страница {{ pageNumber }} из {{ totalPages }}</span>
-  <button (click)="nextPage()" [disabled]="pageNumber === totalPages">Next</button>
 </div>
