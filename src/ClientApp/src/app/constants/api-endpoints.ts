@@ -96,7 +96,15 @@ export const messagesEndpoints = {
 
 export const notificationsEndpoints = {
   notifications: `${base}/notifications`,
-  byProfileId(profileId: number){
-    return `${notificationsEndpoints.notifications}/${profileId}`
+}
+
+export const blackListsEndpoints = {
+  blackLists: `${base}/black-lists`,
+}
+
+export const reportsEndpoints = {
+  reports: `${base}/reports`,
+  paged(pageSize: string, pageNumber: string, profileId: number){
+    return `${reportsEndpoints.reports}/paginated?pageSize=${pageSize}&pageNumber=${pageNumber}`
   }
 }

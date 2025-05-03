@@ -125,6 +125,39 @@ namespace User.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.Property<long>("RolesId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UsersId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("RolesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("RoleUser");
+                });
+
+            modelBuilder.Entity("User.DataAccess.Models.ReportType", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReportTypes");
+                });
+
             modelBuilder.Entity("User.DataAccess.Models.Role", b =>
                 {
                     b.Property<long>("Id")
@@ -217,6 +250,57 @@ namespace User.DataAccess.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("User.DataAccess.Models.UserReport", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModeratorComment")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<long>("ReportTypeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ReportedUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ReporterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("ReviewedByModeratorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportTypeId");
+
+                    b.HasIndex("ReportedUserId");
+
+                    b.HasIndex("ReviewedByModeratorId");
+
+                    b.HasIndex("ReporterUserId", "ReportedUserId")
+                        .IsUnique();
+
+                    b.ToTable("UserReports");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
                     b.HasOne("User.DataAccess.Models.Role", null)
@@ -266,6 +350,69 @@ namespace User.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.HasOne("User.DataAccess.Models.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("User.DataAccess.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("User.DataAccess.Models.UserReport", b =>
+                {
+                    b.HasOne("User.DataAccess.Models.ReportType", "ReportType")
+                        .WithMany("Reports")
+                        .HasForeignKey("ReportTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("User.DataAccess.Models.User", "Reported")
+                        .WithMany("ReportsReceived")
+                        .HasForeignKey("ReportedUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("User.DataAccess.Models.User", "Reporter")
+                        .WithMany("ReportsMade")
+                        .HasForeignKey("ReporterUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("User.DataAccess.Models.User", "Moderator")
+                        .WithMany("ReportsReviewed")
+                        .HasForeignKey("ReviewedByModeratorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Moderator");
+
+                    b.Navigation("ReportType");
+
+                    b.Navigation("Reported");
+
+                    b.Navigation("Reporter");
+                });
+
+            modelBuilder.Entity("User.DataAccess.Models.ReportType", b =>
+                {
+                    b.Navigation("Reports");
+                });
+
+            modelBuilder.Entity("User.DataAccess.Models.User", b =>
+                {
+                    b.Navigation("ReportsMade");
+
+                    b.Navigation("ReportsReceived");
+
+                    b.Navigation("ReportsReviewed");
                 });
 #pragma warning restore 612, 618
         }

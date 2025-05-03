@@ -6,6 +6,7 @@ using Common.Exceptions;
 using MessageQueue;
 using MessageQueue.Messages.User;
 using Microsoft.Extensions.Logging;
+using Minio.Exceptions;
 using User.BusinessLogic.DTOs.Request;
 using User.BusinessLogic.Providers.Interfaces;
 using User.BusinessLogic.Services.Interfaces;
@@ -61,6 +62,15 @@ public class AuthService(
             throw new NotFoundException(loginRequestDto.Email);
         }
 
+        if (user.IsBanned && (user.BannedUntil == null || user.BannedUntil > DateTime.UtcNow))
+        {
+            var untilText = user.BannedUntil == null
+                ? "навсегда"
+                : $"до {user.BannedUntil.Value.ToLocalTime():g}";
+
+            throw new LoginException($"Вы были заблокированы {untilText}.");
+        }
+
         var isValid = await _userRepository.CheckPasswordAsync(user, loginRequestDto.Password);
 
         if (isValid == false)
@@ -85,7 +95,7 @@ public class AuthService(
         if(user.RefreshTokenExpiredAt < DateTime.Now)
         {
             _logger.LogError("Refresh failed: refresh token expired at {at}", user.RefreshTokenExpiredAt);
-            throw new LoginException("Refresh token expired");
+            throw new LoginException("Токен просрочен");
         }
 
         return await GetLoginResponseDtoWithGeneratedTokens(user);

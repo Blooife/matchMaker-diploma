@@ -7,6 +7,9 @@ namespace User.DataAccess.Contexts;
 
 public class UserContext : IdentityDbContext<Models.User, Role, long>
 {
+    public DbSet<UserReport> UserReports { get; set; } = null!;
+    public DbSet<ReportType> ReportTypes { get; set; }
+    
     public UserContext(DbContextOptions<UserContext> options) : base(options){ }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)

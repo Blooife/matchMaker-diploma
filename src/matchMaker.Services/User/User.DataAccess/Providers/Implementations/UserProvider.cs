@@ -1,3 +1,4 @@
+using Common.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using User.DataAccess.Contexts;
@@ -71,5 +72,20 @@ public class UserProvider(UserContext _dbContext, UserManager<Models.User> _user
             .ToListAsync();
 
         return (users, totalCount);
+    }
+    
+    public async Task BanUserAsync(long userId, DateTime? bannedUntil = null, CancellationToken cancellationToken = default)
+    {
+        var user = await _dbContext.Users.FindAsync(userId);
+
+        if (user is null)
+        {
+            throw new NotFoundException(userId);
+        }
+
+        user.IsBanned = true;
+        user.BannedUntil = bannedUntil;
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

@@ -6,6 +6,7 @@ public static class MessageTypeConstants
     {
         public const string UserCreated = "UserCreated";
         public const string UserDeleted = "UserDeleted";
+        public const string NotificationCreated = "NotificationCreated";
     }
     
     public static class ProfileMessages

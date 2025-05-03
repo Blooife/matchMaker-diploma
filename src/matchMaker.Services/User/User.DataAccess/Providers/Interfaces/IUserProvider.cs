@@ -15,4 +15,5 @@ public interface IUserProvider
     Task<IdentityResult> DeleteUserByIdAsync(Models.User user);
     Task<IdentityResult> UpdateUserAsync(Models.User user);
     Task<(List<Models.User> Users, int TotalCount)> GetPagedUsersAsync(int pageNumber, int pageSize);
+    Task BanUserAsync(long userId, DateTime? bannedUntil = null, CancellationToken cancellationToken = default);
 }

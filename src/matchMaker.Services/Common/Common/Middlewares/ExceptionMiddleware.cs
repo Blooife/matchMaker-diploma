@@ -66,6 +66,14 @@ public class ExceptionMiddleware
                 statusCode = HttpStatusCode.Conflict;
                 result = CreateErrorResponse(minioException.Message, "MinioError");
                 break;
+            case LoginException loginException:
+                statusCode = HttpStatusCode.Forbidden;
+                result = CreateErrorResponse(loginException.Message, "LoginError");
+                break;
+            case RegisterException registerException:
+                statusCode = HttpStatusCode.BadRequest;
+                result = CreateErrorResponse(registerException.Message, "RegisterError");
+                break;
             default:
                 statusCode = HttpStatusCode.InternalServerError;
                 result = CreateErrorResponse(exception.Message, "Failure");

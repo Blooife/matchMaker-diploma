@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Common.Constants;
 using Common.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -26,6 +27,7 @@ public class JwtTokenProvider : IJwtTokenProvider
         var claimList = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, applicationUser.Id.ToString()),
+            new Claim(ClaimNames.UserIdClaimName, applicationUser.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, applicationUser.Email),
             new Claim(ClaimTypes.NameIdentifier, applicationUser.Id.ToString()),
         };

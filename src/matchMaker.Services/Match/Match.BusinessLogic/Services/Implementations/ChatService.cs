@@ -18,7 +18,10 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
         {
             throw new NotFoundException(chatId);
         }
-
+        
+        var receiverId = senderId == chat.FirstProfileId ? chat.SecondProfileId : chat.FirstProfileId;
+        await _unitOfWork.BlackLists.CheckCanSendMessageAsync(senderId, receiverId);
+        
         var newMessage = new Message
         {
             SenderId = senderId,

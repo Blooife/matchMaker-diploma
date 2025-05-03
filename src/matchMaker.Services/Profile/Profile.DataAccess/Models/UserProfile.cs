@@ -11,7 +11,6 @@ public class UserProfile : BaseModel<long>, ISoftDeletable
     public Gender Gender { get; set; }
     public string? Bio { get; set; }
     public int? Height { get; set; }
-    public bool ShowAge { get; set; }
     public int AgeFrom { get; set; }
     public int AgeTo { get; set; }
     public int MaxDistance { get; set; }

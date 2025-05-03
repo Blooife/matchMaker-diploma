@@ -8,4 +8,5 @@ public interface IUnitOfWork : IDisposable
     IChatRepository Chats { get; }
     IMessageRepository Messages { get; }
     INotificationRepository Notifications { get; }
+    IBlackListRepository BlackLists { get; }
 }

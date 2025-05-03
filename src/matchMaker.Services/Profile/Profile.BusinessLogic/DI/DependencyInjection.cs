@@ -1,4 +1,5 @@
 using System.Reflection;
+using Common.Authorization.Context;
 using Common.Options;
 using MassTransit;
 using MessageQueue;
@@ -42,6 +43,7 @@ public static class DependencyInjection
         services.AddScoped<ICountryService, CountryService>();
         services.AddScoped<IDbCleanupService, DbCleanUpService>();
         services.AddSingleton<ICacheService, CacheService>();
+        services.TryAddScoped<IAuthenticationContext, AuthenticationContext>();
     }
 
     private static void ConfigureMinioOptions(this IServiceCollection services, IConfiguration config)

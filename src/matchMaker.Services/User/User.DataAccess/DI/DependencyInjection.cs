@@ -11,7 +11,7 @@ using User.DataAccess.Seeds;
 
 namespace User.DataAccess.DI;
 
-public static class UserDiRegistration
+public static class DependencyInjection
 {
     public static void RegisterDataAccess(this IServiceCollection services, IConfiguration config)
     {
@@ -20,6 +20,7 @@ public static class UserDiRegistration
         services.RegisterProviders();
         services.AddTransient<ISeedEntitiesProvider<UserContext>, RolesSeeds>();
         services.AddTransient<ISeedEntitiesProvider<UserContext>, UsersSeeds>();
+        services.AddTransient<ISeedEntitiesProvider<UserContext>, ReportTypesSeeds>();
     }
     
     private static void ConfigureDbContext(this IServiceCollection services, IConfiguration config)
@@ -44,5 +45,6 @@ public static class UserDiRegistration
     {
         services.AddScoped<IUserProvider, UserProvider>();
         services.AddScoped<IRoleProvider, RoleProvider>();
+        services.AddScoped<IUserReportProvider, UserReportProvider>();
     }
 }

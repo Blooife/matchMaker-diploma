@@ -10,4 +10,5 @@ public class MatchDbSettings
     public string ChatsCollectionName { get; set; } = null!;
     public string MessagesCollectionName { get; set; } = null!;
     public string NotificationsCollectionName { get; set; } = null!;
+    public string BlackListsCollectionName { get; set; } = null!;
 }

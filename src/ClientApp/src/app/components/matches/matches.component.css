@@ -1,22 +1,19 @@
-/* Контейнер всей страницы */
 .page-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* Контейнер карточек */
 .match-container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
-  justify-content: flex-start; /* карточки идут слева направо */
+  justify-content: flex-start;
   align-content: flex-start;
-  flex: 1; /* занимает всё доступное пространство */
+  flex: 1;
 }
 
-/* Одна карточка */
 .match-card {
   background-color: #f5f5f5;
   border: 1px solid #d1c4e9;
@@ -51,7 +48,6 @@
   font-size: 14px;
 }
 
-/* Пагинация */
 .pagination {
   display: flex;
   justify-content: center;

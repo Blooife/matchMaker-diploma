@@ -15,5 +15,7 @@ public class UserConfiguration: IEntityTypeConfiguration<Models.User>
         builder.Ignore(user => user.PhoneNumber);
         builder.Property(user => user.Email).IsRequired();
         builder.Property(user => user.PasswordHash).IsRequired();
+        builder.Property(user => user.IsBanned).HasDefaultValue(false);
+        builder.Property(user => user.BannedUntil).HasDefaultValue(null);
     }
 }

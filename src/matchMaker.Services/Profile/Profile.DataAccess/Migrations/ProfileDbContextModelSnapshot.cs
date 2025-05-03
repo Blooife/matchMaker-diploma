@@ -263,9 +263,6 @@ namespace Profile.DataAccess.Migrations
                     b.Property<int>("PreferredGender")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("ShowAge")
-                        .HasColumnType("boolean");
-
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 

@@ -15,7 +15,7 @@ using User.DataAccess.Contexts;
 
 namespace User.API.DI;
 
-public static class ServicesExtension
+public static class DependencyInjection
 {
     public static void ConfigureApi(this IServiceCollection services, IConfiguration config)
     {

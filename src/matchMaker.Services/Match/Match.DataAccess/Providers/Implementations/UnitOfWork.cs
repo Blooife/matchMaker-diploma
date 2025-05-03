@@ -18,6 +18,7 @@ public class UnitOfWork : IUnitOfWork
         Chats = new ChatRepository(_database.GetCollection<Chat>(options.Value.ChatsCollectionName));
         Messages = new MessageRepository(_database.GetCollection<Message>(options.Value.MessagesCollectionName));
         Notifications = new NotificationRepository(_database.GetCollection<Notification>(options.Value.NotificationsCollectionName));
+        BlackLists = new BlackListRepository(_database.GetCollection<BlackList>(options.Value.BlackListsCollectionName));
     }
 
     public IMatchRepository Matches { get; }
@@ -26,6 +27,7 @@ public class UnitOfWork : IUnitOfWork
     public IChatRepository Chats { get; }
     public IMessageRepository Messages { get; }
     public INotificationRepository Notifications { get; }
+    public IBlackListRepository BlackLists { get; }
 
     public void Dispose()
     {

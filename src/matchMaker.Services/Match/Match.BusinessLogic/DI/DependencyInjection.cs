@@ -1,4 +1,5 @@
 using System.Reflection;
+using Common.Authorization.Context;
 using MassTransit;
 using Match.BusinessLogic.Consumers;
 using Match.BusinessLogic.Hubs;
@@ -6,9 +7,11 @@ using Match.BusinessLogic.Services.Implementations;
 using Match.BusinessLogic.Services.Interfaces;
 using MessageQueue.Constants;
 using MessageQueue.Messages.Profile;
+using MessageQueue.Messages.User;
 using MessageQueue.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
 namespace Match.BusinessLogic.DI;
@@ -31,8 +34,9 @@ public static class DependencyInjection
         services.AddScoped<IMessageService, MessageService>();
         services.AddScoped<ILikeService, LikeService>();
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IBlackListService, BlackListService>();
         services.AddSingleton<IConnectionManager, ConnectionManager>();
-
+        services.TryAddScoped<IAuthenticationContext, AuthenticationContext>();
     }
     
     private static void RegisterMassTransit(this IServiceCollection services)
@@ -85,6 +89,11 @@ public static class DependencyInjection
                                 case MessageTypeConstants.ProfileMessages.ProfileUpdated:
                                 {
                                     consumerType = typeof(ProfileUpdatedEventConsumer);
+                                    break;
+                                }
+                                case MessageTypeConstants.UserMessages.NotificationCreated:
+                                {
+                                    consumerType = typeof(NotificationCreatedEventConsumer);
                                     break;
                                 }
                             }
