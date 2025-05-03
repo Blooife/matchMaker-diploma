@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpContextAccessor();
 builder.Services.RegisterBusinessLogic(builder.Configuration);
 builder.Services.RegisterAPI(builder.Configuration);
 builder.Services.RegisterDataAccess(builder.Configuration);

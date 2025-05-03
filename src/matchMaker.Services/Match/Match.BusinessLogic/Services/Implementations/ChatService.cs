@@ -1,4 +1,5 @@
 using AutoMapper;
+using Common.Authorization.Context;
 using Common.Exceptions;
 using Common.Models;
 using Match.BusinessLogic.DTOs.Chat;
@@ -8,7 +9,7 @@ using Match.DataAccess.Models;
 
 namespace Match.BusinessLogic.Services.Implementations;
 
-public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatService
+public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper, IAuthenticationContext _authenticationContext) : IChatService
 {
     public async Task<Message> SendMessageAsync(string chatId, long senderId, string message, CancellationToken cancellationToken)
     {
@@ -62,12 +63,11 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
         {
             throw new NotFoundException($"Chat with profile ids: {firstProfileId} and {secondProfileId} wad not found");
         }
-
+        
         var mappedChat = _mapper.Map<ChatResponseDto>(chat);
         mappedChat.ProfileName = mappedChat.FirstProfileId == profile1.Id ? profile2.Name : profile1.Name;
         mappedChat.ProfileLastName = mappedChat.FirstProfileId == profile1.Id ? profile2.LastName : profile1.LastName;
         mappedChat.MainImageUrl = mappedChat.FirstProfileId == profile1.Id ? profile2.MainImageUrl : profile1.MainImageUrl;
-        
         return mappedChat;
     }
     
@@ -93,12 +93,26 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
 
         var profileDictionary = profiles.ToDictionary(p => p.Id);
         
+        var blockerBlackList = await _unitOfWork.BlackLists.GetByBlockerIdAsync(_authenticationContext.UserId, cancellationToken);
+        var blockedBlackList = await _unitOfWork.BlackLists.GetByBlockedIdAsync(_authenticationContext.UserId, cancellationToken);
+        
         var chatResponseDtos = chats.Select(chat =>
         {
             var otherProfileId = chat.FirstProfileId == profileId ? chat.SecondProfileId : chat.FirstProfileId;
             var otherProfile = profileDictionary[otherProfileId];
             var isFirstRequested = chat.FirstProfileId == profileId;
+            
+            string? isBlockedMessage = null;
 
+            if (blockerBlackList.Any(bl => bl.BlockedProfileId == otherProfileId))
+            {
+                isBlockedMessage = "Вы заблокировали пользователя";
+            }
+            else if (blockedBlackList.Any(bl => bl.BlockerProfileId == otherProfileId))
+            {
+                isBlockedMessage = "Вас заблокировали";
+            }
+            
             return new ChatResponseDto
             {
                 Id = chat.Id,
@@ -113,6 +127,7 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper) : IChatServic
                 ReceiverProfileUnreadCount = isFirstRequested
                     ? chat.SecondProfileUnreadCount
                     : chat.FirstProfileUnreadCount,
+                IsBlockedMessage = isBlockedMessage,
             };
         }).ToList();
 

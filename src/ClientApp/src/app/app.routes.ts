@@ -12,6 +12,8 @@ import {FindMatchComponent} from "./components/find-match/find-match.component";
 import {MatchesComponent} from "./components/matches/matches.component";
 import {ProfileCreatedGuard} from "./guards/profileCreated-guard";
 import {ChatsComponent} from "./components/chats/chats.component";
+import {SettingsComponent} from "./components/settings/settings.component";
+import {BlackListComponent} from "./components/black-list/black-list.component";
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -24,5 +26,7 @@ export const routes: Routes = [
   { path: 'matches', component: MatchesComponent, canActivate: [ProfileCreatedGuard] },
   { path: 'chats', component: ChatsComponent, canActivate: [ProfileCreatedGuard] },
   { path: 'home', component: HomeComponent, canActivate: [LoggedInGuard] },
+  { path: 'settings', component: SettingsComponent, canActivate: [ProfileCreatedGuard] },
+  { path: 'black-list', component: BlackListComponent, canActivate: [ProfileCreatedGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];

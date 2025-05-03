@@ -10,5 +10,5 @@ public class ChatResponseDto
     public long SecondProfileId { get; set; }
     public long RequestedProfileUnreadCount { get; set; }
     public long ReceiverProfileUnreadCount { get; set; }
-    public string IsBlockedMessage { get; set; }
+    public string? IsBlockedMessage { get; set; } = null;
 }

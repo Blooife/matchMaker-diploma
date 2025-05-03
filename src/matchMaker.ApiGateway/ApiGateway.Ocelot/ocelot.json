@@ -588,7 +588,7 @@
           "Port": 5003
         }
       ],
-      "UpstreamPathTemplate": "black-lists",
+      "UpstreamPathTemplate": "/black-lists",
       "UpstreamHttpMethod": [ "POST", "GET", "DELETE" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"

@@ -7,4 +7,5 @@ export interface ChatDto{
   mainImageUrl: string;
   requestedProfileUnreadCount: number;
   receiverProfileUnreadCount: number;
+  isBlockedMessage: string | null;
 }

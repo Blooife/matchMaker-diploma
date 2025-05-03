@@ -1,0 +1,39 @@
+<div class="settings-container">
+  <div class="settings-card">
+    <div class="avatar-container">
+      <ng-container *ngIf="isImagesAvailable; else defaultAvatar">
+        <ng-container *ngFor="let image of profile?.images">
+          <img
+            *ngIf="image.isMainImage"
+            [src]="image.imageUrl"
+            alt="Profile Image"
+            height="120"
+            width="120"
+            class="avatar"
+            crossorigin="anonymous"
+          />
+        </ng-container>
+      </ng-container>
+
+      <ng-template #defaultAvatar>
+        <img src="/noImage.jpg" alt="Default Avatar" height="120" width="120" class="avatar" />
+      </ng-template>
+    </div>
+
+    <h2 class="username">
+      {{ profile?.name }} {{ profile?.lastName }}
+    </h2>
+
+    <div class="settings-actions">
+      <button class="settings-button" title="Blacklist" (click)="goToBlacklist()">
+        <i class="fas fa-user-slash"></i>
+        <span>Чёрный список</span>
+      </button>
+
+      <button class="settings-button" title="Delete Account" (click)="deleteUserById()">
+        <i class="fas fa-trash"></i>
+        <span>Удалить аккаунт</span>
+      </button>
+    </div>
+  </div>
+</div>

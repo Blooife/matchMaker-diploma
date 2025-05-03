@@ -43,6 +43,12 @@ public class BlackListRepository(IMongoCollection<BlackList> _collection) : Gene
         var filter = Builders<BlackList>.Filter.Eq(b => b.BlockerProfileId, blockerUserId);
         return await _collection.Find(ApplySoftDeleteFilter(filter)).ToListAsync(cancellationToken);
     }
+    
+    public async Task<List<BlackList>> GetByBlockedIdAsync(long blockedUserId, CancellationToken cancellationToken = default)
+    {
+        var filter = Builders<BlackList>.Filter.Eq(b => b.BlockedProfileId, blockedUserId);
+        return await _collection.Find(ApplySoftDeleteFilter(filter)).ToListAsync(cancellationToken);
+    }
 
     public async Task RemoveAsync(long blockerUserId, long blockedUserId, CancellationToken cancellationToken = default)
     {

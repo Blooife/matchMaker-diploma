@@ -18,9 +18,20 @@
       </div>
     </div>
   </div>
+  <div *ngIf="selectedChat?.isBlockedMessage as blockMessage" class="block-message">
+    {{ blockMessage }}
+  </div>
 
   <div class="message-input">
-    <input #messageInput type="text" placeholder="Введите сообщение..." (keydown.enter)="sendMessage(messageInput.value); messageInput.value=''"/>
-    <button (click)="sendMessage(messageInput.value); messageInput.value=''">Отправить</button>
+    <input
+      #messageInput
+      type="text"
+      placeholder="Введите сообщение..."
+      [disabled]="isBlocked"
+      (keydown.enter)="sendMessage(messageInput.value); messageInput.value=''"
+    />
+    <button [disabled]="isBlocked" (click)="sendMessage(messageInput.value); messageInput.value=''">
+      Отправить
+    </button>
   </div>
 </div>

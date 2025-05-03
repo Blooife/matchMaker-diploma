@@ -1,4 +1,5 @@
 using AutoMapper;
+using Common.Authorization.Context;
 using Common.Exceptions;
 using Match.BusinessLogic.DTOs.Like;
 using Match.BusinessLogic.Services.Interfaces;
@@ -7,19 +8,24 @@ using Match.DataAccess.Providers.Interfaces;
 
 namespace Match.BusinessLogic.Services.Implementations;
 
-public class LikeService(IUnitOfWork _unitOfWork, IMapper _mapper) : ILikeService
+public class LikeService(IUnitOfWork _unitOfWork, IMapper _mapper, IAuthenticationContext _authenticationContext) : ILikeService
 {
     public async Task<LikeResponseDto> AddLikeAsync(AddLikeDto dto, CancellationToken cancellationToken)
     {
-        var likeEntity = _mapper.Map<Like>(dto);
-
+        var likeEntity = new Like()
+        {
+            IsLike = dto.IsLike,
+            ProfileId = _authenticationContext.UserId,
+            TargetProfileId = dto.TargetProfileId,
+        };
+        
         var likerProfile = await _unitOfWork.Profiles.GetByIdAsync(likeEntity.ProfileId, cancellationToken);
         
         var likedProfile = await _unitOfWork.Profiles.GetByIdAsync(likeEntity.TargetProfileId, cancellationToken);
 
         if (likerProfile is null)
         {
-            throw new NotFoundException(dto.ProfileId);
+            throw new NotFoundException(_authenticationContext.UserId);
         }
         
         if (likedProfile is null)

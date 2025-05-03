@@ -199,6 +199,16 @@ export class ChatsComponent implements OnInit, OnDestroy {
     )
   }
 
+  addToBlackList(chatId: string): void {
+    const chat = this.chats.find(c => c.id === chatId);
+    if (chat) {
+      const blockedProfileId = chat.firstProfileId == this.profileId ? chat.secondProfileId : chat.firstProfileId;
+      this.matchService.addToBlackList({ blockedProfileId: blockedProfileId })
+        .subscribe(() => {
+        });
+    }
+  }
+
   onRightClick(event: MouseEvent, chat: ChatDto): void {
     event.preventDefault();
     this.selectedChatId = chat.id;

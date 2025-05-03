@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient, HttpContext, HttpHeaders} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
 import {
+  blackListsEndpoints,
   chatsEndpoints,
   likesEndpoints,
   matchesEndpoints, messagesEndpoints, notificationsEndpoints,
@@ -18,6 +19,9 @@ import {CreateChatDto} from "../dtos/chat/CreateChatDto";
 import {_IGNORED_STATUSES} from "../constants/http-context";
 import {GeneralResponseDto} from "../dtos/shared/generalResponseDto";
 import {NotificationDto} from "../dtos/notification/NotificationDto";
+import {CreateBlackListDto} from "../dtos/black-list/CreateBlackListDto";
+import {RemoveFromBlackListDto} from "../dtos/black-list/RemoveFromBlackListDto";
+import {BlackListDto} from "../dtos/black-list/BlackListDto";
 
 @Injectable({
   providedIn: 'root'
@@ -142,5 +146,20 @@ export class MatchService {
     return this.httpClient.post<void>(`${notificationsEndpoints.notifications}/read`, {notificationIds}, this.httpOptions)
       .pipe(
       );
+  }
+
+  addToBlackList(model: CreateBlackListDto): Observable<void> {
+    return this.httpClient.post<void>(blackListsEndpoints.blackLists, model, this.httpOptions);
+  }
+
+  getBlackList(): Observable<BlackListDto[]> {
+    return this.httpClient.get<BlackListDto[]>(blackListsEndpoints.blackLists, this.httpOptions);
+  }
+
+  removeFromBlackList(model: RemoveFromBlackListDto): Observable<void> {
+    return this.httpClient.request<void>('delete', blackListsEndpoints.blackLists, {
+      ...this.httpOptions,
+      body: model
+    });
   }
 }

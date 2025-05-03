@@ -8,4 +8,5 @@ public interface IBlackListRepository : IGenericRepository<BlackList, string>
     Task<bool> ExistsAsync(long blockerUserId, long blockedUserId, CancellationToken cancellationToken = default);
     Task<List<BlackList>> GetByBlockerIdAsync(long blockerUserId, CancellationToken cancellationToken = default);
     Task RemoveAsync(long blockerUserId, long blockedUserId, CancellationToken cancellationToken = default);
+    Task<List<BlackList>> GetByBlockedIdAsync(long blockedUserId, CancellationToken cancellationToken = default);
 }

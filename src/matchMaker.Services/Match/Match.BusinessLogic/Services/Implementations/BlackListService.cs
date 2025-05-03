@@ -44,7 +44,8 @@ public class BlackListService(IUnitOfWork unitOfWork, IAuthenticationContext _au
                 BlockerProfileId = e.BlockerProfileId,
                 BlockedProfileId = e.BlockedProfileId,
                 CreatedAt = e.CreatedAt,
-                BlockedProfileFullName = $"{profile?.LastName} {profile?.Name}"
+                BlockedProfileFullName = $"{profile?.LastName} {profile?.Name}",
+                BlockedProfileMainImageUrl = profile?.MainImageUrl,
             };
         }).ToList();
     }

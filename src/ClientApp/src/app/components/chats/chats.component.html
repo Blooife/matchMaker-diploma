@@ -43,5 +43,6 @@
   </div>
   <div *ngIf="showContextMenu" class="context-menu" [ngStyle]="{'top.px': contextMenuPosition.y, 'left.px': contextMenuPosition.x}">
     <button (click)="deleteChat(selectedChatId!)">Удалить чат</button>
+    <button (click)="addToBlackList(selectedChatId!)">Внести в чёрный список</button>
   </div>
 </div>

@@ -1,0 +1,29 @@
+<div class="blacklist-container">
+  <h2>Чёрный список</h2>
+  <div *ngIf="blackList.length > 0; else noBlackList">
+    <div *ngFor="let entry of blackList" class="blacklist-item" (click)="viewProfile(entry.blockedProfileId)">
+        <img
+          [src]="entry.blockedProfileMainImageUrl || 'noImage.jpg'"
+          alt="Аватар"
+          class="avatar"
+          height="50"
+          width="50"
+        />
+      <div class="profile-info">
+        <span>{{ entry.blockedProfileFullName }}</span>
+      </div>
+      <button class="remove-button" (click)="removeFromBlackList(entry.blockedProfileId)">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal" *ngIf="selectedProfile">
+      <div class="modal-content">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <app-profile-card [profile]="selectedProfile"></app-profile-card>
+      </div>
+    </div>
+  </div>
+  <ng-template #noBlackList>
+    <p>Чёрный список пуст.</p>
+  </ng-template>
+</div>

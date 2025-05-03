@@ -1,49 +1,49 @@
 <header class="header" [class.collapsed]="!isMenuVisible">
   <div class="toggle-btn" (click)="toggleMenu()">
-    <span *ngIf="!isMenuVisible" class="icon-menu">☰</span>
-    <span *ngIf="isMenuVisible" class="icon-close">✖</span>
+    <i *ngIf="!isMenuVisible" class="fas fa-bars"></i>
+    <i *ngIf="isMenuVisible" class="fas fa-times"></i>
   </div>
 
   <nav>
     <button *ngIf="isUser()" (click)="notificationsComponent?.toggleNotifications()">
-      <span class="icon">🔔</span>
+      <i class="fas fa-bell"></i>
       <span *ngIf="isMenuVisible">Уведомления</span>
     </button>
 
     <button *ngIf="isLoggedIn$" (click)="logOut()">
-      <span class="icon">🚪</span>
+      <i class="fas fa-sign-out-alt"></i>
       <span *ngIf="isMenuVisible">Выйти</span>
     </button>
 
     <div *ngIf="isLoggedIn$">
       <button *ngIf="isAdmin() || isModerator()" [routerLink]="['/admin-panel']">
-        <span class="icon">🛠️</span>
+        <i class="fas fa-tools"></i>
         <span *ngIf="isMenuVisible">Панель администратора</span>
       </button>
 
       <button *ngIf="isUser()" [routerLink]="['/profile']">
-        <span class="icon">👤</span>
+        <i class="fas fa-user"></i>
         <span *ngIf="isMenuVisible">Мой профиль</span>
       </button>
 
       <button *ngIf="isUser()" [routerLink]="['/find-match']">
-        <span class="icon">🔍</span>
+        <i class="fas fa-search"></i>
         <span *ngIf="isMenuVisible">Поиск</span>
       </button>
 
       <button *ngIf="isUser()" [routerLink]="['/matches']">
-        <span class="icon">❤️</span>
+        <i class="fas fa-heart"></i>
         <span *ngIf="isMenuVisible">Совпадения</span>
       </button>
 
       <button *ngIf="isUser()" [routerLink]="['/chats']">
-        <span class="icon">💬</span>
+        <i class="fas fa-comments"></i>
         <span *ngIf="isMenuVisible">Чаты</span>
       </button>
 
-      <button (click)="deleteUserById()">
-        <span class="icon">🗑️</span>
-        <span *ngIf="isMenuVisible">Удалить аккаунт</span>
+      <button *ngIf="isUser()" [routerLink]="['/settings']">
+        <i class="fas fa-cog"></i>
+        <span *ngIf="isMenuVisible">Настройки</span>
       </button>
     </div>
   </nav>

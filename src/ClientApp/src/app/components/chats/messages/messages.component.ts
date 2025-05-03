@@ -187,4 +187,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy, OnChanges {
       });
     }
   }
+
+  get isBlocked(): boolean {
+    return !!this.selectedChat?.isBlockedMessage;
+  }
 }
