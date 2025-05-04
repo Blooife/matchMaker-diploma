@@ -72,15 +72,15 @@ public class UserReportProvider(UserContext _dbContext) : IUserReportProvider
         {
             query = query.Where(r => r.Status == filter.Status.Value);
         }
-
-        if (filter.ReporterUserId.HasValue)
+        
+        if (!string.IsNullOrWhiteSpace(filter.ReporterUserEmail))
         {
-            query = query.Where(r => r.ReporterUserId == filter.ReporterUserId.Value);
+            query = query.Where(r => r.Reporter.Email.Contains(filter.ReporterUserEmail));
         }
 
-        if (filter.ReportedUserId.HasValue)
+        if (!string.IsNullOrWhiteSpace(filter.ReportedUserEmail))
         {
-            query = query.Where(r => r.ReportedUserId == filter.ReportedUserId.Value);
+            query = query.Where(r => r.Reported.Email.Contains(filter.ReportedUserEmail));
         }
 
         if (filter.ReportTypeId.HasValue)
@@ -96,6 +96,18 @@ public class UserReportProvider(UserContext _dbContext) : IUserReportProvider
         if (filter.CreatedTo.HasValue)
         {
             query = query.Where(r => r.CreatedAt <= filter.CreatedTo.Value);
+        }
+
+        if (filter.NotReviewed.HasValue)
+        {
+            if(filter.NotReviewed.Value)
+            {
+                query = query.Where(r => r.ReviewedByModeratorId == null);
+            }
+            else
+            {
+                query = query.Where(r => r.ReviewedByModeratorId != null);
+            }
         }
 
         var totalCount = await query.CountAsync(cancellationToken);

@@ -1,6 +1,6 @@
 using User.BusinessLogic.DTOs.Response;
-using User.BusinessLogic.Exceptions;
 using AutoMapper;
+using Common.Authorization.Context;
 using Common.Exceptions;
 using Common.Models;
 using MessageQueue;
@@ -11,7 +11,12 @@ using User.DataAccess.Providers.Interfaces;
 
 namespace User.BusinessLogic.Services.Implementations;
 
-public class UserService(IUserProvider _userRepository, IMapper _mapper, ILogger<UserService> _logger, ICommunicationBus _communicationBus) : IUserService
+public class UserService(
+    IUserProvider _userRepository,
+    IMapper _mapper,
+    ILogger<UserService> _logger,
+    ICommunicationBus _communicationBus,
+    IAuthenticationContext _authenticationContext) : IUserService
 
 {
     public async Task<GeneralResponseDto> DeleteUserByIdAsync(long userId, CancellationToken cancellationToken)
@@ -44,6 +49,7 @@ public class UserService(IUserProvider _userRepository, IMapper _mapper, ILogger
     {
         var (users, totalCount) = await _userRepository.GetPagedUsersAsync(pageNumber, pageSize);
 
+        users = users.Where(x => x.Id != _authenticationContext.UserId).ToList();
         var userResponseDtos = _mapper.Map<List<UserResponseDto>>(users);
 
         for (int i = 0; i < userResponseDtos.Count; i++)

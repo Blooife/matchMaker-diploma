@@ -13,22 +13,24 @@ import {InfiniteScrollDirective} from "ngx-infinite-scroll";
 import {ProfileCardComponent} from "../profile/profile-card/profile-card.component";
 import {catchError, map, switchMap} from "rxjs/operators";
 import {ChatSignalRService} from "../../services/chat-signalr.service";
+import {CreateReportComponent} from "../create-report/create-report.component";
 
 @Component({
   selector: 'app-chats',
   templateUrl: './chats.component.html',
   styleUrls: ['./chats.component.css'],
-  imports: [
-    NgForOf,
-    ChatMessagesComponent,
-    NgIf,
-    FormsModule,
-    DatePipe,
-    NgClass,
-    InfiniteScrollDirective,
-    ProfileCardComponent,
-    NgStyle,
-  ],
+    imports: [
+        NgForOf,
+        ChatMessagesComponent,
+        NgIf,
+        FormsModule,
+        DatePipe,
+        NgClass,
+        InfiniteScrollDirective,
+        ProfileCardComponent,
+        NgStyle,
+        CreateReportComponent,
+    ],
   standalone: true
 })
 export class ChatsComponent implements OnInit, OnDestroy {
@@ -45,6 +47,8 @@ export class ChatsComponent implements OnInit, OnDestroy {
   contextMenuPosition = { x: 0, y: 0 };
   selectedChatId?: string;
   private subscriptions: Subscription[] = [];
+  reportProfileId: number | null = null;
+  reportModalVisible: boolean = false;
 
   constructor(private matchService: MatchService,
               private profileService:ProfileService,
@@ -241,5 +245,14 @@ export class ChatsComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }
     });
+  }
+
+  openReportModal(profileId: number): void {
+    this.reportProfileId = profileId;
+    this.reportModalVisible = true;
+  }
+
+  closeReportModal(): void {
+    this.reportModalVisible = false;
   }
 }

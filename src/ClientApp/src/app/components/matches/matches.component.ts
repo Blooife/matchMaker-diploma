@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import { ProfileDto } from "../../dtos/profile/ProfileDto";
 import { ProfileCardComponent } from "../profile/profile-card/profile-card.component";
 import {Subscription} from "rxjs";
+import {CreateReportComponent} from "../create-report/create-report.component";
 
 @Component({
   selector: 'app-matches',
@@ -14,6 +15,7 @@ import {Subscription} from "rxjs";
   imports: [
     CommonModule,
     ProfileCardComponent,
+    CreateReportComponent
   ],
   standalone: true,
 })
@@ -25,6 +27,8 @@ export class MatchesComponent implements OnInit, OnDestroy {
   pageNumber: number = 1;
   totalPages: number = 0;
   selectedProfile: ProfileDto | null = null;
+  reportProfileId: number | null = null;
+  reportModalVisible: boolean = false;
 
   constructor(private matchService: MatchService,  private route: ActivatedRoute, private router: Router,  private profileService: ProfileService) { }
 
@@ -82,5 +86,14 @@ export class MatchesComponent implements OnInit, OnDestroy {
         queryParams: { firstProfileId: currentProfileId, secondProfileId: selectedProfileId }
       });
     }
+  }
+
+  openReportModal(profileId: number): void {
+    this.reportProfileId = profileId;
+    this.reportModalVisible = true;
+  }
+
+  closeReportModal(): void {
+    this.reportModalVisible = false;
   }
 }

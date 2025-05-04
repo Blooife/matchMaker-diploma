@@ -26,7 +26,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn$: boolean = false;
   currentUserId$: number | undefined;
   isMenuVisible = true;
-  isNotificationsOpen = false;
   private subscriptions: Subscription[] = [];
 
   constructor(private authService: AuthService, private router: Router, private userService: UserService) {
@@ -69,18 +68,5 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   isUser(){
     return this.authService.checkRights(roles.user);
-  }
-
-  deleteUserById(){
-    if(this.currentUserId$){
-      if (confirm('Are you sure you want to delete your account?')) {
-        this.userService.deleteUserById(this.currentUserId$).subscribe(
-          () =>{
-            this.authService.logOut();
-            this.router.navigate(['']);
-          }
-        );
-      }
-    }
   }
 }

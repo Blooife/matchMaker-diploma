@@ -1,0 +1,19 @@
+<div class="modal" *ngIf="visible">
+  <div class="modal-content">
+    <span class="close" (click)="close()">&times;</span>
+    <h3>Пожаловаться на пользователя</h3>
+
+    <label for="typeSelect">Тип жалобы:</label>
+    <select id="typeSelect" [(ngModel)]="selectedTypeId">
+      <option [ngValue]="null" disabled selected>Выберите тип</option>
+      <option *ngFor="let type of reportTypes" [ngValue]="type.id">{{ type.name }}</option>
+    </select>
+
+    <label for="comment">Комментарий:</label>
+    <textarea id="comment" [(ngModel)]="comment" placeholder="Опишите причину жалобы"></textarea>
+
+    <div class="modal-buttons">
+      <button (click)="submitReport()" [disabled]="isSubmitting || !selectedTypeId || !comment.trim()">Отправить жалобу</button>
+    </div>
+  </div>
+</div>

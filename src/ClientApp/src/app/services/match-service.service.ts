@@ -157,7 +157,7 @@ export class MatchService {
   }
 
   removeFromBlackList(model: RemoveFromBlackListDto): Observable<void> {
-    return this.httpClient.request<void>('delete', blackListsEndpoints.blackLists, {
+    return this.httpClient.delete<void>(blackListsEndpoints.blackLists, {
       ...this.httpOptions,
       body: model
     });

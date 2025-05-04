@@ -44,7 +44,7 @@ public class UserReportsController(IUserReportService _userReportService) : Cont
         return NoContent();
     }
     
-    [HttpPut("moderate")]
+    [HttpPost("moderate")]
     [Authorize(Roles = $"{Roles.Moderator}")]
     public async Task<IActionResult> UpdateReportStatus([FromBody] ModerateReportDto dto, CancellationToken cancellationToken = default)
     {

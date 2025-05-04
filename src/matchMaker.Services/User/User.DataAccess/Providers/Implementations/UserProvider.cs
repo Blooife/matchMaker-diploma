@@ -10,7 +10,7 @@ public class UserProvider(UserContext _dbContext, UserManager<Models.User> _user
 {
      public async Task<Models.User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
     {
-        return await _dbContext.Users.Where(u => u.DeletedAt == null).FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+        return await _dbContext.Users.Include(x => x.Roles).Where(u => u.DeletedAt == null).FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
     public async Task<IdentityResult> RegisterAsync(Models.User user, string password)
@@ -62,7 +62,7 @@ public class UserProvider(UserContext _dbContext, UserManager<Models.User> _user
     
     public async Task<(List<Models.User> Users, int TotalCount)> GetPagedUsersAsync(int pageNumber, int pageSize)
     {
-        var query = _dbContext.Set<Models.User>().Where(u => u.DeletedAt == null);
+        var query = _dbContext.Set<Models.User>().Include(x => x.Roles).Where(u => u.DeletedAt == null);
         var totalCount = query.Count();
 
         var users = await query

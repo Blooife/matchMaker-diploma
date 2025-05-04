@@ -1,0 +1,118 @@
+<div class="moderator-panel">
+  <h2>Панель модератора</h2>
+
+  <div class="filter-section">
+    <div class="email-row">
+      <label for="reporterUserId">Email отправителя:</label>
+      <input id="reporterUserId" [(ngModel)]="filter.reporterUserEmail" placeholder="Email отправителя" type="text">
+
+      <label for="reportedUserId">Email получателя:</label>
+      <input id="reportedUserId" [(ngModel)]="filter.reportedUserEmail" placeholder="Email получателя" type="text">
+
+      <label for="notReviewed">Рассмотрение:</label>
+      <select id="notReviewed" [(ngModel)]="filter.notReviewed">
+        <option [ngValue]="undefined">Все</option>
+        <option [ngValue]="false">Только рассмотренные</option>
+        <option [ngValue]="true">Только не рассмотренные</option>
+      </select>
+    </div>
+
+    <div class="other-filters">
+      <label for="status">Статус:</label>
+      <select id="status" [(ngModel)]="filter.status">
+        <option [ngValue]="undefined">Все статусы</option>
+        <option [ngValue]="statuses.Pending">В обработке</option>
+        <option [ngValue]="statuses.Reviewed">Обработана</option>
+        <option [ngValue]="statuses.Rejected">Отклонена</option>
+        <option [ngValue]="statuses.Blocked">Заблокирован</option>
+      </select>
+
+      <label for="startDate">Дата создания от:</label>
+      <input id="startDate" type="date" [(ngModel)]="filter.createdFrom">
+
+      <label for="endDate">Дата создания до:</label>
+      <input id="endDate" type="date" [(ngModel)]="filter.createdTo">
+
+      <button (click)="loadReports()">Применить</button>
+      <button (click)="clearFilters()">Сбросить</button>
+    </div>
+  </div>
+
+  <div *ngIf="reports.length > 0" class="report-list">
+    <table>
+      <thead>
+      <tr>
+        <th>От</th>
+        <th>Кому</th>
+        <th>Тип</th>
+        <th>Причина</th>
+        <th>Статус</th>
+        <th>Дата создания</th>
+        <th>Дата рассмотрения</th>
+        <th>Комментарий модератора</th>
+        <th>Действие</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let report of reports">
+        <td><a (click)="viewProfile(report.reporterUserId)" class="email-link">{{ report.reporterEmail }}</a></td>
+        <td><a (click)="viewProfile(report.reportedUserId)" class="email-link">{{ report.reportedEmail }}</a></td>
+        <td>{{ report.reportType }}</td>
+        <td>{{ report.reason }}</td>
+        <td>{{ report.status }}</td>
+        <td>{{ report.createdAt | date:'dd.MM.yyyy HH:mm' }}</td>
+        <td>{{ report.reviewedAt | date:'dd.MM.yyyy HH:mm' }}</td>
+        <td>{{ report.moderatorComment }}</td>
+        <td>
+          <button
+            [disabled]="report.status !== (statuses.Pending | statusTranslate)"
+            (click)="openModeration(report)">
+            Модерировать
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="selectedReport" class="modal-overlay">
+    <div class="modal-content">
+      <button class="close-btn" (click)="selectedReport = null">×</button>
+      <h4>Модерация жалобы</h4>
+
+      <label>Статус:
+        <select [(ngModel)]="newStatus">
+          <option [ngValue]="statuses.Reviewed">{{statuses.Reviewed | statusTranslate}}</option>
+          <option [ngValue]="statuses.Rejected">{{statuses.Rejected | statusTranslate}}</option>
+          <option [ngValue]="statuses.Blocked">{{statuses.Blocked | statusTranslate}}</option>
+        </select>
+      </label>
+
+      <label>Комментарий модератора:
+        <textarea [(ngModel)]="moderatorComment"></textarea>
+      </label>
+
+      <label *ngIf="newStatus === statuses.Blocked">Блокировка до:
+        <input type="datetime-local" [(ngModel)]="banUntil">
+      </label>
+
+      <div class="modal-buttons">
+        <button type="button" (click)="selectedReport = null">Отмена</button>
+        <button type="button" (click)="moderate()">Подтвердить</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="selectedProfile">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <app-profile-card [profile]="selectedProfile"></app-profile-card>
+    </div>
+  </div>
+</div>
+
+<div class="pagination">
+  <button (click)="prevPage()" [disabled]="pageNumber === 1">Предыдущая</button>
+  <span>Страница {{ pageNumber }} из {{ totalPages }}</span>
+  <button (click)="nextPage()" [disabled]="pageNumber === totalPages">Следующая</button>
+</div>

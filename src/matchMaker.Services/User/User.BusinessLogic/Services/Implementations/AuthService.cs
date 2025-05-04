@@ -1,12 +1,10 @@
 using User.BusinessLogic.DTOs.Response;
-using User.BusinessLogic.Exceptions;
 using AutoMapper;
 using Common.Constants;
 using Common.Exceptions;
 using MessageQueue;
 using MessageQueue.Messages.User;
 using Microsoft.Extensions.Logging;
-using Minio.Exceptions;
 using User.BusinessLogic.DTOs.Request;
 using User.BusinessLogic.Providers.Interfaces;
 using User.BusinessLogic.Services.Interfaces;

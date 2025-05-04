@@ -14,11 +14,13 @@ import {ProfileCreatedGuard} from "./guards/profileCreated-guard";
 import {ChatsComponent} from "./components/chats/chats.component";
 import {SettingsComponent} from "./components/settings/settings.component";
 import {BlackListComponent} from "./components/black-list/black-list.component";
+import {ModeratorPanelComponent} from "./components/moderator-panel/moderator-panel.component";
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'admin-panel', component: AdminPanelComponent, canActivate: [AdminGuard] },
+  { path: 'moderator-panel', component: ModeratorPanelComponent, canActivate: [AdminGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [ProfileCreatedGuard] },
   { path: 'create-profile/:userId', component: CreateProfileComponent },
   { path: 'update-profile/:profileId', component: UpdateProfileComponent, canActivate: [ProfileCreatedGuard] },

@@ -63,7 +63,6 @@ img {
 }
 
 .profile-modal {
-
   top: 0;
   right: 0;
   width: 30%;
@@ -76,7 +75,7 @@ img {
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
-  max-width: 500px;
+  max-width: 400px;
   width: 100%;
 }
 
@@ -115,3 +114,19 @@ img {
   margin-left: 8px;
 }
 
+.report-button {
+  background-color: #dc3545;
+  margin-top: 10px;
+  transition: background-color 0.3s, transform 0.3s;
+  font-size: 16px;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.report-button:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+}

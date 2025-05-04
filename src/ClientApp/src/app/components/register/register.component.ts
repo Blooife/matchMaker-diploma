@@ -45,13 +45,13 @@ export class RegisterComponent {
 
     if (control && control.errors) {
       if (control.errors['required']) {
-        return 'This field is required';
+        return 'Поле обязательно для заполнения';
       } else if (control.errors['minlength']) {
-        return `Minimum length is ${control.errors['minlength'].requiredLength}`;
+        return `Минимальное количество символов - ${control.errors['minlength'].requiredLength}`;
       } else if (control.errors['maxlength']) {
-        return `Maximum length is ${control.errors['maxlength'].requiredLength}`;
+        return `Максимальное количество символов - ${control.errors['maxlength'].requiredLength}`;
       }else if (control.errors['email']) {
-        return `Must contain email`;
+        return `Должно содержать email`;
       }
     }
 

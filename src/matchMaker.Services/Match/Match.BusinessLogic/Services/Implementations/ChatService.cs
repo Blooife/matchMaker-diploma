@@ -259,6 +259,6 @@ public class ChatService(IUnitOfWork _unitOfWork, IMapper _mapper, IAuthenticati
             ReceiverProfileUnreadCount = isFirstRequested
                 ? chat.SecondProfileUnreadCount
                 : chat.FirstProfileUnreadCount,
-        };;
+        };
     }
 }

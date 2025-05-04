@@ -1,7 +1,6 @@
 using AutoMapper;
 using Common.Dtos.Profile;
 using Common.Exceptions;
-using Common.Exceptions.Messages;
 using MessageQueue;
 using MessageQueue.Messages.Profile;
 using Profile.BusinessLogic.DTOs.Profile.Request;

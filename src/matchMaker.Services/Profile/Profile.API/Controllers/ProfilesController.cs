@@ -10,10 +10,10 @@ namespace Profile.API.Controllers;
 
 [Route("api/profiles")]
 [ApiController]
-[Authorize(Roles = $"{Roles.User}")]
 public class ProfilesController(IProfileService _profileService) : ControllerBase
 {
     [HttpGet("{id}")]
+    [Authorize(Roles = $"{Roles.User}, {Roles.Moderator}, {Roles.Admin}")]
     public async Task<ActionResult<ProfileResponseDto>> GetProfileById([FromRoute] long id, CancellationToken cancellationToken)
     {
         var profile = await _profileService.GetProfileByIdAsync(id, cancellationToken);
@@ -22,6 +22,7 @@ public class ProfilesController(IProfileService _profileService) : ControllerBas
     }
     
     [HttpGet("user/{id}")]
+    [Authorize(Roles = $"{Roles.User}")]
     public async Task<ActionResult<ProfileResponseDto>> GetProfileByUserId([FromRoute] long id, CancellationToken cancellationToken)
     {
         var profile = await _profileService.GetProfileByUserIdAsync(id, cancellationToken);
@@ -30,6 +31,7 @@ public class ProfilesController(IProfileService _profileService) : ControllerBas
     }
     
     [HttpPost]
+    [Authorize(Roles = $"{Roles.User}")]
     public async Task<ActionResult<ProfileResponseDto>> CreateProfile([FromBody] CreateOrUpdateProfileDto dto, CancellationToken cancellationToken)
     {
         var profile = await _profileService.CreateProfileAsync(dto, cancellationToken);
@@ -38,6 +40,7 @@ public class ProfilesController(IProfileService _profileService) : ControllerBas
     }
     
     [HttpPut("{id}")]
+    [Authorize(Roles = $"{Roles.User}")]
     public async Task<ActionResult<ProfileResponseDto>> UpdateProfile([FromRoute] long id, [FromBody] CreateOrUpdateProfileDto dto, CancellationToken cancellationToken)
     {
         var profile = await _profileService.UpdateProfileAsync(id, dto, cancellationToken);
@@ -46,6 +49,7 @@ public class ProfilesController(IProfileService _profileService) : ControllerBas
     }
     
     [HttpPost("by-ids/get")]
+    [Authorize(Roles = $"{Roles.User}")]
     public async Task<ActionResult<ICollection<ProfileClientDto>>> GetProfilesByIds([FromBody] long[] profileIds, CancellationToken cancellationToken)
     {
         var profiles = await _profileService.GetProfilesByIdsAsync(profileIds, cancellationToken);

@@ -1,7 +1,6 @@
 using User.BusinessLogic.DTOs.Response;
-using User.BusinessLogic.Exceptions;
-using AutoMapper;
 using Common.Exceptions;
+using AutoMapper;
 using Common.Models;
 using Microsoft.Extensions.Logging;
 using User.BusinessLogic.Services.Interfaces;
@@ -34,6 +33,13 @@ public class RoleService(IRoleProvider _roleRepository, IUserProvider _userRepos
         {
             _logger.LogError("Assign role failed: role with name = {name} does not exist", roleName);
             throw new AssignRoleException(ExceptionMessages.RoleNotExists);
+        }
+
+        var roles = await _userRepository.GetRolesAsync(user);
+        
+        if (roles.Any(x => x == roleName))
+        {
+            throw new AssignRoleException("Пользователю уже назначена эта роль");
         }
         
         var result = await _userRepository.AddToRoleAsync(user, roleName);
@@ -70,7 +76,7 @@ public class RoleService(IRoleProvider _roleRepository, IUserProvider _userRepos
         if (roles.Count == 1)
         {
             _logger.LogError("Remove user from role failed: User can't have less than 1 role");
-            throw new RemoveRoleException("User can't have less than 1 role");
+            throw new RemoveRoleException("У пользователя должна быть хотя бы одна роль");
         }
         
         var result = await _userRepository.RemoveFromRoleAsync(user, roleName);

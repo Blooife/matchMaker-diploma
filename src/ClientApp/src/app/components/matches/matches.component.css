@@ -128,3 +128,28 @@
   background-color: #6a1b9a;
   transform: scale(1.05);
 }
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.report-button {
+  background-color: #dc3545;
+  margin-top: 10px;
+  transition: background-color 0.3s, transform 0.3s;
+  font-size: 16px;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.report-button:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+

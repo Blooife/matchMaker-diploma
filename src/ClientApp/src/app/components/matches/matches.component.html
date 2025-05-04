@@ -17,14 +17,24 @@
       <div class="modal-content">
         <span class="close" (click)="closeModal()">&times;</span>
         <app-profile-card [profile]="selectedProfile"></app-profile-card>
-        <button class="start-dialog-button" (click)="startDialog(selectedProfile.id)">Начать диалог</button>
+        <div class="modal-buttons">
+          <button class="start-dialog-button" (click)="startDialog(selectedProfile.id)">Начать диалог</button>
+          <button class="report-button" (click)="openReportModal(selectedProfile.id)">Пожаловаться</button>
+        </div>
+        <app-create-report
+          *ngIf="reportModalVisible && reportProfileId"
+          [profileId]="reportProfileId"
+          [visible]="reportModalVisible"
+          (clickOutside)="closeReportModal()">
+        </app-create-report>
+
       </div>
     </div>
   </div>
 
   <div class="pagination">
-    <button (click)="prevPage()" [disabled]="pageNumber === 1">Previous</button>
+    <button (click)="prevPage()" [disabled]="pageNumber === 1">Предыдущая</button>
     <span>Страница {{ pageNumber }} из {{ totalPages }}</span>
-    <button (click)="nextPage()" [disabled]="pageNumber === totalPages">Next</button>
+    <button (click)="nextPage()" [disabled]="pageNumber === totalPages">Следующая</button>
   </div>
 </div>

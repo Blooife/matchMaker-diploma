@@ -1,6 +1,5 @@
 using AutoMapper;
 using Common.Exceptions;
-using Common.Exceptions.Messages;
 using Profile.BusinessLogic.DTOs.Education.Request;
 using Profile.BusinessLogic.DTOs.Education.Response;
 using Profile.BusinessLogic.InfrastructureServices.Interfaces;

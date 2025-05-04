@@ -21,6 +21,11 @@
         <span *ngIf="isMenuVisible">Панель администратора</span>
       </button>
 
+      <button *ngIf="isModerator()" [routerLink]="['/moderator-panel']">
+        <i class="fas fa-eye"></i>
+        <span *ngIf="isMenuVisible">Панель модератора</span>
+      </button>
+
       <button *ngIf="isUser()" [routerLink]="['/profile']">
         <i class="fas fa-user"></i>
         <span *ngIf="isMenuVisible">Мой профиль</span>
@@ -49,4 +54,4 @@
   </nav>
 </header>
 
-<app-notifications #notificationsComponent></app-notifications>
+<app-notifications #notificationsComponent *ngIf="isUser()"></app-notifications>

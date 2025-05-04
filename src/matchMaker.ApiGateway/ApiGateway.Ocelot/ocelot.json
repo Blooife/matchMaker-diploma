@@ -92,7 +92,7 @@
         }
       ],
       "UpstreamPathTemplate": "/roles/removal",
-      "UpstreamHttpMethod": [ "DELETE" ],
+      "UpstreamHttpMethod": [ "POST" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
       },
@@ -172,7 +172,7 @@
         }
       ],
       "UpstreamPathTemplate": "/reports/paginated",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": [ "POST" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
       },
@@ -257,7 +257,7 @@
         "AuthenticationProviderKey": "Bearer"
       },
       "RouteClaimsRequirement": {
-        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "User"
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "User, Admin, Moderator"
       },
       "SwaggerKey": "profiles",
       "DangerousAcceptAnyServerCertificateValidator": true

@@ -39,7 +39,14 @@
     <div class="profile-modal-content">
       <span class="close" (click)="closeProfileModal()">&times;</span>
       <app-profile-card [profile]="selectedProfile"></app-profile-card>
+      <button class="report-button" (click)="openReportModal(selectedProfile.id)">Пожаловаться</button>
     </div>
+    <app-create-report
+      *ngIf="reportModalVisible && reportProfileId"
+      [profileId]="reportProfileId"
+      [visible]="reportModalVisible"
+      (clickOutside)="closeReportModal()">
+    </app-create-report>
   </div>
   <div *ngIf="showContextMenu" class="context-menu" [ngStyle]="{'top.px': contextMenuPosition.y, 'left.px': contextMenuPosition.x}">
     <button (click)="deleteChat(selectedChatId!)">Удалить чат</button>
