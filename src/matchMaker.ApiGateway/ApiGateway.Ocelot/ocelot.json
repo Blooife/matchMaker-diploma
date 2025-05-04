@@ -29,6 +29,20 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
+      "DownstreamPathTemplate": "/api/auth/login/google",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/login/google",
+      "UpstreamHttpMethod": [ "POST" ],
+      "SwaggerKey": "user",
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
       "DownstreamPathTemplate": "/api/auth/refresh",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [

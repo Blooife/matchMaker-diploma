@@ -15,6 +15,7 @@ import {ChatsComponent} from "./components/chats/chats.component";
 import {SettingsComponent} from "./components/settings/settings.component";
 import {BlackListComponent} from "./components/black-list/black-list.component";
 import {ModeratorPanelComponent} from "./components/moderator-panel/moderator-panel.component";
+import {OauthCallbackComponent} from "./components/login/oauth-callback/oauth-callback.component";
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -31,4 +32,5 @@ export const routes: Routes = [
   { path: 'settings', component: SettingsComponent, canActivate: [ProfileCreatedGuard] },
   { path: 'black-list', component: BlackListComponent, canActivate: [ProfileCreatedGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'oauth-callback', component: OauthCallbackComponent }
 ];

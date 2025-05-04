@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import { AuthService } from '../../services/auth-service.service';
 import { Router } from '@angular/router';
 import {NgIf} from "@angular/common";
+import {environment} from "../../constants/environment";
 
 @Component({
   selector: 'app-login',
@@ -56,5 +57,15 @@ export class LoginComponent {
     }
 
     return '';
+  }
+
+  loginWithGoogle() {
+    const url = `https://accounts.google.com/o/oauth2/v2/auth` +
+      `?client_id=${environment.googleClientId}` +
+      `&redirect_uri=${environment.redirectUri}` +
+      `&response_type=code` +
+      `&scope=email profile`;
+
+    window.location.href = url;
   }
 }

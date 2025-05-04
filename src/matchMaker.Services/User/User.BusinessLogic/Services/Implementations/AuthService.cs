@@ -1,3 +1,5 @@
+using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 using User.BusinessLogic.DTOs.Response;
 using AutoMapper;
 using Common.Constants;
@@ -112,5 +114,61 @@ public class AuthService(
         loginResponseDto.JwtToken = _jwtTokenProvider.GenerateToken(user, roles);
         
         return loginResponseDto;
+    }
+    
+    public async Task<LoginResponseDto> LoginWithGoogleAsync(ExternalLoginRequestDto dto)
+    {
+        var googleUser = await GetGoogleUserInfoAsync(dto.AccessToken);
+
+        var user = await _userRepository.GetByEmailAsync(googleUser.Email, CancellationToken.None);
+
+        if (user is null)
+        {
+            user = new DataAccess.Models.User
+            {
+                Email = googleUser.Email,
+                UserName = googleUser.Email,
+                NormalizedEmail = googleUser.Email.ToUpper()
+            };
+
+            var result = await _userRepository.RegisterAsync(user, null);
+            if (!result.Succeeded)
+            {
+                throw new RegisterException("Ошибка при регистрации через Google");
+            }
+
+            await _userRepository.AddToRoleAsync(user, Roles.User);
+            await _communicationBus.PublishAsync(new UserCreatedEventMessage
+            {
+                Id = user.Id,
+                Email = user.Email,
+            });
+        }
+
+        return await GetLoginResponseDtoWithGeneratedTokens(user);
+    }
+    
+    private async Task<GoogleUserInfo> GetGoogleUserInfoAsync(string accessToken)
+    {
+        using var httpClient = new HttpClient();
+        var response = await httpClient.GetAsync($"https://www.googleapis.com/oauth2/v1/userinfo?access_token={accessToken}");
+
+        if (!response.IsSuccessStatusCode)
+            throw new LoginException("Невалидный Google токен");
+
+        var userInfo = await response.Content.ReadFromJsonAsync<GoogleUserInfo>();
+        return userInfo!;
+    }
+    
+    private class GoogleUserInfo
+    {
+        [JsonPropertyName("email")]
+        public string Email { get; set; } = default!;
+    
+        [JsonPropertyName("name")]
+        public string Name { get; set; } = default!;
+    
+        [JsonPropertyName("picture")]
+        public string Picture { get; set; }
     }
 }

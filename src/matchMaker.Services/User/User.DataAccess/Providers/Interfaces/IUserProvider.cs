@@ -6,7 +6,7 @@ public interface IUserProvider
 {
     Task<Models.User?> GetByEmailAsync(string email, CancellationToken cancellationToken);
     Task<Models.User?> GetByIdAsync(long id, CancellationToken cancellationToken);
-    Task<IdentityResult> RegisterAsync(Models.User user, string password);
+    Task<IdentityResult> RegisterAsync(Models.User user, string? password);
     Task<bool> CheckPasswordAsync(Models.User user, string password);
     Task<IList<string>> GetRolesAsync(Models.User user);
     Task<IdentityResult> AddToRoleAsync(Models.User user, string roleName);

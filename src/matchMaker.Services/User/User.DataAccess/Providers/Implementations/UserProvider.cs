@@ -13,8 +13,12 @@ public class UserProvider(UserContext _dbContext, UserManager<Models.User> _user
         return await _dbContext.Users.Include(x => x.Roles).Where(u => u.DeletedAt == null).FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
-    public async Task<IdentityResult> RegisterAsync(Models.User user, string password)
+    public async Task<IdentityResult> RegisterAsync(Models.User user, string? password)
     {
+        if (string.IsNullOrEmpty(password))
+        {
+            return await _userManager.CreateAsync(user);
+        }
         return await _userManager.CreateAsync(user, password);
     }
 

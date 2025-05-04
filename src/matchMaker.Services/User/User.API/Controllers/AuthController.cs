@@ -32,4 +32,11 @@ public class AuthController(IAuthService _authService) : ControllerBase
 
         return Ok(response);
     }
+    [HttpPost("login/google")]
+    public async Task<ActionResult<LoginResponseDto>> LoginWithGoogle([FromBody] ExternalLoginRequestDto model, CancellationToken cancellationToken)
+    {
+        var response = await _authService.LoginWithGoogleAsync(model);
+        
+        return Ok(response);
+    }
 }

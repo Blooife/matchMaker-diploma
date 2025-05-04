@@ -50,6 +50,23 @@ export class AuthService {
       );
   }
 
+  loginWithGoogle(token: string): Observable<boolean> {
+    return this.httpClient.post<LoginResponseDto>(`${authEndpoints.login}/google`,
+      {accessToken: token}, this.httpOptions)
+      .pipe(
+        tap(response => {
+          if (response.refreshToken) {
+            this.setTokens(response);
+          } else {
+            this.isLoggedInSubject.next(false);
+            this.currentUserIdSubject.next(null);
+            this.currentUserRolesSubject.next(null);
+          }
+        }),
+        map(response => !!response.refreshToken),
+      );
+  }
+
   refreshToken(): Observable<boolean> {
     const refreshToken = this.getRefreshToken();
     console.log(refreshToken)
