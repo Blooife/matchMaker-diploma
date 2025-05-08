@@ -43,7 +43,7 @@ public class CountryService(IUnitOfWork _unitOfWork, IMapper _mapper, ICacheServ
 
         if (country is null)
         {
-            throw new NotFoundException(countryId);    
+            throw new NotFoundException("Страна", 2);    
         }
         
         var cities = await _unitOfWork.CountryRepository.GetAllCitiesFromCountryAsync(countryId, cancellationToken);

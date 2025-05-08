@@ -14,11 +14,11 @@ namespace Match.API.Controllers;
 [Authorize(Roles = $"{Roles.User}")]
 public class MatchesController(IMatchService _matchService, IMapper _mapper) : ControllerBase
 {
-    [HttpGet("paged/profiles/{profileId}")]
+    [HttpGet("paged")]
     public async Task<ActionResult<PagedList<MatchResponseDto>>> GetPagedMatches(
-        [FromRoute] long profileId, CancellationToken cancellationToken, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        CancellationToken cancellationToken, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var pagedList = await _matchService.GetMatchesByProfileIdAsync(profileId, pageNumber, pageSize, cancellationToken);
+        var pagedList = await _matchService.GetMatchesByProfileIdAsync(pageNumber, pageSize, cancellationToken);
         var metadata = _mapper.Map<PaginationMetadata>(pagedList);
 
         HttpContext.Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(metadata));

@@ -1,52 +1,75 @@
 <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
   <h5>Обновление профиля</h5>
-  <label for="name">Имя:</label>
-  <input id="name" formControlName="name" type="text">
-  <div class="error-message">{{ getErrorMessage('name', this.profileForm) }}</div>
 
-  <label for="lastName">Фамилия:</label>
-  <input id="lastName" formControlName="lastName" type="text">
-  <div class="error-message">{{ getErrorMessage('lastName', this.profileForm) }}</div>
+  <div class="form-group">
+    <label for="name">Имя:</label>
+    <input id="name" formControlName="name" type="text">
+    <div class="error-message">{{ getErrorMessage('name', this.profileForm) }}</div>
+  </div>
 
-  <label for="birthDate">Дата рождения:</label>
-  <input id="birthDate" formControlName="birthDate" type="date">
-  <div class="error-message">{{ getErrorMessage('birthDate', this.profileForm) }}</div>
+  <div class="form-group">
+    <label for="lastName">Фамилия:</label>
+    <input id="lastName" formControlName="lastName" type="text">
+    <div class="error-message">{{ getErrorMessage('lastName', this.profileForm) }}</div>
+  </div>
 
-  <label for="gender">Пол:</label>
-  <select id="gender" formControlName="gender">
-    <option *ngFor="let gender of genders" [value]="gender">{{ gender | genderTranslate }}</option>
-  </select>
-  <div class="error-message">{{ getErrorMessage('gender', this.profileForm) }}</div>
+  <div class="form-group">
+    <label for="birthDate">Дата рождения:</label>
+    <input id="birthDate" formControlName="birthDate" type="date">
+    <div class="error-message">{{ getErrorMessage('birthDate', this.profileForm) }}</div>
+  </div>
 
-  <label for="bio">О себе:</label>
-  <textarea id="bio" formControlName="bio"></textarea>
-  <div class="error-message">{{ getErrorMessage('bio', this.profileForm) }}</div>
+  <div class="form-group">
+    <label for="gender">Пол:</label>
+    <select id="gender" formControlName="gender">
+      <option *ngFor="let gender of genders" [value]="gender">{{ gender | genderTranslate }}</option>
+    </select>
+    <div class="error-message">{{ getErrorMessage('gender', this.profileForm) }}</div>
+  </div>
 
-  <label for="height">Рост:</label>
-  <input id="height" formControlName="height" type="number">
-  <div class="error-message">{{ getErrorMessage('height', this.profileForm) }}</div>
+  <div class="form-group">
+    <label for="bio">О себе:</label>
+    <textarea id="bio" formControlName="bio"></textarea>
+    <div class="error-message">{{ getErrorMessage('bio', this.profileForm) }}</div>
+  </div>
 
-  <label for="showAge">Показывать возраст:</label>
-  <input id="showAge" formControlName="showAge" type="checkbox">
-  <div class="error-message">{{ getErrorMessage('showAge', this.profileForm) }}</div>
+  <div class="form-group">
+    <label for="height">Рост:</label>
+    <input id="height" formControlName="height" type="number">
+    <div class="error-message">{{ getErrorMessage('height', this.profileForm) }}</div>
+  </div>
 
-  <label for="ageFrom">Возраст от:</label>
-  <input id="ageFrom" formControlName="ageFrom" type="number">
-  <div class="error-message">{{ getErrorMessage('ageFrom', this.profileForm) }}</div>
+  <div class="form-group">
+    <label for="showAge">Показывать возраст:</label>
+    <input id="showAge" formControlName="showAge" type="checkbox">
+    <div class="error-message">{{ getErrorMessage('showAge', this.profileForm) }}</div>
+  </div>
 
-  <label for="ageTo">Возраст до:</label>
-  <input id="ageTo" formControlName="ageTo" type="number">
-  <div class="error-message">{{ getErrorMessage('ageTo', this.profileForm) }}</div>
+  <div class="form-group">
+    <label for="ageFrom">Возраст от:</label>
+    <input id="ageFrom" formControlName="ageFrom" type="number">
+    <div class="error-message">{{ getErrorMessage('ageFrom', this.profileForm) }}</div>
+  </div>
 
-  <label for="maxDistance">Расстояние(км):</label>
-  <input id="maxDistance" formControlName="maxDistance" type="number">
-  <div class="error-message">{{ getErrorMessage('maxDistance', this.profileForm) }}</div>
+  <div class="form-group">
+    <label for="ageTo">Возраст до:</label>
+    <input id="ageTo" formControlName="ageTo" type="number">
+    <div class="error-message">{{ getErrorMessage('ageTo', this.profileForm) }}</div>
+  </div>
 
-  <label for="preferredGender">Предпочетаемый пол:</label>
-  <select id="preferredGender" formControlName="preferredGender">
-    <option *ngFor="let gender of genders" [value]="gender">{{ gender | genderTranslate }}</option>
-  </select>
-  <div class="error-message">{{ getErrorMessage('preferredGender', this.profileForm) }}</div>
+  <div class="form-group">
+    <label for="maxDistance">Расстояние(км):</label>
+    <input id="maxDistance" formControlName="maxDistance" type="number">
+    <div class="error-message">{{ getErrorMessage('maxDistance', this.profileForm) }}</div>
+  </div>
+
+  <div class="form-group">
+    <label for="preferredGender">Предпочетаемый пол:</label>
+    <select id="preferredGender" formControlName="preferredGender">
+      <option *ngFor="let gender of genders" [value]="gender">{{ gender | genderTranslate }}</option>
+    </select>
+    <div class="error-message">{{ getErrorMessage('preferredGender', this.profileForm) }}</div>
+  </div>
 
   <label>Цель:</label>
   <app-goal-select [selectedGoalId]="selectedGoalId" (goalSelected)="onGoalSelected($event)"></app-goal-select>
@@ -54,9 +77,11 @@
   <label>Страна:</label>
   <app-country-select [selectedCountryId]="selectedCountryId" (countrySelected)="onCountrySelected($event)"></app-country-select>
 
-  <label>Город:</label>
-  <app-city-select [selectedCityId]="selectedCityId" [countryId]="selectedCountryId" (citySelected)="onCitySelected($event)"></app-city-select>
-  <div class="error-message">{{ getErrorMessage('cityId', this.profileForm) }}</div>
+  <div class="form-group">
+    <label>Город:</label>
+    <app-city-select [selectedCityId]="selectedCityId" [countryId]="selectedCountryId" (citySelected)="onCitySelected($event)"></app-city-select>
+    <div class="error-message">{{ getErrorMessage('cityId', this.profileForm) }}</div>
+  </div>
 
   <button type="submit">Обновить профиль</button>
   <app-update-images></app-update-images>

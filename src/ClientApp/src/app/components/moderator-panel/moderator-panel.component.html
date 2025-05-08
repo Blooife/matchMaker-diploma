@@ -75,33 +75,56 @@
     </table>
   </div>
 
-  <div *ngIf="selectedReport" class="modal-overlay">
-    <div class="modal-content">
-      <button class="close-btn" (click)="selectedReport = null">×</button>
-      <h4>Модерация жалобы</h4>
+  <div class="modal-overlay" *ngIf="selectedReport">
+    <form [formGroup]="moderationForm" class="modal-content" (ngSubmit)="moderate()">
+      <span class="close" (click)="selectedReport = null">&times;</span>
+      <h3>Модерация жалобы</h3>
 
-      <label>Статус:
-        <select [(ngModel)]="newStatus">
-          <option [ngValue]="statuses.Reviewed">{{statuses.Reviewed | statusTranslate}}</option>
-          <option [ngValue]="statuses.Rejected">{{statuses.Rejected | statusTranslate}}</option>
-          <option [ngValue]="statuses.Blocked">{{statuses.Blocked | statusTranslate}}</option>
+      <div class="form-group">
+        <label for="statusSelect">Статус:</label>
+        <select id="statusSelect" [(ngModel)]="moderationForm.value.status" formControlName="status">
+          <option [ngValue]="statuses.Reviewed">{{ statuses.Reviewed | statusTranslate }}</option>
+          <option [ngValue]="statuses.Rejected">{{ statuses.Rejected | statusTranslate }}</option>
+          <option [ngValue]="statuses.Blocked">{{ statuses.Blocked | statusTranslate }}</option>
         </select>
-      </label>
+        <div
+          class="error-message"
+          *ngIf="moderationForm.get('status')?.touched && moderationForm.get('status')?.errors">
+          {{ getErrorMessage('status', moderationForm) }}
+        </div>
+      </div>
 
-      <label>Комментарий модератора:
-        <textarea [(ngModel)]="moderatorComment"></textarea>
-      </label>
+      <div class="form-group">
+        <label for="moderatorComment">Комментарий модератора:</label>
+        <textarea
+          id="moderatorComment"
+          formControlName="moderatorComment"
+          placeholder="Введите комментарий"
+        ></textarea>
+        <div
+          class="error-message"
+          *ngIf="moderationForm.get('moderatorComment')?.touched && moderationForm.get('moderatorComment')?.errors">
+          {{ getErrorMessage('moderatorComment', moderationForm) }}
+        </div>
+      </div>
 
-      <label *ngIf="newStatus === statuses.Blocked">Блокировка до:
-        <input type="datetime-local" [(ngModel)]="banUntil">
-      </label>
+      <div class="form-group" *ngIf="moderationForm.value.status === statuses.Blocked">
+        <label for="banUntil">Блокировка до:</label>
+        <input id="banUntil" type="datetime-local" formControlName="banUntil" />
+        <div
+          class="error-message"
+          *ngIf="moderationForm.get('banUntil')?.touched && moderationForm.get('banUntil')?.errors">
+          {{ getErrorMessage('banUntil', moderationForm) }}
+        </div>
+      </div>
 
       <div class="modal-buttons">
         <button type="button" (click)="selectedReport = null">Отмена</button>
-        <button type="button" (click)="moderate()">Подтвердить</button>
+        <button type="submit" [disabled]="moderationForm.invalid">Подтвердить</button>
       </div>
-    </div>
+    </form>
   </div>
+
 
   <div class="modal" *ngIf="selectedProfile">
     <div class="modal-content">

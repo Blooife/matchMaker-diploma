@@ -1,3 +1,4 @@
+using Common.Attributes;
 using Common.Constants;
 using Common.Dtos.Profile;
 using Microsoft.AspNetCore.Authorization;
@@ -41,6 +42,7 @@ public class ProfilesController(IProfileService _profileService) : ControllerBas
     
     [HttpPut("{id}")]
     [Authorize(Roles = $"{Roles.User}")]
+    [AuthorizeByOtherUser("ProfileId")]
     public async Task<ActionResult<ProfileResponseDto>> UpdateProfile([FromRoute] long id, [FromBody] CreateOrUpdateProfileDto dto, CancellationToken cancellationToken)
     {
         var profile = await _profileService.UpdateProfileAsync(id, dto, cancellationToken);

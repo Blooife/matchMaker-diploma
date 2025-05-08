@@ -1,3 +1,4 @@
+using Common.Exceptions;
 using Match.DataAccess.Models;
 using Match.DataAccess.Providers.Interfaces;
 using MongoDB.Driver;
@@ -23,7 +24,16 @@ public class BlackListRepository(IMongoCollection<BlackList> _collection) : Gene
 
         if (blocked != null)
         {
-            throw new InvalidOperationException("Сообщение не может быть отправлено. Один из пользователей заблокирован.");
+            if (blocked.BlockerProfileId == receiverId && blocked.BlockedProfileId == senderId)
+            {
+                throw new ConflictException("Вы не можете отправить сообщение: получатель добавил вас в чёрный список.");
+            }
+            if (blocked.BlockerProfileId == senderId && blocked.BlockedProfileId == receiverId)
+            {
+                throw new ConflictException("Вы не можете отправить сообщение пользователю, которого сами заблокировали.");
+            }
+
+            throw new ConflictException("Отправка сообщения невозможна из-за блокировки.");
         }
     }
     

@@ -24,8 +24,8 @@ export const profilesEndpoints = {
     return `${base}/profiles/user/${userId}`
   },
   location: `${base}/profiles/location`,
-  recs(profileId: number){
-    return `${base}/profiles/${profileId}/recommendations`
+  recs(){
+    return `${base}/profiles/recommendations`
   }
 }
 
@@ -68,8 +68,8 @@ export const goalsEndpoints = {
 
 export const matchesEndpoints = {
   matches: `${base}/matches`,
-  paged(pageSize: string, pageNumber: string, profileId: number){
-    return `${matchesEndpoints.matches}/paged/profiles/${profileId}?pageSize=${pageSize}&pageNumber=${pageNumber}`
+  paged(pageSize: string, pageNumber: string){
+    return `${matchesEndpoints.matches}/paged?pageSize=${pageSize}&pageNumber=${pageNumber}`
   }
 }
 
@@ -82,8 +82,8 @@ export const chatsEndpoints = {
   chatsByIds(firstProfileId: number, secondProfileId: number){
     return `${chatsEndpoints.chats}/profiles?firstProfileId=${firstProfileId}&secondProfileId=${secondProfileId}`
   },
-  paged(pageSize: string, pageNumber: string, profileId: number){
-    return `${chatsEndpoints.chats}/paged/profiles/${profileId}?pageSize=${pageSize}&pageNumber=${pageNumber}`
+  paged(pageSize: string, pageNumber: string){
+    return `${chatsEndpoints.chats}/paged?pageSize=${pageSize}&pageNumber=${pageNumber}`
   }
 }
 

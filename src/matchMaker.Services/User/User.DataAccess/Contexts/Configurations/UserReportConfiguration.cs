@@ -10,10 +10,6 @@ public class UserReportConfiguration : IEntityTypeConfiguration<UserReport>
     public void Configure(EntityTypeBuilder<UserReport> builder)
     {
         builder
-            .HasIndex(r => new { r.ReporterUserId, r.ReportedUserId })
-            .IsUnique();
-
-        builder
             .HasOne(r => r.Reporter)
             .WithMany(u => u.ReportsMade)
             .HasForeignKey(r => r.ReporterUserId)

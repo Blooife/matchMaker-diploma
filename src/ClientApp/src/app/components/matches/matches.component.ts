@@ -49,7 +49,7 @@ export class MatchesComponent implements OnInit, OnDestroy {
   }
 
   loadMatches(): void {
-    this.matchService.getPaginatedMatches(this.pageSize, this.pageNumber, this.profile!.id).subscribe({
+    this.matchService.getPaginatedMatches(this.pageSize, this.pageNumber).subscribe({
       next: (result) => {
         this.matches = result.matches;
         this.totalPages = result.pagination.TotalPages;

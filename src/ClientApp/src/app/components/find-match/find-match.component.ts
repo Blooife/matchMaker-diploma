@@ -74,8 +74,7 @@ export class FindMatchComponent implements OnInit, OnDestroy {
   }
 
   loadRecommendations(): void {
-    console.log(this.profileId);
-    this.matchService.getRecs(this.profileId!).subscribe({
+    this.matchService.getRecs().subscribe({
       next: (recs) => {
         if (recs.length === 0) {
           this.noMoreRecs = true;

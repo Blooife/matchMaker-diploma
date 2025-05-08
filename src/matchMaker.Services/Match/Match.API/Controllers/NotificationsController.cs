@@ -11,11 +11,10 @@ namespace Match.API.Controllers;
 [Authorize(Roles = $"{Roles.User}")]
 public class NotificationsController(INotificationService _notificationService) : ControllerBase
 {
-    [HttpGet("{profileId}")]
-    public async Task<ActionResult<ICollection<NotificationResponseDto>>> GetNotificationsByProfileId(
-        [FromRoute] long profileId, CancellationToken cancellationToken)
+    [HttpGet]
+    public async Task<ActionResult<ICollection<NotificationResponseDto>>> GetNotificationsByProfileId(CancellationToken cancellationToken)
     {
-        var profiles = await _notificationService.GetUserNotificationsAsync(profileId, cancellationToken);
+        var profiles = await _notificationService.GetUserNotificationsAsync(cancellationToken);
 
         return Ok(profiles);
     }

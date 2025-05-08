@@ -1,4 +1,5 @@
 using AutoMapper;
+using Common.Authorization.Context;
 using Common.Exceptions;
 using Match.BusinessLogic.DTOs.Profile;
 using Match.BusinessLogic.Services.Interfaces;
@@ -8,16 +9,21 @@ using Profile.Client;
 
 namespace Match.BusinessLogic.Services.Implementations;
 
-public class ProfileService(IUnitOfWork _unitOfWork, IProfileClient _profileClient, IMapper _mapper) : IProfileService
+public class ProfileService(
+    IUnitOfWork _unitOfWork,
+    IProfileClient _profileClient,
+    IMapper _mapper,
+    IAuthenticationContext _authenticationContext) : IProfileService
 {
     public async Task<List<ProfileResponseDto>> GetRecommendationsAsync(
-        long profileId, int pageNumber, int pageSize, CancellationToken cancellationToken)
+        int pageNumber, int pageSize, CancellationToken cancellationToken)
     {
+        var profileId = _authenticationContext.UserId;
         var userProfile = await _unitOfWork.Profiles.GetByIdAsync(profileId, cancellationToken);
 
         if (userProfile is null)
         {
-            throw new NotFoundException(profileId);
+            throw new NotFoundException("Профиль");
         }
 
         var likedProfiles = await _unitOfWork.Likes
@@ -44,7 +50,7 @@ public class ProfileService(IUnitOfWork _unitOfWork, IProfileClient _profileClie
         
         if (profile is null)
         {
-            throw new NotFoundException(dto.ProfileId);
+            throw new NotFoundException("Профиль");
         }
 
         if (dto.Longitude is not null && dto.Latitude is not null)
@@ -66,7 +72,7 @@ public class ProfileService(IUnitOfWork _unitOfWork, IProfileClient _profileClie
 
         if (profile is null)
         {
-            throw new NotFoundException(profileId);
+            throw new NotFoundException("Профиль");
         }
 
         var res = new ProfileResponseDto()

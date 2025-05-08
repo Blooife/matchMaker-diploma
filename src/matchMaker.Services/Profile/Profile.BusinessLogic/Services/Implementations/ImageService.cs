@@ -25,7 +25,7 @@ public class ImageService
         
         if (profile is null)
         {
-            throw new NotFoundException(request.ProfileId);
+            throw new NotFoundException("Профиль");
         }
         
         var file = request.file;
@@ -33,7 +33,7 @@ public class ImageService
 
         if (!_allowedExtensions.Contains(fileExtension.ToLowerInvariant()))
         {
-            throw new ImageUploadException("Wrong extension");
+            throw new ImageUploadException("Неподходящее расширения файла");
         }
 
         var objectName = $"{request.ProfileId}/{file.FileName}";
@@ -81,14 +81,14 @@ public class ImageService
         
         if (profile is null)
         {
-            throw new NotFoundException(request.ProfileId);
+            throw new NotFoundException("Профиль");
         }
         
         var image = await _unitOfWork.ImageRepository.FirstOrDefaultAsync(request.ImageId, cancellationToken);
         
         if (image is null)
         {
-            throw new NotFoundException(request.ImageId);
+            throw new NotFoundException("Изображение", 4);
         }
         
         var notMainImage = profile.Images.First(p => p.IsMainImage);
@@ -119,14 +119,14 @@ public class ImageService
         
         if (profile is null)
         {
-            throw new NotFoundException(profileId);
+            throw new NotFoundException("Профиль");
         }
         
         var image = await _unitOfWork.ImageRepository.FirstOrDefaultAsync(imageId, cancellationToken);
         
         if (image is null)
         {
-            throw new NotFoundException(imageId);
+            throw new NotFoundException("Изображение", 4);
         }
         
         await _unitOfWork.ImageRepository.RemoveImageFromProfileAsync(image);

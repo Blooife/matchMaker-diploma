@@ -1,3 +1,4 @@
+using Common.Attributes;
 using Common.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,7 @@ public class LanguagesController(ILanguageService _languageService, IProfileServ
     }
 
     [HttpPost("profile")]
+    [AuthorizeByOtherUser("ProfileId")]
     public async Task<IActionResult> AddLanguageToProfile([FromBody] AddLanguageToProfileDto dto, CancellationToken cancellationToken)
     {
         var result = await _profileService.AddLanguageToProfileAsync(dto.ProfileId, dto.LanguageId, cancellationToken);
@@ -28,6 +30,7 @@ public class LanguagesController(ILanguageService _languageService, IProfileServ
     }
     
     [HttpDelete("profile")]
+    [AuthorizeByOtherUser("ProfileId")]
     public async Task<IActionResult> RemoveLanguageFromProfile([FromBody] AddLanguageToProfileDto dto, CancellationToken cancellationToken)
     {
         var result = await _profileService.RemoveLanguageFromProfileAsync(dto.ProfileId, dto.LanguageId, cancellationToken);

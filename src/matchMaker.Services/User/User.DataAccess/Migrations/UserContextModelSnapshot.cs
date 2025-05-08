@@ -300,10 +300,9 @@ namespace User.DataAccess.Migrations
 
                     b.HasIndex("ReportedUserId");
 
-                    b.HasIndex("ReviewedByModeratorId");
+                    b.HasIndex("ReporterUserId");
 
-                    b.HasIndex("ReporterUserId", "ReportedUserId")
-                        .IsUnique();
+                    b.HasIndex("ReviewedByModeratorId");
 
                     b.ToTable("UserReports");
                 });

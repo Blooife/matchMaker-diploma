@@ -39,7 +39,7 @@ public class ProfileService(IUnitOfWork _unitOfWork, IMapper _mapper, ICommunica
         
         if (findRes is null)
         {
-            throw new NotFoundException(id);
+            throw new NotFoundException("Профиль");
         }
         
         var profile = _mapper.Map<UserProfile>(requestDto);
@@ -62,7 +62,7 @@ public class ProfileService(IUnitOfWork _unitOfWork, IMapper _mapper, ICommunica
         
         if (profile is null)
         {
-            throw new NotFoundException(id);
+            throw new NotFoundException("Профиль");
         }
         
         var mappedProfile = _mapper.Map<ProfileResponseDto>(profile);
@@ -76,7 +76,7 @@ public class ProfileService(IUnitOfWork _unitOfWork, IMapper _mapper, ICommunica
         
         if (profile is null)
         {
-            throw new NotFoundException(id);
+            throw new NotFoundException("Профиль");
         }
         
         var mappedProfile = _mapper.Map<ProfileResponseDto>(profile);
@@ -94,14 +94,14 @@ public class ProfileService(IUnitOfWork _unitOfWork, IMapper _mapper, ICommunica
         
         if (profile is null)
         {
-            throw new NotFoundException(profileId);
+            throw new NotFoundException("Профиль");
         }
 
         var language = await _unitOfWork.LanguageRepository.FirstOrDefaultAsync(languageId, cancellationToken);
         
         if (language is null)
         {
-            throw new NotFoundException(languageId);
+            throw new NotFoundException("Язык");
         }
 
         var isProfileContainsLanguage = profile.ContainsLanguage(languageId);
@@ -127,14 +127,14 @@ public class ProfileService(IUnitOfWork _unitOfWork, IMapper _mapper, ICommunica
         
         if (profile is null)
         {
-            throw new NotFoundException(profileId);
+            throw new NotFoundException("Профиль");
         }
         
         var language = await _unitOfWork.LanguageRepository.FirstOrDefaultAsync(languageId, cancellationToken);
         
         if (language is null)
         {
-            throw new NotFoundException(languageId);
+            throw new NotFoundException("Язык");
         }
 
         var isProfileContainsLanguage = profile.ContainsLanguage(languageId);
@@ -161,14 +161,14 @@ public class ProfileService(IUnitOfWork _unitOfWork, IMapper _mapper, ICommunica
 
         if (profile is null)
         {
-            throw new NotFoundException(profileId);
+            throw new NotFoundException("Профиль");
         }
         
         var interest = await _unitOfWork.InterestRepository.FirstOrDefaultAsync(interestId, cancellationToken);
         
         if (interest is null)
         {
-            throw new NotFoundException(interestId);
+            throw new NotFoundException("Интерес");
         }
 
         var isProfileContainsInterest = profile.ContainsInterest(interestId);
@@ -201,14 +201,14 @@ public class ProfileService(IUnitOfWork _unitOfWork, IMapper _mapper, ICommunica
         
         if (profile is null)
         {
-            throw new NotFoundException(profileId);
+            throw new NotFoundException("Профиль");
         }
         
         var interest = await _unitOfWork.InterestRepository.FirstOrDefaultAsync(interestId, cancellationToken);
         
         if (interest is null)
         {
-            throw new NotFoundException(interestId);
+            throw new NotFoundException("Интерес");
         }
 
         var isProfileContainsInterest = profile.ContainsInterest(interestId);

@@ -297,7 +297,7 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "DownstreamPathTemplate": "/api/chats/profiles/{id}",
+      "DownstreamPathTemplate": "/api/chats/paged",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -305,27 +305,7 @@
           "Port": 5003
         }
       ],
-      "UpstreamPathTemplate": "/chats/profiles/{id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      },
-      "RouteClaimsRequirement": {
-        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "User"
-      },
-      "SwaggerKey": "matches",
-      "DangerousAcceptAnyServerCertificateValidator": true
-    },
-    {
-      "DownstreamPathTemplate": "/api/chats/paged/profiles/{profileId}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5003
-        }
-      ],
-      "UpstreamPathTemplate": "/chats/paged/profiles/{profileId}",
+      "UpstreamPathTemplate": "/chats/paged",
       "UpstreamHttpMethod": [ "GET" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
@@ -347,6 +327,26 @@
       ],
       "UpstreamPathTemplate": "/chats",
       "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "User"
+      },
+      "SwaggerKey": "matches",
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "DownstreamPathTemplate": "/api/chats/profiles",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UpstreamPathTemplate": "/chats/profiles",
+      "UpstreamHttpMethod": [ "GET" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
       },
@@ -417,7 +417,7 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "DownstreamPathTemplate": "/api/matches/profiles/{id}",
+      "DownstreamPathTemplate": "/api/matches/paged",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -425,27 +425,7 @@
           "Port": 5003
         }
       ],
-      "UpstreamPathTemplate": "/matches/profiles/{id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      },
-      "RouteClaimsRequirement": {
-        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "User"
-      },
-      "SwaggerKey": "matches",
-      "DangerousAcceptAnyServerCertificateValidator": true
-    },
-    {
-      "DownstreamPathTemplate": "/api/matches/paged/profiles/{profileId}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5003
-        }
-      ],
-      "UpstreamPathTemplate": "/matches/paged/profiles/{profileId}",
+      "UpstreamPathTemplate": "/matches/paged",
       "UpstreamHttpMethod": [ "GET" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
@@ -477,7 +457,7 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "DownstreamPathTemplate": "/api/profiles/{profileId}/recommendations",
+      "DownstreamPathTemplate": "/api/profiles/recommendations",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -485,7 +465,7 @@
           "Port": 5003
         }
       ],
-      "UpstreamPathTemplate": "/profiles/{profileId}/recommendations",
+      "UpstreamPathTemplate": "/profiles/recommendations",
       "UpstreamHttpMethod": [ "GET" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
@@ -497,7 +477,7 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "DownstreamPathTemplate": "/api/profiles/{profileId}/paged/recommendations",
+      "DownstreamPathTemplate": "/api/notifications",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -505,27 +485,7 @@
           "Port": 5003
         }
       ],
-      "UpstreamPathTemplate": "/profiles/{profileId}/paged/recommendations",
-      "UpstreamHttpMethod": [ "GET" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      },
-      "RouteClaimsRequirement": {
-        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "User"
-      },
-      "SwaggerKey": "matches",
-      "DangerousAcceptAnyServerCertificateValidator": true
-    },
-    {
-      "DownstreamPathTemplate": "/api/notifications/{profileId}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5003
-        }
-      ],
-      "UpstreamPathTemplate": "/notifications/{profileId}",
+      "UpstreamPathTemplate": "/notifications",
       "UpstreamHttpMethod": [ "GET" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"

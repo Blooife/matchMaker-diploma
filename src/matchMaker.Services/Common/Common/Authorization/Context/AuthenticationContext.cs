@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Common.Constants;
 using Microsoft.AspNetCore.Http;
 
@@ -24,4 +25,13 @@ public class AuthenticationContext : IAuthenticationContext
     }
     
     public string IpAddress => _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString() ?? string.Empty;
+    
+    public bool IsUser => _httpContextAccessor.HttpContext?.User.Claims
+        .Any(c => c is { Type: ClaimTypes.Role, Value: Roles.User }) ?? false;
+
+    public bool IsModerator => _httpContextAccessor.HttpContext?.User.Claims
+        .Any(c => c is { Type: ClaimTypes.Role, Value: Roles.Moderator }) ?? false;
+
+    public bool IsAdmin => _httpContextAccessor.HttpContext?.User.Claims
+        .Any(c => c is { Type: ClaimTypes.Role, Value: Roles.Admin }) ?? false;
 }

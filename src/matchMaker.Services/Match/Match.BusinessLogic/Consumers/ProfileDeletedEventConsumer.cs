@@ -17,7 +17,7 @@ public class ProfileDeletedEventConsumer(IUnitOfWork _unitOfWork) : IConsumer<Pr
         
         if (profile is null)
         {
-            throw new NotFoundException(eventMessage.Id);
+            throw new NotFoundException("Профиль");
         }
         
         await _unitOfWork.Profiles.DeleteAsync(profile, cancellationToken);

@@ -42,7 +42,7 @@ public class CityService(IUnitOfWork _unitOfWork, IMapper _mapper, ICacheService
         
         if (city is null)
         {
-            throw new NotFoundException(id);
+            throw new NotFoundException("Город");
         }
         
         var mappedCity = _mapper.Map<CityResponseDto>(city);

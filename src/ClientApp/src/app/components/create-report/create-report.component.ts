@@ -1,41 +1,52 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {NgIf, NgFor } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {UserService} from "../../services/user-service.service";
 import {ReportTypeDto} from "../../dtos/report/ReportTypeDto";
 import {CreateUserReportDto} from "../../dtos/report/CreateUserReportDto";
+import {futureDateValidator, getErrorMessage} from "../profile/validators";
 
 @Component({
   selector: 'app-create-report',
   templateUrl: './create-report.component.html',
   styleUrls: ['./create-report.component.css'],
   standalone: true,
-  imports: [NgIf, NgFor, FormsModule]
+  imports: [NgIf, NgFor, ReactiveFormsModule,]
 })
-export class CreateReportComponent implements OnInit {
+export class CreateReportComponent implements OnInit, OnDestroy {
   @Input() profileId!: number;
   @Input() visible: boolean = false;
-  reportTypes: ReportTypeDto[] = [];
-  selectedTypeId: number | null = null;
-  comment: string = '';
-  isSubmitting: boolean = false;
   @Output() clickOutside = new EventEmitter<unknown>();
 
-  constructor(private userService: UserService) {}
+  reportTypes: ReportTypeDto[] = [];
+  isSubmitting: boolean = false;
+
+  form!: FormGroup;
+
+  constructor(private userService: UserService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
+    this.form = this.fb.group({
+      reportTypeId: [null, Validators.required],
+      comment: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(1000)]],
+    });
+
     this.userService.getReportTypes().subscribe(types => {
       this.reportTypes = types;
     });
   }
 
+  ngOnDestroy() {
+    this.close();
+  }
+
   submitReport(): void {
-    if (!this.selectedTypeId || !this.comment.trim()) return;
+    if (this.form.invalid) return;
 
     const model: CreateUserReportDto = {
       reportedUserId: this.profileId,
-      reportTypeId: this.selectedTypeId,
-      reason: this.comment
+      reportTypeId: this.form.value.reportTypeId,
+      reason: this.form.value.comment
     };
 
     this.isSubmitting = true;
@@ -46,7 +57,6 @@ export class CreateReportComponent implements OnInit {
       },
       error: () => {
         this.isSubmitting = false;
-
       }
     });
   }
@@ -54,11 +64,13 @@ export class CreateReportComponent implements OnInit {
   close(): void {
     this.visible = false;
     this.resetForm();
+    this.clickOutside.emit();
   }
 
   private resetForm(): void {
-    this.selectedTypeId = null;
-    this.comment = '';
+    this.form.reset();
     this.isSubmitting = false;
   }
+
+  protected readonly getErrorMessage = getErrorMessage;
 }

@@ -16,7 +16,7 @@ public class MessageService(IUnitOfWork _unitOfWork, IMapper _mapper) : IMessage
 
         if (chat is null)
         {
-            throw new NotFoundException(chatId);
+            throw new NotFoundException("Чат");
         }
 
         var (messages, count) =

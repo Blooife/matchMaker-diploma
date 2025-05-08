@@ -1,3 +1,4 @@
+using Common.Attributes;
 using Common.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,7 @@ public class InterestsController(IInterestService _interestService, IProfileServ
     }
 
     [HttpPost("profile")]
+    [AuthorizeByOtherUser("ProfileId")]
     public async Task<IActionResult> AddInterestToProfile([FromBody] AddInterestToProfileDto dto, CancellationToken cancellationToken)
     {
         var result = await _profileService.AddInterestToProfileAsync(dto.ProfileId, dto.InterestId, cancellationToken);
@@ -28,6 +30,7 @@ public class InterestsController(IInterestService _interestService, IProfileServ
     }
     
     [HttpDelete("profile")]
+    [AuthorizeByOtherUser("ProfileId")]
     public async Task<IActionResult> RemoveInterestFromProfile([FromBody] AddInterestToProfileDto dto, CancellationToken cancellationToken)
     {
         var result = await _profileService.RemoveInterestFromProfileAsync(dto.ProfileId, dto.InterestId, cancellationToken);

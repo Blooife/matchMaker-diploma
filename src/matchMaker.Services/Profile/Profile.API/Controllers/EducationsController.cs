@@ -1,3 +1,4 @@
+using Common.Attributes;
 using Common.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,7 @@ public class EducationsController(IEducationService _educationService) : Control
     }
     
     [HttpPut("profile")]
+    [AuthorizeByOtherUser("ProfileId")]
     public async Task<ActionResult<ICollection<ProfileEducationResponseDto>>> UpdateProfileEducation(
         [FromBody] AddOrRemoveProfileEducationDto dto, CancellationToken cancellationToken)
     {
@@ -30,6 +32,7 @@ public class EducationsController(IEducationService _educationService) : Control
     }
 
     [HttpPost("profile")]
+    [AuthorizeByOtherUser("ProfileId")]
     public async Task<ActionResult<ICollection<ProfileEducationResponseDto>>> AddEducationToProfile(
         [FromBody] AddOrRemoveProfileEducationDto dto, CancellationToken cancellationToken)
     {
@@ -39,6 +42,7 @@ public class EducationsController(IEducationService _educationService) : Control
     }
     
     [HttpDelete("profile")]
+    [AuthorizeByOtherUser("ProfileId")]
     public async Task<ActionResult<ICollection<ProfileEducationResponseDto>>> RemoveEducationFromProfile(
         [FromBody] AddOrRemoveProfileEducationDto dto, CancellationToken cancellationToken)
     {

@@ -126,7 +126,7 @@ public class UserReportProvider(UserContext _dbContext) : IUserReportProvider
         var report = await _dbContext.UserReports.FindAsync(reportId);
         if (report == null)
         {
-            throw new NotFoundException("Report not found");
+            throw new NotFoundException("Жалоба", 2);
         }
 
         report.Status = status;

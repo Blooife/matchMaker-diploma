@@ -28,14 +28,14 @@ export class NotificationsComponent implements OnInit {
     this.authService.currentUserId$.subscribe(id => {
       if (id) {
         this.currentUserId = id;
-        this.loadNotifications(id);
+        this.loadNotifications();
       }
     });
   }
 
-  loadNotifications(profileId: number) {
+  loadNotifications() {
     this.isLoading = true;
-    this.matchService.getNotifications(profileId).subscribe(data => {
+    this.matchService.getNotifications().subscribe(data => {
       this.notifications = data.map(notification => ({
         ...notification,
         isSelected: false
@@ -89,7 +89,7 @@ export class NotificationsComponent implements OnInit {
   toggleNotifications() {
     this.isVisible = !this.isVisible;
     if (this.isVisible && this.currentUserId) {
-      this.loadNotifications(this.currentUserId);
+      this.loadNotifications();
     }
   }
 }

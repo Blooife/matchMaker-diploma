@@ -41,14 +41,14 @@ public class EducationService(IUnitOfWork _unitOfWork, IMapper _mapper, ICacheSe
         
         if (profile is null)
         {
-            throw new NotFoundException(request.ProfileId);
+            throw new NotFoundException("Профиль");
         }
         
         var education = await _unitOfWork.EducationRepository.FirstOrDefaultAsync(request.EducationId, cancellationToken);
         
         if (education is null)
         {
-            throw new NotFoundException(request.EducationId);
+            throw new NotFoundException("Образование", 4);
         }
         
         var isProfileContainsEducation = profile.ContainsEducation(request.EducationId);
@@ -77,14 +77,14 @@ public class EducationService(IUnitOfWork _unitOfWork, IMapper _mapper, ICacheSe
         
         if (profile is null)
         {
-            throw new NotFoundException(request.ProfileId);
+            throw new NotFoundException("Профиль");
         }
         
         var education = await _unitOfWork.EducationRepository.FirstOrDefaultAsync(request.EducationId, cancellationToken);
         
         if (education is null)
         {
-            throw new NotFoundException(request.EducationId);
+            throw new NotFoundException("Образование", 4);
         }
         
         var isProfileContainsEducation = profile.ContainsEducation(request.EducationId);
@@ -112,14 +112,14 @@ public class EducationService(IUnitOfWork _unitOfWork, IMapper _mapper, ICacheSe
         
         if (profile is null)
         {
-            throw new NotFoundException(request.ProfileId);
+            throw new NotFoundException("Профиль");
         }
         
         var education = await _unitOfWork.EducationRepository.FirstOrDefaultAsync(request.EducationId, cancellationToken);
         
         if (education is null)
         {
-            throw new NotFoundException(request.EducationId);
+            throw new NotFoundException("Образование", 4);
         }
         
         var isContains = profile.ContainsEducation(request.EducationId);

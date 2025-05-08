@@ -1,4 +1,5 @@
 using AutoMapper;
+using Common.Authorization.Context;
 using Common.Exceptions;
 using Common.Models;
 using Match.BusinessLogic.DTOs.Profile;
@@ -8,16 +9,21 @@ using Profile.Client;
 
 namespace Match.BusinessLogic.Services.Implementations;
 
-public class MatchService(IUnitOfWork _unitOfWork, IProfileClient _profileClient, IMapper _mapper) : IMatchService
+public class MatchService(
+    IUnitOfWork _unitOfWork,
+    IProfileClient _profileClient,
+    IMapper _mapper,
+    IAuthenticationContext _authenticationContext) : IMatchService
 {
     public async Task<PagedList<ProfileResponseDto>> GetMatchesByProfileIdAsync(
-        long profileId, int pageNumber, int pageSize, CancellationToken cancellationToken)
+        int pageNumber, int pageSize, CancellationToken cancellationToken)
     {
+        var profileId = _authenticationContext.UserId;
         var profile = await _unitOfWork.Profiles.GetByIdAsync(profileId, cancellationToken);
 
         if (profile is null)
         {
-            throw new NotFoundException(profileId);
+            throw new NotFoundException("Профиль");
         }
 
         var (matches, count) = await _unitOfWork.Matches.GetPagedAsync(profileId, pageNumber, pageSize, cancellationToken);

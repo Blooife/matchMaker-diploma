@@ -1,3 +1,4 @@
+using Common.Attributes;
 using Common.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Match.BusinessLogic.DTOs.Profile;
@@ -11,16 +12,17 @@ namespace Match.API.Controllers;
 [Authorize(Roles = $"{Roles.User}")]
 public class ProfilesController(IProfileService _profileService) : ControllerBase
 {
-    [HttpGet("{profileId}/recommendations")]
+    [HttpGet("recommendations")]
     public async Task<ActionResult<ICollection<ProfileResponseDto>>> GetPagedRecommendations(
-        [FromRoute] long profileId, CancellationToken cancellationToken, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+         CancellationToken cancellationToken, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var profiles = await _profileService.GetRecommendationsAsync(profileId, pageNumber, pageSize, cancellationToken);
+        var profiles = await _profileService.GetRecommendationsAsync(pageNumber, pageSize, cancellationToken);
 
         return Ok(profiles);
     }
     
     [HttpPatch("location")]
+    [AuthorizeByOtherUser("ProfileId")]
     public async Task<ActionResult> UpdateLocation([FromBody]UpdateLocationDto dto, CancellationToken cancellationToken)
     {
         await _profileService.UpdateLocationAsync(dto, cancellationToken);

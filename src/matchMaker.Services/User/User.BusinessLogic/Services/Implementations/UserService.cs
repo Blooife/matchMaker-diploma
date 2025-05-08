@@ -26,9 +26,9 @@ public class UserService(
         if (user is null)
         {
             _logger.LogError("Delete user by id failed: User with id = {userId} was not found", userId);
-            throw new NotFoundException(userId);
+            throw new NotFoundException("Пользователь");
         }
-
+        
         var result = await _userRepository.DeleteUserByIdAsync(user);
         
         if (!result.Succeeded)
@@ -67,7 +67,7 @@ public class UserService(
         if (user is null)
         {
             _logger.LogError("Get user by id failed: User with id = {userId} was not found", userId);
-            throw new NotFoundException(userId);
+            throw new NotFoundException("Пользователь");
         }
         
         return _mapper.Map<UserResponseDto>(user);
@@ -80,7 +80,7 @@ public class UserService(
         if (user is null)
         {
             _logger.LogError("Get user by email failed: User with email = {email} was not found", email);
-            throw new NotFoundException(email);
+            throw new NotFoundException("Пользователь");
         }
         
         return _mapper.Map<UserResponseDto>(user);

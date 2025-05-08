@@ -31,6 +31,10 @@ form label {
   color: #a35bbf;
 }
 
+form .form-group {
+  margin-bottom: 16px;
+}
+
 form input[type="text"],
 form input[type="number"],
 form input[type="date"],
@@ -39,11 +43,18 @@ form select,
 form textarea {
   width: 100%;
   padding: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 0;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box;
 }
+
+.error-message {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 4px;
+}
+
 
 form input[type="number"] {
   -moz-appearance: textfield;
@@ -87,9 +98,4 @@ form .form-section h3 {
 form .form-section p {
   margin: 0;
   color: #666;
-}
-
-.error-message {
-  color: red;
-  font-size: 0.8em;
 }

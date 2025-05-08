@@ -74,6 +74,10 @@ public class ExceptionMiddleware
                 statusCode = HttpStatusCode.BadRequest;
                 result = CreateErrorResponse(registerException.Message, "RegisterError");
                 break;
+            case ConflictException conflictException:
+                statusCode = HttpStatusCode.Conflict;
+                result = CreateErrorResponse(conflictException.Message, "LogicError");
+                break;
             default:
                 statusCode = HttpStatusCode.InternalServerError;
                 result = CreateErrorResponse(exception.Message, "Failure");
@@ -96,12 +100,8 @@ public class ExceptionMiddleware
     
     private string CreatValidationErrorResponse(List<ValidationError> errors, string errorType)
     {
-        var errorMessage = $"Validation Errors: ";
-
-        foreach (var error in errors)
-        {
-            errorMessage += $" | {error.Error}";
-        }
+        var em = errors.Select(e => e.Error);
+        var errorMessage = string.Join(", ", em);
             
         return CreateErrorResponse(errorMessage, errorType);
     }

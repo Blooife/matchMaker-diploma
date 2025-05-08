@@ -10,7 +10,7 @@ public interface IChatService
     Task<ChatResponseDto> GetChatsByProfileIdsAsync(
         long firstProfileId, long secondProfileId, CancellationToken cancellationToken);
     Task<PagedList<ChatResponseDto>> GetChatsByProfileId(
-        long profileId, int pageNumber, int pageSize, CancellationToken cancellationToken);
+        int pageNumber, int pageSize, CancellationToken cancellationToken);
     Task<ChatResponseDto> CreateChatAsync(long firstProfileId, long secondProfileId, CancellationToken cancellationToken);
     Task<GeneralResponseDto> DeleteChatAsync(string chatId, CancellationToken cancellationToken);
     Task ReadChatAsync(ReadChatDto dto, CancellationToken cancellationToken);

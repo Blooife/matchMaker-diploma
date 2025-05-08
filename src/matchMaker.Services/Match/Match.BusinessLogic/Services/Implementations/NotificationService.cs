@@ -1,4 +1,5 @@
 using AutoMapper;
+using Common.Authorization.Context;
 using Common.Enums;
 using Match.BusinessLogic.DTOs.Notification;
 using Match.BusinessLogic.Services.Interfaces;
@@ -8,12 +9,12 @@ using MongoDB.Driver;
 
 namespace Match.BusinessLogic.Services.Implementations;
 
-public class NotificationService(IUnitOfWork _unitOfWork, IMapper _mapper) : INotificationService
+public class NotificationService(IUnitOfWork _unitOfWork, IMapper _mapper, IAuthenticationContext _authenticationContext) : INotificationService
 {
-    public async Task<List<NotificationResponseDto>> GetUserNotificationsAsync(long profileId, CancellationToken cancellationToken)
+    public async Task<List<NotificationResponseDto>> GetUserNotificationsAsync(CancellationToken cancellationToken)
     {
         var notifications = (await _unitOfWork.Notifications.GetAsync(
-            n => n.ProfileId == profileId,
+            n => n.ProfileId == _authenticationContext.UserId,
             cancellationToken
             ))
             .OrderByDescending(n => n.CreatedAt)
@@ -27,7 +28,7 @@ public class NotificationService(IUnitOfWork _unitOfWork, IMapper _mapper) : INo
         var update = Builders<Notification>.Update.Set(n => n.IsRead, true);
 
         await _unitOfWork.Notifications.UpdateManyAsync(
-            n => ids.Contains(n.Id),
+            n => ids.Contains(n.Id) && n.ProfileId == _authenticationContext.UserId,
             update,
             cancellationToken
         );

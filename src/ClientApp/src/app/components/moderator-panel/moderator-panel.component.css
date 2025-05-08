@@ -261,3 +261,14 @@
   font-size: 24px;
   cursor: pointer;
 }
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: #d9534f;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+

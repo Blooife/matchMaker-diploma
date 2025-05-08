@@ -26,10 +26,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Validators\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\Common\Common\Common.csproj" />
       <ProjectReference Include="..\Profile.BusinessLogic\Profile.BusinessLogic.csproj" />
     </ItemGroup>

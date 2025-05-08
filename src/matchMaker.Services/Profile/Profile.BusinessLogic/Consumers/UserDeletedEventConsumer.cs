@@ -18,7 +18,7 @@ public class UserDeletedEventConsumer(IUnitOfWork _unitOfWork, ICommunicationBus
 
         if (user is null)
         {
-            throw new NotFoundException(eventMessage.Id);
+            throw new NotFoundException("Пользователь");
         }
         
         await _unitOfWork.UserRepository.DeleteUserAsync(user);

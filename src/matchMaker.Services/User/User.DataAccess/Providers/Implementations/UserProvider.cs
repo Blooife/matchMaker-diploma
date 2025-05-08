@@ -84,7 +84,7 @@ public class UserProvider(UserContext _dbContext, UserManager<Models.User> _user
 
         if (user is null)
         {
-            throw new NotFoundException(userId);
+            throw new NotFoundException("Пользователь");
         }
 
         user.IsBanned = true;

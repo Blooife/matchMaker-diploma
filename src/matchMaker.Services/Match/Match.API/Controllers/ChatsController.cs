@@ -23,11 +23,11 @@ public class ChatsController(IChatService _chatService, IMapper _mapper) : Contr
         return Ok(chat);
     }
     
-    [HttpGet("paged/profiles/{profileId}")]
+    [HttpGet("paged")]
     public async Task<ActionResult<PagedList<ChatResponseDto>>> GetPagedChats(
-        [FromRoute] long profileId, CancellationToken cancellationToken, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        CancellationToken cancellationToken, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var pagedList = await _chatService.GetChatsByProfileId(profileId, pageNumber, pageSize, cancellationToken);
+        var pagedList = await _chatService.GetChatsByProfileId(pageNumber, pageSize, cancellationToken);
         var metadata = _mapper.Map<PaginationMetadata>(pagedList);
         
         HttpContext.Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(metadata));

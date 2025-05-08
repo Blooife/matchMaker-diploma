@@ -59,7 +59,7 @@ public class AuthService(
         if (user is null)
         {
             _logger.LogError("Login failed: user with email = {email} was not found", loginRequestDto.Email);
-            throw new NotFoundException(loginRequestDto.Email);
+            throw new NotFoundException("Пользователь");
         }
 
         if (user.IsBanned && (user.BannedUntil == null || user.BannedUntil > DateTime.UtcNow))

@@ -42,7 +42,7 @@ public class LanguageService(IUnitOfWork _unitOfWork, ICacheService _cacheServic
         
         if (language == null)
         {
-            throw new NotFoundException(id);
+            throw new NotFoundException("Язык");
         }
         
         var mappedLanguage = _mapper.Map<LanguageResponseDto>(language);

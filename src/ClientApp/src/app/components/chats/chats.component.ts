@@ -64,7 +64,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
         this.profileId = profileDto!.id;
 
         const token = localStorage.getItem('access_token');
-        console.log("ddd"+token)
         if (token) {
           this.chatSignalRService.startConnection(token);
 
@@ -73,8 +72,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
             if (chat) {
               chat.requestedProfileUnreadCount = requestedProfileUnreadCount;
               chat.receiverProfileUnreadCount = receiverProfileUnreadCount;
-              console.log(requestedProfileUnreadCount)
-              console.log(receiverProfileUnreadCount)
               if (this.selectedChat && this.selectedChat.id === chatId) {
                 this.selectedChat.requestedProfileUnreadCount = requestedProfileUnreadCount;
                 this.selectedChat.receiverProfileUnreadCount = receiverProfileUnreadCount;
@@ -125,7 +122,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   loadChats(): void {
     this.isLoading = true;
-    this.matchService.getPaginatedChats(this.pageSize, this.pageNumber, this.profile!.id).subscribe({
+    this.matchService.getPaginatedChats(this.pageSize, this.pageNumber).subscribe({
       next: (response) => {
         this.chats.push(...response.chats);
         this.pagination = response.pagination;
@@ -233,7 +230,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   refreshChats(){
-    this.matchService.getPaginatedChats(this.pageSize, this.pageNumber, this.profile!.id).subscribe({
+    this.matchService.getPaginatedChats(this.pageSize, this.pageNumber).subscribe({
       next: (response) => {
         this.chats = response.chats;
         this.pagination = response.pagination;

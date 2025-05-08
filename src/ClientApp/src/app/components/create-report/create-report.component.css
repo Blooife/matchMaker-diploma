@@ -32,17 +32,6 @@
   margin-top: 0;
 }
 
-.modal-content select,
-.modal-content textarea {
-  width: 100%;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  padding: 8px;
-  font-size: 14px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
 .modal-buttons {
   text-align: right;
 }
@@ -60,3 +49,25 @@
   background-color: #cccccc;
   cursor: not-allowed;
 }
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 2px;
+  margin-bottom: 0;
+}
+
+.modal-content select,
+.modal-content textarea {
+  width: 100%;
+  margin: 10px 0 0 0;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+

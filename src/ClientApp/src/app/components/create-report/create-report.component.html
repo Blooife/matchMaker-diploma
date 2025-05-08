@@ -1,19 +1,30 @@
 <div class="modal" *ngIf="visible">
-  <div class="modal-content">
+  <form [formGroup]="form" class="modal-content" (ngSubmit)="submitReport()">
     <span class="close" (click)="close()">&times;</span>
     <h3>Пожаловаться на пользователя</h3>
 
-    <label for="typeSelect">Тип жалобы:</label>
-    <select id="typeSelect" [(ngModel)]="selectedTypeId">
-      <option [ngValue]="null" disabled selected>Выберите тип</option>
-      <option *ngFor="let type of reportTypes" [ngValue]="type.id">{{ type.name }}</option>
-    </select>
+    <div class="form-group">
+      <label for="typeSelect">Тип жалобы:</label>
+      <select id="typeSelect" formControlName="reportTypeId">
+        <option [ngValue]="null" disabled>Выберите тип</option>
+        <option *ngFor="let type of reportTypes" [ngValue]="type.id">{{ type.name }}</option>
+      </select>
+      <div class="error-message" *ngIf="form.get('reportTypeId')?.touched && form.get('reportTypeId')?.errors">
+        {{ getErrorMessage('reportTypeId', form) }}
+      </div>
+    </div>
 
-    <label for="comment">Комментарий:</label>
-    <textarea id="comment" [(ngModel)]="comment" placeholder="Опишите причину жалобы"></textarea>
+    <div class="form-group">
+      <label for="comment">Комментарий:</label>
+      <textarea id="comment" formControlName="comment" placeholder="Опишите причину жалобы"></textarea>
+      <div class="error-message" *ngIf="form.get('comment')?.touched && form.get('comment')?.errors">
+        {{ getErrorMessage('comment', form) }}
+      </div>
+    </div>
+
 
     <div class="modal-buttons">
-      <button (click)="submitReport()" [disabled]="isSubmitting || !selectedTypeId || !comment.trim()">Отправить жалобу</button>
+      <button type="submit" [disabled]="isSubmitting || form.invalid">Отправить жалобу</button>
     </div>
-  </div>
+  </form>
 </div>

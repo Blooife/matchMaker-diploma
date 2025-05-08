@@ -1,4 +1,4 @@
-import { AbstractControl, FormGroup } from '@angular/forms';
+import {AbstractControl, FormGroup, ValidationErrors, ValidatorFn} from '@angular/forms';
 
 export function minimumAge(minAge: number) {
   return (control: AbstractControl) => {
@@ -46,6 +46,29 @@ export function ageFromLessThanOrEqualAgeTo(ageFromKey: string, ageToKey: string
   };
 }
 
+export function futureDateValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+
+    if (!value) {
+      return null;
+    }
+
+    const inputDate = new Date(value);
+    const now = new Date();
+
+    if (isNaN(inputDate.getTime())) {
+      return null;
+    }
+
+    if (inputDate <= now) {
+      return { futureDate: true };
+    }
+
+    return null;
+  };
+}
+
 export function getErrorMessage(controlName: string, form: FormGroup): string {
   const control = form.get(controlName);
   if (control && control.errors) {
@@ -63,7 +86,10 @@ export function getErrorMessage(controlName: string, form: FormGroup): string {
       return 'Значение должно быть больше 0';
     } else if (control.errors['ageFromLessThanAgeTo']) {
       return 'Возраст от должен быть меньше возраста до';
+    }else if (control.errors['futureDate']) {
+      return 'Дата должна быть в будущем';
     }
+
   }
   return '';
 }

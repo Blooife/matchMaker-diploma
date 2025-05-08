@@ -36,10 +36,10 @@ export class MatchService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getRecs(profileId: number): Observable<ProfileDto[]> {
+  getRecs(): Observable<ProfileDto[]> {
     this.recsLoadingSubject.next(true);
 
-    return this.httpClient.get<ProfileDto[]>(`${profilesEndpoints.recs(profileId)}`,
+    return this.httpClient.get<ProfileDto[]>(`${profilesEndpoints.recs()}`,
       this.httpOptions).pipe(
       tap(() => {
         this.recsLoadingSubject.next(false);
@@ -59,8 +59,8 @@ export class MatchService {
       );
   }
 
-  getPaginatedMatches(pageSize: number, pageNumber: number, profileId: number): Observable<{ matches: ProfileDto[], pagination: any }> {
-    return this.httpClient.get<ProfileDto[]>(`${matchesEndpoints.paged(pageSize.toString(), pageNumber.toString(), profileId)}`,
+  getPaginatedMatches(pageSize: number, pageNumber: number): Observable<{ matches: ProfileDto[], pagination: any }> {
+    return this.httpClient.get<ProfileDto[]>(`${matchesEndpoints.paged(pageSize.toString(), pageNumber.toString())}`,
       {
         ...this.httpOptions,
         observe: 'response'
@@ -75,8 +75,8 @@ export class MatchService {
     );
   }
 
-  getPaginatedChats(pageSize: number, pageNumber: number, profileId: number): Observable<{ chats: ChatDto[], pagination: any }> {
-    return this.httpClient.get<ChatDto[]>(`${chatsEndpoints.paged(pageSize.toString(), pageNumber.toString(), profileId)}`,
+  getPaginatedChats(pageSize: number, pageNumber: number): Observable<{ chats: ChatDto[], pagination: any }> {
+    return this.httpClient.get<ChatDto[]>(`${chatsEndpoints.paged(pageSize.toString(), pageNumber.toString())}`,
       {
         ...this.httpOptions,
         observe: 'response'
@@ -136,8 +136,8 @@ export class MatchService {
     }, this.httpOptions);
   }
 
-  getNotifications(profileId: number): Observable<NotificationDto[]> {
-    return this.httpClient.get<NotificationDto[]>(`${notificationsEndpoints.notifications}/${profileId}`, this.httpOptions)
+  getNotifications(): Observable<NotificationDto[]> {
+    return this.httpClient.get<NotificationDto[]>(`${notificationsEndpoints.notifications}`, this.httpOptions)
       .pipe(
       );
   }

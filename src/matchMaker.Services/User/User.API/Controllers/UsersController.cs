@@ -1,5 +1,6 @@
 using User.BusinessLogic.Services.Interfaces;
 using AutoMapper;
+using Common.Attributes;
 using Common.Constants;
 using Common.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -44,10 +45,11 @@ public class UsersController(IUserService _userService, IMapper _mapper): Contro
     
     [HttpDelete("{userId}")]
     [Authorize(Roles = $"{Roles.Admin}, {Roles.Moderator}, {Roles.User}")]
+    [AuthorizeByOtherUser("userId")]
     public async Task<IActionResult> DeleteUserById([FromRoute] long userId, CancellationToken cancellationToken)
     {
         var users = await _userService.DeleteUserByIdAsync(userId, cancellationToken);
         
-        return Ok(users);
+        return NoContent();
     } 
 }

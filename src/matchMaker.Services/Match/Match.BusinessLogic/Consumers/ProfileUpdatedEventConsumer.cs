@@ -21,7 +21,7 @@ public class ProfileUpdatedEventConsumer(
         
         if (profile is null)
         {
-            throw new NotFoundException(eventMessage.Id);
+            throw new NotFoundException("Профиль");
         }
         
         await _unitOfWork.Profiles.UpdateAsync(profileMapped, cancellationToken);

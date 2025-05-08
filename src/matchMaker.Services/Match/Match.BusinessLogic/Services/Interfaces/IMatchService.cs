@@ -6,5 +6,5 @@ namespace Match.BusinessLogic.Services.Interfaces;
 public interface IMatchService
 {
     Task<PagedList<ProfileResponseDto>> GetMatchesByProfileIdAsync(
-        long profileId, int pageNumber, int pageSize, CancellationToken cancellationToken);
+        int pageNumber, int pageSize, CancellationToken cancellationToken);
 }

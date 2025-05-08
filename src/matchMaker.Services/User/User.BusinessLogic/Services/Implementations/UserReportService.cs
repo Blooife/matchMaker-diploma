@@ -29,13 +29,13 @@ public class UserReportService(
         var alreadyReported = await _userReportProvider.HasUserAlreadyReportedAsync(_authenticationContext.UserId, dto.ReportedUserId, cancellationToken);
         if (alreadyReported)
         {
-            throw new InvalidOperationException("Вы уже подали жалобу на этого пользователя.");
+            throw new InvalidOperationException("Вы уже подали жалобу на этого пользователя, она ещё не была рассмотрена.");
         }
         
         var reportType = await _userReportProvider.GetReportTypeByIdAsync(dto.ReportTypeId, cancellationToken);
         if (reportType is null)
         {
-            throw new NotFoundException(dto.ReportTypeId);
+            throw new NotFoundException("Жалоба", 2);
         }
 
         var report = new UserReport
@@ -98,6 +98,16 @@ public class UserReportService(
     public async Task ModerateReportAsync(ModerateReportDto dto, CancellationToken cancellationToken = default)
     {
         var report = await _userReportProvider.GetReportByIdAsync(dto.ReportId, cancellationToken);
+
+        if (report is null)
+        {
+            throw new NotFoundException("Жалоба", 2);
+        }
+        
+        if (report?.Status is not ReportStatus.Pending)
+        {
+            throw new ConflictException("Эта жалоба уже была отмодерирована");
+        }
         
         await _userReportProvider.UpdateReportStatusAsync(dto.ReportId, dto.Status, dto.ModeratorComment, _authenticationContext.UserId, cancellationToken);
 

@@ -25,15 +25,20 @@ public class LikeService(IUnitOfWork _unitOfWork, IMapper _mapper, IAuthenticati
 
         if (likerProfile is null)
         {
-            throw new NotFoundException(_authenticationContext.UserId);
+            throw new NotFoundException("Профиль");
         }
         
         if (likedProfile is null)
         {
-            throw new NotFoundException(dto.TargetProfileId);
+            throw new NotFoundException("Профиль");
         }
-        
-        var mutualLike = await _unitOfWork.Likes.CheckMutualLikeAsync(likeEntity, cancellationToken);
+
+        Like? mutualLike = null;
+
+        if (dto.IsLike)
+        {
+            mutualLike = await _unitOfWork.Likes.CheckMutualLikeAsync(likeEntity, cancellationToken);
+        }
             
         if (mutualLike is not null)
         {
