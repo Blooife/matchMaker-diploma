@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {formatDate, KeyValuePipe, NgForOf} from '@angular/common';
+import {formatDate, KeyValuePipe, NgForOf, NgIf} from '@angular/common';
 import {Gender, GenderTranslatePipe} from '../../../constants/gender';
 import { ProfileService } from '../../../services/profile-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,7 +29,8 @@ import {minimumAge, rangeValidator, minValue, ageFromLessThanOrEqualAgeTo, getEr
     UpdateLanguagesComponent,
     UpdateEducationComponent,
     UpdateImagesComponent,
-    GenderTranslatePipe
+    GenderTranslatePipe,
+    NgIf
   ],
   standalone: true
 })
@@ -45,7 +46,7 @@ export class UpdateProfileComponent implements OnInit {
     this.profileForm = this.fb.group({
       id: ['', Validators.required],
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      lastName: ['', [Validators.minLength(2), Validators.maxLength(50)]],
+      lastName: ['', [Validators.required,Validators.minLength(2), Validators.maxLength(50)]],
       birthDate: ['', [Validators.required, minimumAge(16)]],
       gender: ['', Validators.required],
       bio: [null, [Validators.minLength(10), Validators.maxLength(500)]],
@@ -82,7 +83,6 @@ export class UpdateProfileComponent implements OnInit {
             gender: profile.gender,
             bio: profile.bio,
             height: profile.height,
-            showAge: profile.showAge,
             ageFrom: profile.ageFrom,
             ageTo: profile.ageTo,
             maxDistance: profile.maxDistance,

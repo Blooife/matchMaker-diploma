@@ -184,7 +184,7 @@ namespace User.DataAccess.Migrations
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("User.DataAccess.Models.User", b =>
@@ -254,7 +254,7 @@ namespace User.DataAccess.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("User.DataAccess.Models.UserReport", b =>

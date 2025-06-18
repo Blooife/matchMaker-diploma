@@ -20,6 +20,9 @@ export class ErrorHandlerService {
     } else if (error.error) {
       const errorDetails: ErrorDetails = error.error;
       errorMessage = `${errorDetails.ErrorMessage}`;
+      if (errorDetails.ErrorMessage == "Профиль не найден"){
+        return throwError(errorMessage);
+      }
     } else {
       errorMessage = `${error.message}`;
     }

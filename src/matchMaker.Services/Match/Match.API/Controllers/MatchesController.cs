@@ -12,7 +12,7 @@ namespace Match.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize(Roles = $"{Roles.User}")]
-public class MatchesController(IMatchService _matchService, IMapper _mapper) : ControllerBase
+public class MatchesController(IMatchService _matchService, IMapper _mapper, ICompatibilityService _compatibilityService) : ControllerBase
 {
     [HttpGet("paged")]
     public async Task<ActionResult<PagedList<MatchResponseDto>>> GetPagedMatches(
@@ -24,5 +24,13 @@ public class MatchesController(IMatchService _matchService, IMapper _mapper) : C
         HttpContext.Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(metadata));
 
         return Ok(pagedList);
+    }
+    
+    [HttpPost("compatibility")]
+    public async Task<IActionResult> GetCompatibility([FromBody] CompatibilityRequestDto request)
+    {
+        var compatibilityJson = await _compatibilityService.GetBirthCompatibilityAsync(request.BirthDate1, request.BirthDate2);
+
+        return Content(compatibilityJson, "application/json");
     }
 }

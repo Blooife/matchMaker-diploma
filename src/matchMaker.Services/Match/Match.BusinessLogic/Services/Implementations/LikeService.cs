@@ -51,14 +51,12 @@ public class LikeService(IUnitOfWork _unitOfWork, IMapper _mapper, IAuthenticati
             
             await _unitOfWork.Matches.CreateAsync(matchEntity, cancellationToken);
             
-            await _unitOfWork.Likes.DeleteAsync(mutualLike, cancellationToken);
+            //await _unitOfWork.Likes.DeleteAsync(mutualLike, cancellationToken);
             
             await CreateMatchNotificationsAsync(likerProfile.Name, likedProfile.Name, likerProfile.Id, likedProfile.Id, cancellationToken);
         }
-        else
-        {
-            await _unitOfWork.Likes.CreateAsync(likeEntity, cancellationToken);
-        }
+
+        await _unitOfWork.Likes.CreateAsync(likeEntity, cancellationToken);
         
         return _mapper.Map<LikeResponseDto>(likeEntity);
     }

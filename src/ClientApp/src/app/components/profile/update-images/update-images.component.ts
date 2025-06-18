@@ -80,7 +80,7 @@ export class UpdateImagesComponent implements OnInit, OnDestroy {
         this.selectedFile = null;
       });
     } else {
-      alert('Please select a file first');
+      alert('Пожалуйста, сначала выберите файл');
     }
   }
 
@@ -104,7 +104,7 @@ export class UpdateImagesComponent implements OnInit, OnDestroy {
   }
 
   confirmDelete(imageId: number): void {
-    if (confirm('Are you sure you want to delete this image?')) {
+    if (confirm('Вы уверены, что хотите удалить изображение?')) {
       this.profileService.removeImage(this.profileId!, imageId).subscribe(() => {
         this.closeModal();
       });
@@ -112,7 +112,7 @@ export class UpdateImagesComponent implements OnInit, OnDestroy {
   }
 
   makeMain(imageId: number): void {
-    if (confirm('Are you sure you want to make this image main?')) {
+    if (confirm('Вы уверены, что хотите сделать изображение автаром?')) {
       const model: ChangeMainImageDto = {
         profileId: this.profileId!,
         imageId: imageId

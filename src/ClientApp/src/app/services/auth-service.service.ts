@@ -8,6 +8,7 @@ import { LoginResponseDto } from '../dtos/auth/loginResponseDto';
 import { RefreshRequestDto } from '../dtos/auth/refreshRequestDto';
 import { jwtDecode } from 'jwt-decode';
 import { authEndpoints } from '../constants/api-endpoints';
+import {ChangePasswordRequestDto} from "../dtos/auth/changePasswordRequestDto";
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,12 @@ export class AuthService {
           }
         }),
         map(response => !!response.refreshToken),
+      );
+  }
+
+  changePassword(model: ChangePasswordRequestDto): Observable<void> {
+    return this.httpClient.patch<void>(`${authEndpoints.changePassword}`, model, this.httpOptions)
+      .pipe(
       );
   }
 

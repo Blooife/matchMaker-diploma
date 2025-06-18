@@ -3,71 +3,85 @@
   <div class="form-group">
     <label for="name">Имя:</label>
     <input id="name" formControlName="name" type="text" >
-    <div class="error-message">{{ getErrorMessage('name', this.profileForm) }}</div>
+    <div class="error-message" *ngIf="this.profileForm.get('name')?.touched && this.profileForm.get('name')?.errors">
+      {{ getErrorMessage('name', this.profileForm) }}
+    </div>
   </div>
 
   <div class="form-group">
     <label for="lastName">Фамилия:</label>
     <input id="lastName" formControlName="lastName" type="text">
-    <div class="error-message">{{ getErrorMessage('lastName', this.profileForm) }}</div>
+    <div class="error-message" *ngIf="this.profileForm.get('lastName')?.touched && this.profileForm.get('lastName')?.errors">
+      {{ getErrorMessage('lastName', this.profileForm) }}
+    </div>
   </div>
 
   <div class="form-group">
     <label for="birthDate">Дата рождения:</label>
     <input id="birthDate" formControlName="birthDate" type="date">
-    <div class="error-message">{{ getErrorMessage('birthDate', this.profileForm) }}</div>
+    <div class="error-message" *ngIf="this.profileForm.get('birthDate')?.touched && this.profileForm.get('birthDate')?.errors">
+      {{ getErrorMessage('birthDate', this.profileForm) }}
+    </div>
   </div>
 
   <div class="form-group">
     <label for="gender">Пол:</label>
-    <select id="gender" formControlName="gender" class="select-input">
+    <select id="gender" formControlName="gender">
       <option *ngFor="let gender of genders" [value]="gender">{{ gender | genderTranslate }}</option>
     </select>
-    <div class="error-message">{{ getErrorMessage('gender', this.profileForm) }}</div>
+    <div class="error-message" *ngIf="this.profileForm.get('gender')?.touched && this.profileForm.get('gender')?.errors">
+      {{ getErrorMessage('gender', this.profileForm) }}
+    </div>
   </div>
 
   <div class="form-group">
     <label for="bio">О себе:</label>
     <textarea id="bio" formControlName="bio"></textarea>
-    <div class="error-message">{{ getErrorMessage('bio', this.profileForm) }}</div>
+    <div class="error-message" *ngIf="this.profileForm.get('bio')?.touched && this.profileForm.get('bio')?.errors">
+      {{ getErrorMessage('bio', this.profileForm) }}
+    </div>
   </div>
 
   <div class="form-group">
     <label for="height">Рост:</label>
     <input id="height" formControlName="height" type="number">
-    <div class="error-message">{{ getErrorMessage('height', this.profileForm) }}</div>
-  </div>
-
-  <div class="form-group">
-    <label for="showAge">Показывать возраст:</label>
-    <input id="showAge" formControlName="showAge" type="checkbox">
-    <div class="error-message">{{ getErrorMessage('showAge', this.profileForm) }}</div>
+    <div class="error-message" *ngIf="this.profileForm.get('height')?.touched && this.profileForm.get('height')?.errors">
+      {{ getErrorMessage('height', this.profileForm) }}
+    </div>
   </div>
 
   <div class="form-group">
     <label for="ageFrom">Возраст от:</label>
-    <input id="ageFrom" formControlName="ageFrom" type="number" min="16" max="100">
-    <div class="error-message">{{ getErrorMessage('ageFrom', this.profileForm) }}</div>
+    <input id="ageFrom" formControlName="ageFrom" type="number">
+    <div class="error-message" *ngIf="this.profileForm.get('ageFrom')?.touched && this.profileForm.get('ageFrom')?.errors">
+      {{ getErrorMessage('ageFrom', this.profileForm) }}
+    </div>
   </div>
 
   <div class="form-group">
     <label for="ageTo">Возраст до:</label>
-    <input id="ageTo" formControlName="ageTo" type="number" min="16" max="100">
-    <div class="error-message">{{ getErrorMessage('ageTo', this.profileForm) }}</div>
+    <input id="ageTo" formControlName="ageTo" type="number">
+    <div class="error-message" *ngIf="this.profileForm.get('ageTo')?.touched && this.profileForm.get('ageTo')?.errors">
+      {{ getErrorMessage('ageTo', this.profileForm) }}
+    </div>
   </div>
 
   <div class="form-group">
-    <label for="maxDistance">Расстояние(км):</label>
-    <input id="maxDistance" formControlName="maxDistance" type="number" min="0" max="1000">
-    <div class="error-message">{{ getErrorMessage('maxDistance', this.profileForm) }}</div>
+    <label for="maxDistance">Радиус поиска(км):</label>
+    <input id="maxDistance" formControlName="maxDistance" type="number">
+    <div class="error-message" *ngIf="this.profileForm.get('maxDistance')?.touched && this.profileForm.get('maxDistance')?.errors">
+      {{ getErrorMessage('maxDistance', this.profileForm) }}
+    </div>
   </div>
 
   <div class="form-group">
     <label for="preferredGender">Предпочетаемый пол:</label>
-    <select id="preferredGender" formControlName="preferredGender" class="select-input">
-      <option *ngFor="let gender of genders" [value]="gender">{{ gender | genderTranslate}}</option>
+    <select id="preferredGender" formControlName="preferredGender">
+      <option *ngFor="let gender of genders" [value]="gender">{{ gender | genderTranslate }}</option>
     </select>
-    <div class="error-message">{{ getErrorMessage('preferredGender', this.profileForm) }}</div>
+    <div class="error-message" *ngIf="this.profileForm.get('preferredGender')?.touched && this.profileForm.get('preferredGender')?.errors">
+      {{ getErrorMessage('preferredGender', this.profileForm) }}
+    </div>
   </div>
 
   <label>Цель:</label>
@@ -79,7 +93,9 @@
   <div class="form-group">
     <label>Город:</label>
     <app-city-select [countryId]="selectedCountryId" (citySelected)="onCitySelected($event)"></app-city-select>
-    <div class="error-message">{{ getErrorMessage('cityId', this.profileForm) }}</div>
+    <div class="error-message" *ngIf="this.profileForm.get('cityId')?.touched && this.profileForm.get('cityId')?.errors">
+      {{ getErrorMessage('cityId', this.profileForm) }}
+    </div>
   </div>
 
   <button type="submit" mat-raised-button color="primary">Создать</button>

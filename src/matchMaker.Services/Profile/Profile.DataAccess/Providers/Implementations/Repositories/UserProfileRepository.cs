@@ -41,7 +41,7 @@ public class UserProfileRepository(ProfileDbContext _dbContext)
             .ThenInclude(pe=>pe.Education)
             .Include(p => p.Languages)
             .Include(p => p.Interests)
-            .Include(p => p.Images.OrderByDescending(i=>i.IsMainImage).ThenByDescending(i => i.UploadTimestamp))
+            .Include(p => p.Images.OrderByDescending(i=>i.IsMainImage).ThenBy(i => i.UploadTimestamp))
             .Where(expression).WhereNotDeleted().AsNoTracking().FirstOrDefaultAsync(cancellationToken);
     }
     
@@ -55,7 +55,7 @@ public class UserProfileRepository(ProfileDbContext _dbContext)
             .ThenInclude(pe=>pe.Education)
             .Include(p => p.Languages)
             .Include(p => p.Interests)
-            .Include(p => p.Images.OrderByDescending(i=>i.IsMainImage).ThenByDescending(i => i.UploadTimestamp))
+            .Include(p => p.Images.OrderByDescending(i=>i.IsMainImage).ThenBy(i => i.UploadTimestamp))
             .Where(profile=>profileIds.Contains(profile.Id)).WhereNotDeleted().AsNoTracking().ToListAsync();
     }
 }

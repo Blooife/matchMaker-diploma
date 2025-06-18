@@ -1,4 +1,5 @@
 using Common.Authorization.Context;
+using Common.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -48,10 +49,7 @@ public class AuthorizeByOtherUserAttribute : Attribute, IActionFilter
 
         if (authContext.UserId != routeUserId)
         {
-            context.Result = new ObjectResult("Вы не можете выполнять действия от имени другого пользователя")
-            {
-                StatusCode = StatusCodes.Status403Forbidden
-            };
+            throw new ForbiddenException("Вы не можете выполнять действия от имени другого пользователя");
         }
     }
 

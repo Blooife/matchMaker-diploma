@@ -26,6 +26,11 @@
         <span *ngIf="isMenuVisible">Панель модератора</span>
       </button>
 
+      <button *ngIf="(isAdmin() || isModerator()) && !isUser()" [routerLink]="['/change-password']">
+        <i class="fas fa-key"></i>
+        <span *ngIf="isMenuVisible">Сменить пароль</span>
+      </button>
+
       <button *ngIf="isUser()" [routerLink]="['/profile']">
         <i class="fas fa-user"></i>
         <span *ngIf="isMenuVisible">Мой профиль</span>

@@ -17,6 +17,16 @@ public class CitiesSeeds(ProfileDbContext _dbContext) : ISeedEntitiesProvider<Pr
         {
             CreateIfNotExists(city);
         }
+        
+        var countryId1 = _dbContext.Set<Country>()
+            .Where(c => c.Name == "Россия")
+            .Select(c => c.Id)
+            .FirstOrDefault();
+        
+        foreach (var city in GetCitiesForRussia(countryId1))
+        {
+            CreateIfNotExists(city);
+        }
 
         _dbContext.SaveChanges();
         return Task.CompletedTask;
@@ -40,6 +50,27 @@ public class CitiesSeeds(ProfileDbContext _dbContext) : ISeedEntitiesProvider<Pr
         yield return Create("Гродно");
         yield return Create("Витебск");
         yield return Create("Могилёв");
+        yield break;
+
+        City Create(string name)
+        {
+            return new City()
+            {
+                Name = name,
+                CountryId = countryId
+            };
+        }
+    }
+    
+    private IEnumerable<City> GetCitiesForRussia(long countryId)
+    {
+        yield return Create("Москва");
+        yield return Create("Санкт-Петербург");
+        yield return Create("Самара");
+        yield return Create("Волгоград");
+        yield return Create("Краснодар");
+        yield return Create("Воронеж");
+        yield return Create("Пенза");
         yield break;
 
         City Create(string name)

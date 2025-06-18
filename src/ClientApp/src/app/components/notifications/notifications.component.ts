@@ -5,6 +5,8 @@ import { NotificationDto } from '../../dtos/notification/NotificationDto';
 import { AsyncPipe } from "@angular/common";
 import { MatchService } from "../../services/match-service.service";
 import { FormsModule } from "@angular/forms";
+import {ProfileService} from "../../services/profile-service.service";
+import {roles} from "../../constants/roles";
 
 type NotificationWithSelection = NotificationDto & { isSelected: boolean }; // <== добавили тип расширения!
 
@@ -22,13 +24,19 @@ export class NotificationsComponent implements OnInit {
   isVisible = false;
   activeTab: 'unread' | 'read' = 'unread';
 
-  constructor(private matchService: MatchService, private authService: AuthService) {}
+  constructor(private matchService: MatchService, private authService: AuthService, private profileService: ProfileService) {}
 
   ngOnInit() {
     this.authService.currentUserId$.subscribe(id => {
       if (id) {
         this.currentUserId = id;
-        this.loadNotifications();
+        const isUser = this.authService.checkRights(roles.user);
+        if(isUser)
+        this.profileService.getProfileById(id).subscribe(profileId =>{
+          if (profileId){
+            this.loadNotifications();
+          }
+        })
       }
     });
   }

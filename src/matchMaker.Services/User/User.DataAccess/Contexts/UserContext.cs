@@ -17,5 +17,15 @@ public class UserContext : IdentityDbContext<Models.User, Role, long>
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         
         base.OnModelCreating(modelBuilder);
+        
+        modelBuilder.Entity<Models.User>(b =>
+        {
+            b.ToTable("Users");
+        });
+        
+        modelBuilder.Entity<Role>(b =>
+        {
+            b.ToTable("Roles");
+        });
     }
 }

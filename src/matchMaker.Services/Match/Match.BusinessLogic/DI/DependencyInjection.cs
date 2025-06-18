@@ -24,6 +24,11 @@ public static class DependencyInjection
         services.RegisterServices();
         services.ConfigureApplicationOptions(configuration);
         services.RegisterMassTransit();
+        services.AddHttpClient<ICompatibilityService, CompatibilityService>(client =>
+        {
+            client.BaseAddress = new Uri("https://pink-api.ru/");
+        });
+
     }
     
     private static void RegisterServices(this IServiceCollection services)
@@ -36,6 +41,7 @@ public static class DependencyInjection
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IBlackListService, BlackListService>();
         services.AddSingleton<IConnectionManager, ConnectionManager>();
+        services.AddScoped<IHybridScoringService, HybridScoringService>();
         services.TryAddScoped<IAuthenticationContext, AuthenticationContext>();
     }
     

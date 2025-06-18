@@ -3,7 +3,8 @@ export const base = "https://localhost:5000";
 export const authEndpoints = {
   login: `${base}/auth/login`,
   register: `${base}/auth/register`,
-  refresh: `${base}/auth/refresh`
+  refresh: `${base}/auth/refresh`,
+  changePassword: `${base}/auth/password`
 }
 
 export const rolesEndpoints = {

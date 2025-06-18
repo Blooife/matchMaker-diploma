@@ -4,6 +4,7 @@ import {RouterLink} from "@angular/router";
 import {UpdateImagesComponent} from "../update-images/update-images.component";
 import {ProfileDto} from "../../../dtos/profile/ProfileDto";
 import {Gender, GenderTranslatePipe} from '../../../constants/gender';
+import {getZodiacSign} from "../../utils/zodiac.util";
 
 @Component({
   selector: 'app-profile-card',
@@ -37,5 +38,8 @@ export class ProfileCardComponent {
     if (this.profile && this.profile.images.length > 0) {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.profile.images.length;
     }
+  }
+  get zodiacSign(): string {
+    return getZodiacSign(this.profile.birthDate);
   }
 }

@@ -17,7 +17,6 @@ export class ErrorInterceptor implements HttpInterceptor {
           return throwError(() => error);
         }
 
-        // Теперь ошибки обрабатываются через ErrorHandlerService
         this.errorHandlerService.handleError(error);
 
         return throwError(() => error);

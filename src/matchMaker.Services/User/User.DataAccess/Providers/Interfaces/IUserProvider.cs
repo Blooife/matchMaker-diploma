@@ -16,4 +16,5 @@ public interface IUserProvider
     Task<IdentityResult> UpdateUserAsync(Models.User user);
     Task<(List<Models.User> Users, int TotalCount)> GetPagedUsersAsync(int pageNumber, int pageSize);
     Task BanUserAsync(long userId, DateTime? bannedUntil = null, CancellationToken cancellationToken = default);
+    Task<IdentityResult> UpdatePasswordAsync(DataAccess.Models.User user, string currentPassword, string newPassword);
 }

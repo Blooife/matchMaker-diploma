@@ -1,5 +1,6 @@
 using AutoMapper;
 using Common.Authorization.Context;
+using Common.Dtos.Profile;
 using Common.Exceptions;
 using Match.BusinessLogic.DTOs.Profile;
 using Match.BusinessLogic.Services.Interfaces;
@@ -13,7 +14,8 @@ public class ProfileService(
     IUnitOfWork _unitOfWork,
     IProfileClient _profileClient,
     IMapper _mapper,
-    IAuthenticationContext _authenticationContext) : IProfileService
+    IAuthenticationContext _authenticationContext,
+    IHybridScoringService _hybridScoringService) : IProfileService
 {
     public async Task<List<ProfileResponseDto>> GetRecommendationsAsync(
         int pageNumber, int pageSize, CancellationToken cancellationToken)
@@ -39,9 +41,12 @@ public class ProfileService(
         var ids =
             await _unitOfWork.Profiles.GetRecsAsync(excludedProfileIds, userProfile, cancellationToken);
 
-        var profiles = await _profileClient.GetProfilesByIdsAsync(ids.ToArray());
+        var candidateProfiles = await _profileClient.GetProfilesByIdsAsync(ids.ToArray());
+        var userClientProfile = (await _profileClient.GetProfilesByIdsAsync([profileId])).FirstOrDefault();
         
-        return _mapper.Map<List<ProfileResponseDto>>(profiles);
+        var ranked = await _hybridScoringService.RankProfilesAsync(userClientProfile, candidateProfiles.ToList(), cancellationToken);
+
+        return _mapper.Map<List<ProfileResponseDto>>(ranked);
     }
     
     public async Task UpdateLocationAsync(UpdateLocationDto dto, CancellationToken cancellationToken)

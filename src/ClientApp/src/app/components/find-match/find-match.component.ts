@@ -38,6 +38,7 @@ import {Subscription} from "rxjs";
 })
 export class FindMatchComponent implements OnInit, OnDestroy {
   profileId: number | undefined;
+  profile: ProfileDto | undefined;
   userId: number | undefined;
   recommendations: ProfileDto[] = [];
   currentIndex: number = 0;
@@ -45,8 +46,12 @@ export class FindMatchComponent implements OnInit, OnDestroy {
   animationState: string = 'center';
   recsLoading: boolean = true;
   subscriptions: Subscription[] = [];
+  compatibilityResult: any;
 
-  constructor(private matchService: MatchService, private route: ActivatedRoute, private authService: AuthService, private profileService: ProfileService) { }
+  constructor(private matchService: MatchService,
+              private route: ActivatedRoute,
+              private authService: AuthService,
+              private profileService: ProfileService) { }
 
   ngOnInit(): void {
     const sub = this.matchService.recsLoading$.subscribe(
@@ -58,6 +63,7 @@ export class FindMatchComponent implements OnInit, OnDestroy {
       (profileDto) =>{
         if(profileDto){
           this.profileId = profileDto?.id;
+          this.profile = profileDto;
         }
       }
     )
@@ -188,4 +194,29 @@ export class FindMatchComponent implements OnInit, OnDestroy {
     });
   }
 
+  loadCompatibility(partner: ProfileDto) {
+    const myBirthDate = this.profile?.birthDate;
+    const partnerBirthDate = partner.birthDate;
+
+    if (!myBirthDate || !partnerBirthDate) {
+      alert('Нет данных о дате рождения для совместимости.');
+      return;
+    }
+
+    this.matchService.getCompatibility(myBirthDate, partnerBirthDate).subscribe({
+      next: (result) => {
+        this.compatibilityResult = result;
+        const dialog: any = document.querySelector('.compatibility-modal');
+        if (dialog) dialog.showModal();
+      },
+      error: () => {
+        alert('Ошибка при загрузке совместимости.');
+      }
+    });
+  }
+
+  closeModal() {
+    const dialog: any = document.querySelector('.compatibility-modal');
+    if (dialog) dialog.close();
+  }
 }

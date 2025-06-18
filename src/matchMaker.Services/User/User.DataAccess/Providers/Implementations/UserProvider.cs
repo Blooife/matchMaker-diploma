@@ -92,4 +92,10 @@ public class UserProvider(UserContext _dbContext, UserManager<Models.User> _user
 
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
+    
+    public async Task<IdentityResult> UpdatePasswordAsync(DataAccess.Models.User user, string currentPassword, string newPassword)
+    {
+        var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        return result;
+    }
 }

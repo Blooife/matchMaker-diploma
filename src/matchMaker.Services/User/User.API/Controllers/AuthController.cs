@@ -1,3 +1,5 @@
+using Common.Constants;
+using Microsoft.AspNetCore.Authorization;
 using User.BusinessLogic.DTOs.Request;
 using User.BusinessLogic.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -38,5 +40,14 @@ public class AuthController(IAuthService _authService) : ControllerBase
         var response = await _authService.LoginWithGoogleAsync(model);
         
         return Ok(response);
+    }
+    
+    [HttpPatch("password")]
+    [Authorize(Roles = $"{Roles.Admin}, {Roles.Moderator}, {Roles.User}")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestDto dto, CancellationToken cancellationToken)
+    {
+        await _authService.ChangePasswordAsync(dto, cancellationToken);
+        
+        return NoContent();
     }
 }

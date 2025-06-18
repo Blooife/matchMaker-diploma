@@ -93,3 +93,154 @@
   color: #6f42c1;
   text-align: center;
 }
+
+.compatibility-modal {
+  border: none;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  padding: 1rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  background: white;
+  font-family: sans-serif;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header button {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal-content {
+  margin-top: 0.5rem;
+}
+
+.modal-content h3 {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.chakra-progress-bars {
+  margin-top: 1rem;
+}
+
+.chakra-bar {
+  margin-bottom: 1rem;
+}
+
+.chakra-bar label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+  display: block;
+  color: #444;
+}
+
+.progress {
+  position: relative;
+  height: 20px;
+  background: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 10px 0 0 10px;
+  transition: width 0.5s ease-in-out;
+}
+
+.progress span {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #000000;
+}
+
+.progress-fill.physical {
+  background-color: #4caf50;
+}
+.progress-fill.emotional {
+  background-color: #f44336;
+}
+.progress-fill.intellect {
+  background-color: #2196f3;
+}
+.progress-fill.heart {
+  background-color: #e91e63;
+}
+.progress-fill.creative {
+  background-color: #ff9800;
+}
+.progress-fill.intuitive {
+  background-color: #9c27b0;
+}
+.progress-fill.highest {
+  background-color: #3f51b5;
+}
+.chakra-description {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 4px;
+  margin-left: 4px;
+}
+.chakra-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.chakra-bar label {
+  font-weight: bold;
+  color: #444;
+  margin: 0;
+}
+
+.chakra-label-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #000;
+  border: 2px solid;
+}
+
+.chakra-label-badge.physical {
+  border-color: #4caf50;
+}
+.chakra-label-badge.emotional {
+  border-color: #f44336;
+}
+.chakra-label-badge.intellect {
+  border-color: #2196f3;
+}
+.chakra-label-badge.heart {
+  border-color: #e91e63;
+}
+.chakra-label-badge.creative {
+  border-color: #ff9800;
+}
+.chakra-label-badge.intuitive {
+  border-color: #9c27b0;
+}
+.chakra-label-badge.highest {
+  border-color: #3f51b5;
+}
+
+
+

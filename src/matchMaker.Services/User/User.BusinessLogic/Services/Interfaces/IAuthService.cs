@@ -10,4 +10,5 @@ public interface IAuthService
     Task<LoginResponseDto> LoginAsync(UserRequestDto loginRequestDto, CancellationToken cancellationToken);
     Task<LoginResponseDto> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken);
     Task<LoginResponseDto> LoginWithGoogleAsync(ExternalLoginRequestDto dto);
+    Task ChangePasswordAsync(ChangePasswordRequestDto changePasswordRequestDto, CancellationToken cancellationToken);
 }

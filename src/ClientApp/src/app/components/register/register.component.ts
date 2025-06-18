@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import { AuthService } from '../../services/auth-service.service';
 import { Router } from '@angular/router';
 import {NgIf} from "@angular/common";
+import {getErrorMessage, passwordMatchValidator} from "../profile/validators";
 
 @Component({
   selector: 'app-register',
@@ -24,8 +25,9 @@ export class RegisterComponent {
   ) {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
-    });
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
+    }, { validators: passwordMatchValidator('password', 'confirmPassword') });
   }
 
   async register() {
@@ -40,21 +42,5 @@ export class RegisterComponent {
     )
   }
 
-  getErrorMessage(controlName: string): string {
-    const control = this.registerForm.get(controlName);
-
-    if (control && control.errors) {
-      if (control.errors['required']) {
-        return 'Поле обязательно для заполнения';
-      } else if (control.errors['minlength']) {
-        return `Минимальное количество символов - ${control.errors['minlength'].requiredLength}`;
-      } else if (control.errors['maxlength']) {
-        return `Максимальное количество символов - ${control.errors['maxlength'].requiredLength}`;
-      }else if (control.errors['email']) {
-        return `Должно содержать email`;
-      }
-    }
-
-    return '';
-  }
+  protected readonly getErrorMessage = getErrorMessage;
 }

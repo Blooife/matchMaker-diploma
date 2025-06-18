@@ -78,6 +78,11 @@ export class ModeratorPanelComponent implements OnInit, OnDestroy {
     };
     this.reportService.moderateReport(dto).subscribe(() => {
       this.selectedReport = null;
+      this.moderationForm.reset({
+        status: ReportStatus.Reviewed,
+        moderatorComment: '',
+        banUntil: null
+      });
       this.loadReports();
     });
   }

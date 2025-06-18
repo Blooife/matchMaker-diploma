@@ -64,4 +64,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
   hasMainImage(): boolean {
     return this.profile?.images?.some(img => img.isMainImage) ?? false;
   }
+
+  redirectToChangePassword(): void {
+    this.router.navigate(['/change-password']);
+  }
 }

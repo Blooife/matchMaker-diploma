@@ -32,6 +32,9 @@ public class CountriesSeeds(ProfileDbContext _dbContext) : ISeedEntitiesProvider
         yield return Create("Россия");
         yield return Create("Польша");
         yield return Create("Казахстан");
+        yield return Create("Украина");
+        yield return Create("Литва");
+        yield return Create("Латвия");
         yield break;
 
         Country Create(string name)

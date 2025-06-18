@@ -100,11 +100,6 @@ img {
   background-color: #f5f5f5;
 }
 
-.chat-item.unread {
-  background-color: #f3e5f5;
-  font-weight: bold;
-}
-
 .badge {
   background-color: red;
   color: white;

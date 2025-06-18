@@ -6,6 +6,7 @@ using Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using User.BusinessLogic.DTOs.Request;
 
 namespace User.API.Controllers;
 

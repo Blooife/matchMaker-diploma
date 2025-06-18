@@ -1,5 +1,11 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .moderator-panel {
-  width: 95%;
+  width: 100%;
   max-width: 1200px;
   margin: 20px auto;
   padding: 20px;
@@ -7,6 +13,7 @@
   background-color: #f5f5f5;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 2px solid #a35bbf;
+  overflow-x: auto;
 }
 
 .moderator-panel h2 {
@@ -15,18 +22,19 @@
   margin-bottom: 20px;
 }
 
-
 .filter-section input,
 .filter-section select,
 .filter-section button {
   padding: 6px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  max-width: 100%;
 }
 
 .filter-section input[type="number"],
 .filter-section select {
   width: 20%;
+  min-width: 120px;
 }
 
 .filter-section button {
@@ -53,19 +61,6 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
-}
-
-.email-row input {
-
-}
-
-.other-filters select,
-.other-filters input[type="date"] {
-
-}
-
-.other-filters button {
-  width: auto;
 }
 
 .report-list table {
@@ -106,14 +101,14 @@
   background-color: #9449ac;
 }
 
-/* Modal Styles */
+.modal,
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,14 +116,14 @@
 }
 
 .modal-content {
-  background: #fff;
-  padding: 24px;
-  border-radius: 15px;
-  width: 80%;
-  max-width: 800px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 90%;
   position: relative;
-  border: 2px solid #a35bbf;
+  overflow-x: auto;
 }
 
 .modal-content h4 {
@@ -144,7 +139,10 @@
 
 .modal-content select,
 .modal-content textarea,
-.modal-content input[type="datetime-local"] {
+.modal-content input[type="datetime-local"],
+.modal-content input[type="text"],
+.modal-content input[type="email"],
+.modal-content input[type="number"] {
   width: 100%;
   padding: 6px;
   border-radius: 5px;
@@ -159,6 +157,7 @@
 .modal-buttons {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
   margin-top: 20px;
 }
 
@@ -169,25 +168,35 @@
   background-color: #a35bbf;
   color: white;
   cursor: pointer;
-  width: 48%;
+  flex: 1;
 }
 
 .modal-buttons button:hover {
   background-color: #9449ac;
 }
 
-.close-btn {
+.close-btn,
+.close {
   position: absolute;
-  top: 8px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
   font-size: 24px;
-  border: none;
-  background: none;
   cursor: pointer;
+  background: none;
+  border: none;
   color: #000;
 }
 
-/* Pagination */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: #d9534f;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -231,44 +240,24 @@
   color: #4a148c;
 }
 
-.modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
+/* Responsive Fix */
+@media (max-width: 768px) {
+  .filter-section input[type="number"],
+  .filter-section select {
+    width: 100%;
+  }
 
-.modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  max-width: 440px;
-  width: 60%;
-  position: relative;
-}
+  .email-row,
+  .other-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-.close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  cursor: pointer;
-}
+  .modal-buttons {
+    flex-direction: column;
+  }
 
-.form-group {
-  margin-bottom: 1rem;
+  .modal-buttons button {
+    width: 100%;
+  }
 }
-
-.error-message {
-  color: #d9534f;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-}
-

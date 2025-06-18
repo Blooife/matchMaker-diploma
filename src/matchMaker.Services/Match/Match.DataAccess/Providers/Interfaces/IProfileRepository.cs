@@ -5,5 +5,5 @@ namespace Match.DataAccess.Providers.Interfaces;
 
 public interface IProfileRepository : IGenericRepository<Profile, long>
 {
-    Task<List<long>> GetRecsAsync(List<long> excludedProfileIds, Profile userProfile, CancellationToken cancellationToken);
+    Task<List<long>> GetRecsAsync(List<long> excludedProfileIds, Profile userProfile, CancellationToken cancellationToken, int? limit = null);
 }

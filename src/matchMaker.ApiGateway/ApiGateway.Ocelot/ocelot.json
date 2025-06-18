@@ -57,6 +57,20 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
+      "DownstreamPathTemplate": "/api/auth/password",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/password",
+      "UpstreamHttpMethod": [ "PATCH" ],
+      "SwaggerKey": "user",
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
       "DownstreamPathTemplate": "/api/roles",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -427,6 +441,26 @@
       ],
       "UpstreamPathTemplate": "/matches/paged",
       "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "User"
+      },
+      "SwaggerKey": "matches",
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "DownstreamPathTemplate": "/api/matches/compatibility",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UpstreamPathTemplate": "/matches/compatibility",
+      "UpstreamHttpMethod": [ "POST" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
       },

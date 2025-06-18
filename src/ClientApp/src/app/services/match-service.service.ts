@@ -162,4 +162,11 @@ export class MatchService {
       body: model
     });
   }
+
+  getCompatibility(birthDate1: Date, birthDate2: Date) {
+    return this.httpClient.post<any>(`${matchesEndpoints.matches}/compatibility`, {
+      birthDate1: birthDate1,
+      birthDate2: birthDate2
+    }, this.httpOptions);
+  }
 }

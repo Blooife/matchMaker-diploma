@@ -25,6 +25,10 @@
       <p><strong>Дата рождения:</strong> {{profile.birthDate | date:'dd.MM.yyyy'}}</p>
     </div>
     <div class="profile-detail-item">
+      <i class="fa fa-star"></i>
+      <p><strong>Знак зодиака:</strong> {{ zodiacSign }}</p>
+    </div>
+    <div class="profile-detail-item">
       <i class="fa fa-venus-mars"></i>
       <p><strong>Пол:</strong> {{ profile.gender | genderTranslate}}</p>
     </div>
@@ -74,7 +78,9 @@
     <h3>Образование</h3>
     <ng-container *ngIf="profile.education.length > 0; else noEducation">
       <ul>
-        <li *ngFor="let edu of profile.education">{{edu.educationName}}: {{edu.description}}</li>
+        <li *ngFor="let edu of profile.education">
+          {{edu.educationName}}{{edu.description ? ': ' + edu.description : ''}}
+        </li>
       </ul>
     </ng-container>
     <ng-template #noEducation>

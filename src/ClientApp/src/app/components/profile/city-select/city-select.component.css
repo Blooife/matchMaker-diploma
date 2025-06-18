@@ -24,3 +24,9 @@
   font-size: 14px;
   color: #6c757d;
 }
+
+.select-input:focus {
+  border-color: #a35bbf;
+  box-shadow: 0 0 5px rgba(163, 91, 191, 0.4);
+  outline: none;
+}

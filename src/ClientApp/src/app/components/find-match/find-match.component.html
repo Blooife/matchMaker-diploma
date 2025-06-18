@@ -9,11 +9,17 @@
       <app-profile-card [profile]="recommendations[currentIndex]" class="profile-card"></app-profile-card>
     </div>
     <div class="actions">
-      <button (click)="onDislike(recommendations[currentIndex].id)" class="action-button">
+      <button (click)="onDislike(recommendations[currentIndex].id)"
+              title="Проигнорировать" class="action-button">
         <i class="fas fa-times"></i>
       </button>
-      <button (click)="onLike(recommendations[currentIndex].id)" class="action-button">
+      <button (click)="onLike(recommendations[currentIndex].id)"
+              title="Выразить симпатию" class="action-button">
         <i class="fas fa-check"></i>
+      </button>
+      <button (click)="loadCompatibility(recommendations[currentIndex])"
+              title="Посмотреть совместимость" class="action-button">
+        <i class="fas fa-star"></i>
       </button>
     </div>
   </ng-template>
@@ -21,6 +27,139 @@
 
 <ng-template #noRecs>
   <div class="no-recs-container">
-    <p class="no-recs-message">Рекомендации на сегодня закончились</p>
+    <p class="no-recs-message">Рекомендации на сегодня закончились.</p>
+    <p class="no-recs-message">Попробуйте откличить геолокацию или увеличить радиус поиска.</p>
   </div>
 </ng-template>
+
+<dialog #compatibilityModal class="compatibility-modal">
+  <div class="modal-header">
+    <h2>Совместимость</h2>
+    <button (click)="closeModal()">×</button>
+  </div>
+  <div class="modal-content" *ngIf="compatibilityResult">
+    <p><strong>Общая биоэнергетическая совместимость:</strong> {{ compatibilityResult.bio_result_top?.totalCompatibility }} (> 50%)</p>
+    <p><strong>Диссонансы:</strong> {{ compatibilityResult.bio_result_top?.totalDissonance || 'Нет' }} (< 20%)</p>
+
+    <h3>Чакры</h3>
+    <div class="chakra-progress-bars">
+      <div class="chakra-bar">
+        <div class="chakra-bar-header">
+          <label>Физическая</label>
+          <div *ngIf="compatibilityResult.bio_result_chart_labels?.['physical-label']"
+               class="chakra-label-badge physical">
+            {{ compatibilityResult.bio_result_chart_labels['physical-label'] }}
+          </div>
+        </div>
+        <div class="progress">
+          <div class="progress-fill physical" [style.width.%]="compatibilityResult.bio_result_chart?.physical"></div>
+          <span>{{ compatibilityResult.bio_result_chart?.physical }}%</span>
+        </div>
+        <p class="chakra-description">#1 Муладхара — физическое влечение, совпадение желаний</p>
+      </div>
+
+      <div class="chakra-bar">
+        <div class="chakra-bar-header">
+          <label>Эмоциональная</label>
+          <div *ngIf="compatibilityResult.bio_result_chart_labels?.['emotional-label']"
+               class="chakra-label-badge emotional">
+            {{ compatibilityResult.bio_result_chart_labels['emotional-label'] }}
+          </div>
+        </div>
+        <div class="progress">
+          <div class="progress-fill emotional" [style.width.%]="compatibilityResult.bio_result_chart?.emotional"></div>
+          <span>{{ compatibilityResult.bio_result_chart?.emotional }}%</span>
+        </div>
+        <p class="chakra-description">#2 Свадхистана — эмоции, удовольствия, радость, грусть</p>
+      </div>
+
+      <div class="chakra-bar">
+        <div class="chakra-bar-header">
+          <label>Интеллектуальная</label>
+          <div *ngIf="compatibilityResult.bio_result_chart_labels?.['intellect-label']"
+               class="chakra-label-badge intellect">
+            {{ compatibilityResult.bio_result_chart_labels['intellect-label'] }}
+          </div>
+        </div>
+        <div class="progress">
+          <div class="progress-fill intellect" [style.width.%]="compatibilityResult.bio_result_chart?.intellect"></div>
+          <span>{{ compatibilityResult.bio_result_chart?.intellect }}%</span>
+        </div>
+        <p class="chakra-description">#3 Манипура — мышление, логический диалог, понимание</p>
+      </div>
+
+      <div class="chakra-bar">
+        <div class="chakra-bar-header">
+          <label>Сердечная</label>
+          <div *ngIf="compatibilityResult.bio_result_chart_labels?.['heart-label']"
+               class="chakra-label-badge heart">
+            {{ compatibilityResult.bio_result_chart_labels['heart-label'] }}
+          </div>
+        </div>
+        <div class="progress">
+          <div class="progress-fill heart" [style.width.%]="compatibilityResult.bio_result_chart?.heart"></div>
+          <span>{{ compatibilityResult.bio_result_chart?.heart }}%</span>
+        </div>
+        <p class="chakra-description">#4 Анахата — принятие, преданность, бескорыстное добро</p>
+      </div>
+
+      <div class="chakra-bar">
+        <div class="chakra-bar-header">
+          <label>Творческая</label>
+          <div *ngIf="compatibilityResult.bio_result_chart_labels?.['creative-label']"
+               class="chakra-label-badge creative">
+            {{ compatibilityResult.bio_result_chart_labels['creative-label'] }}
+          </div>
+        </div>
+        <div class="progress">
+          <div class="progress-fill creative" [style.width.%]="compatibilityResult.bio_result_chart?.creative"></div>
+          <span>{{ compatibilityResult.bio_result_chart?.creative }}%</span>
+        </div>
+        <p class="chakra-description">#5 Вишудха — вдохновение, генерация идей, самовыражение</p>
+      </div>
+
+      <div class="chakra-bar">
+        <div class="chakra-bar-header">
+          <label>Интуитивная</label>
+          <div *ngIf="compatibilityResult.bio_result_chart_labels?.['intuitive-label']"
+               class="chakra-label-badge intuitive">
+            {{ compatibilityResult.bio_result_chart_labels['intuitive-label'] }}
+          </div>
+        </div>
+        <div class="progress">
+          <div class="progress-fill intuitive" [style.width.%]="compatibilityResult.bio_result_chart?.intuitive"></div>
+          <span>{{ compatibilityResult.bio_result_chart?.intuitive }}%</span>
+        </div>
+        <p class="chakra-description">#6 Аджна — предугадывание, одинаковые мысли, сознание</p>
+      </div>
+
+      <div class="chakra-bar">
+        <div class="chakra-bar-header">
+          <label>Высшая</label>
+          <div *ngIf="compatibilityResult.bio_result_chart_labels?.['highest-label']"
+               class="chakra-label-badge highest">
+            {{ compatibilityResult.bio_result_chart_labels['highest-label'] }}
+          </div>
+        </div>
+        <div class="progress">
+          <div class="progress-fill highest" [style.width.%]="compatibilityResult.bio_result_chart?.highest"></div>
+          <span>{{ compatibilityResult.bio_result_chart?.highest }}%</span>
+        </div>
+        <p class="chakra-description">#7 Сахасрара — общий духовный путь, разделение вечных ценностей</p>
+      </div>
+    </div>
+
+    <h3>Зодиак</h3>
+    <p>Вы: {{ compatibilityResult.zodiac_result_signs?.zodiacSignMale }} ({{ compatibilityResult.zodiac_result_signs?.zodiacElementMale }})</p>
+    <p>Парнёр: {{ compatibilityResult.zodiac_result_signs?.zodiacSignFemale }} ({{ compatibilityResult.zodiac_result_signs?.zodiacElementFemale }})</p>
+    <p>{{ compatibilityResult.zodiac_result_roles?.zodiacPairText }}</p>
+
+    <h3>Аркан</h3>
+    <p>Вы: {{ compatibilityResult.arcane_result_male.arcane[0] }} — {{ compatibilityResult.arcane_result_male.arcane[4] }}</p>
+    <p>Парнёр: {{ compatibilityResult.arcane_result_female.arcane[0] }} — {{ compatibilityResult.arcane_result_female.arcane[4] }}</p>
+
+    <h3>Нумерология</h3>
+    <p><strong>Совместимость:</strong> {{ compatibilityResult.numerologic_result_pair.consCharact }}</p>
+    <p><strong>Миссия пары:</strong> {{ compatibilityResult.numerologic_result_pair.missionText }}</p>
+  </div>
+</dialog>

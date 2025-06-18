@@ -34,6 +34,11 @@ public class InterestsSeeds(ProfileDbContext _dbContext) : ISeedEntitiesProvider
         yield return Create("Спорт");
         yield return Create("Мода");
         yield return Create("Программирование");
+        yield return Create("Театр");
+        yield return Create("Языки");
+        yield return Create("Культура");
+        yield return Create("Велосипед");
+        yield return Create("Танцы");
         yield break;
 
         Interest Create(string name)

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Minio.Exceptions;
 using Newtonsoft.Json;
+using ForbiddenException = Common.Exceptions.ForbiddenException;
 
 namespace Common.Middlewares;
 
@@ -77,6 +78,10 @@ public class ExceptionMiddleware
             case ConflictException conflictException:
                 statusCode = HttpStatusCode.Conflict;
                 result = CreateErrorResponse(conflictException.Message, "LogicError");
+                break;
+            case ForbiddenException forbiddenException:
+                statusCode = HttpStatusCode.Forbidden;
+                result = CreateErrorResponse(forbiddenException.Message, "ForbiddenError");
                 break;
             default:
                 statusCode = HttpStatusCode.InternalServerError;

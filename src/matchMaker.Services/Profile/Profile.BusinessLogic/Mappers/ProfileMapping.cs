@@ -24,11 +24,15 @@ public class ProfileMapping : AutoMapper.Profile
         //CreateMap<UserCreatedMessage, CreateOrUpdateUserDto>();
 
         CreateMap<UserProfile, ProfileCreatedEventMessage>()
+            .ForMember(dest => dest.CountryId, opt => opt.MapFrom(src => src.City.CountryId))
+            .ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.CityId))
             .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.City.Country.Name))
             .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.Name))
             .ForMember(dest => dest.MainImageUrl, opt => opt.MapFrom(src => src.Images.Count > 0 ? src.Images[0].ImageUrl : null));
         
         CreateMap<UserProfile, ProfileUpdatedEventMessage>()
+            .ForMember(dest => dest.CountryId, opt => opt.MapFrom(src => src.City.CountryId))
+            .ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.CityId))
             .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.City.Country.Name))
             .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.Name))
             .ForMember(dest => dest.MainImageUrl, opt => opt.MapFrom(src => src.Images.Count > 0 ? src.Images[0].ImageUrl : null));

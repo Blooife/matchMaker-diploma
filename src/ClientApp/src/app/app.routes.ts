@@ -16,6 +16,7 @@ import {SettingsComponent} from "./components/settings/settings.component";
 import {BlackListComponent} from "./components/black-list/black-list.component";
 import {ModeratorPanelComponent} from "./components/moderator-panel/moderator-panel.component";
 import {OauthCallbackComponent} from "./components/login/oauth-callback/oauth-callback.component";
+import {ChangePasswordComponent} from "./components/settings/change-password/change-password.component";
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -31,6 +32,7 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [LoggedInGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [ProfileCreatedGuard] },
   { path: 'black-list', component: BlackListComponent, canActivate: [ProfileCreatedGuard] },
+  { path: 'change-password', component: ChangePasswordComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'oauth-callback', component: OauthCallbackComponent }
 ];

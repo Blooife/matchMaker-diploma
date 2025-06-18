@@ -11,10 +11,10 @@ namespace Profile.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "InterestProfile");
+                name: "InterestUserProfile");
 
             migrationBuilder.DropTable(
-                name: "LanguageProfile");
+                name: "LanguageUserProfile");
 
             migrationBuilder.CreateTable(
                 name: "ProfileInterest",

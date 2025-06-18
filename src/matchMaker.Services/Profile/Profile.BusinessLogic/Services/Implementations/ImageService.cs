@@ -59,7 +59,7 @@ public class ImageService
         profile.Images.Add(result);
         var sortedImages = profile.Images
             .OrderByDescending(i => i.IsMainImage)
-            .ThenByDescending(i => i.UploadTimestamp)
+            .ThenBy(i => i.UploadTimestamp)
             .ToList();
         profile.Images = sortedImages;
 
@@ -99,7 +99,7 @@ public class ImageService
         
         var sortedImages = profile.Images
             .OrderByDescending(i => i.IsMainImage)
-            .ThenByDescending(i => i.UploadTimestamp)
+            .ThenBy(i => i.UploadTimestamp)
             .ToList();
         profile.Images = sortedImages;
         

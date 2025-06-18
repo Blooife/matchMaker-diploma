@@ -13,12 +13,22 @@ public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
         builder
             .HasMany(userProfile => userProfile.Interests)
             .WithMany(interest => interest.Profiles)
-            .UsingEntity("ProfileInterest");
+            .UsingEntity<Dictionary<string, object>>(
+                "ProfileInterest",
+                r => r.HasOne<Interest>().WithMany().HasForeignKey("InterestId")
+                    .HasConstraintName("FK_ProfileInterest_Interest_InterestId"),
+                l => l.HasOne<UserProfile>().WithMany().HasForeignKey("ProfileId")
+                    .HasConstraintName("FK_ProfileInterest_UserProfile_ProfileId"));
         
         builder
             .HasMany(userProfile => userProfile.Languages)
             .WithMany(language => language.Profiles)
-            .UsingEntity("ProfileLanguage");
+            .UsingEntity<Dictionary<string, object>>(
+                "ProfileLanguage",
+                r => r.HasOne<Language>().WithMany().HasForeignKey("LanguageId")
+                    .HasConstraintName("FK_ProfileLanguage_Language_InterestId"),
+                l => l.HasOne<UserProfile>().WithMany().HasForeignKey("ProfileId")
+                    .HasConstraintName("FK_ProfileLanguage_UserProfile_ProfileId"));
         
         builder
             .HasMany(up => up.ProfileEducations)

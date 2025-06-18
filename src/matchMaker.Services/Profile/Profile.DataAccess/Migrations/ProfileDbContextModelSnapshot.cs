@@ -280,30 +280,30 @@ namespace Profile.DataAccess.Migrations
 
             modelBuilder.Entity("ProfileInterest", b =>
                 {
-                    b.Property<long>("InterestsId")
+                    b.Property<long>("InterestId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("ProfilesId")
+                    b.Property<long>("ProfileId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("InterestsId", "ProfilesId");
+                    b.HasKey("InterestId", "ProfileId");
 
-                    b.HasIndex("ProfilesId");
+                    b.HasIndex("ProfileId");
 
                     b.ToTable("ProfileInterest");
                 });
 
             modelBuilder.Entity("ProfileLanguage", b =>
                 {
-                    b.Property<long>("LanguagesId")
+                    b.Property<long>("LanguageId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("ProfilesId")
+                    b.Property<long>("ProfileId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("LanguagesId", "ProfilesId");
+                    b.HasKey("LanguageId", "ProfileId");
 
-                    b.HasIndex("ProfilesId");
+                    b.HasIndex("ProfileId");
 
                     b.ToTable("ProfileLanguage");
                 });
@@ -378,30 +378,34 @@ namespace Profile.DataAccess.Migrations
                 {
                     b.HasOne("Profile.DataAccess.Models.Interest", null)
                         .WithMany()
-                        .HasForeignKey("InterestsId")
+                        .HasForeignKey("InterestId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_ProfileInterest_Interest_InterestId");
 
                     b.HasOne("Profile.DataAccess.Models.UserProfile", null)
                         .WithMany()
-                        .HasForeignKey("ProfilesId")
+                        .HasForeignKey("ProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_ProfileInterest_UserProfile_ProfileId");
                 });
 
             modelBuilder.Entity("ProfileLanguage", b =>
                 {
                     b.HasOne("Profile.DataAccess.Models.Language", null)
                         .WithMany()
-                        .HasForeignKey("LanguagesId")
+                        .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_ProfileLanguage_Language_InterestId");
 
                     b.HasOne("Profile.DataAccess.Models.UserProfile", null)
                         .WithMany()
-                        .HasForeignKey("ProfilesId")
+                        .HasForeignKey("ProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_ProfileLanguage_UserProfile_ProfileId");
                 });
 
             modelBuilder.Entity("Profile.DataAccess.Models.City", b =>

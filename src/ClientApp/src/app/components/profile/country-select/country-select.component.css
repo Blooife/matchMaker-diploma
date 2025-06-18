@@ -19,3 +19,9 @@
 .select-input option {
   padding: 8px;
 }
+
+.select-input:focus {
+  border-color: #a35bbf;
+  box-shadow: 0 0 5px rgba(163, 91, 191, 0.4);
+  outline: none;
+}

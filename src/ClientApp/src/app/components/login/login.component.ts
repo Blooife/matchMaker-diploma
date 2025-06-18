@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth-service.service';
 import { Router } from '@angular/router';
 import {NgIf} from "@angular/common";
 import {environment} from "../../constants/environment";
+import {getErrorMessage} from "../profile/validators";
 
 @Component({
   selector: 'app-login',
@@ -41,24 +42,6 @@ export class LoginComponent {
     }
   }
 
-  getErrorMessage(controlName: string): string {
-    const control = this.loginForm.get(controlName);
-
-    if (control && control.errors) {
-      if (control.errors['required']) {
-        return 'Поле обязательно для заполнения';
-      } else if (control.errors['minlength']) {
-        return `Минимальное количество символов - ${control.errors['minlength'].requiredLength}`;
-      } else if (control.errors['maxlength']) {
-        return `Максимальное количество символов - ${control.errors['maxlength'].requiredLength}`;
-      }else if (control.errors['email']) {
-        return `Должно содержать email`;
-      }
-    }
-
-    return '';
-  }
-
   loginWithGoogle() {
     const url = `https://accounts.google.com/o/oauth2/v2/auth` +
       `?client_id=${environment.googleClientId}` +
@@ -68,4 +51,6 @@ export class LoginComponent {
 
     window.location.href = url;
   }
+
+  protected readonly getErrorMessage = getErrorMessage;
 }
